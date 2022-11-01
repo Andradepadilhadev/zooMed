@@ -22,6 +22,9 @@ export class Users {
   @Column({ length: 150 })
   email: string;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @Exclude()
   @Column({ length: 200 })
   password: string;
