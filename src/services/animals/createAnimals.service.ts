@@ -1,10 +1,7 @@
+import { Animals } from "../../entities/animals.entity";
 import { AppError } from "../../errors/appErros";
-import {
-  ICreateAnimalsResponse,
-  ICreateAnimalsRequest,
-} from "../../interfaces/animals";
+import { ICreateAnimalsRequest } from "../../interfaces/animals";
 import { animalsRepository } from "../../utilities";
-import { usersRepository } from "../../utilities";
 import { speciesRepository } from "../../utilities";
 
 const createAnimalsServices = async ({
@@ -12,7 +9,7 @@ const createAnimalsServices = async ({
   birthDate,
   breed,
   speciesId,
-}: ICreateAnimalsRequest): Promise<ICreateAnimalsResponse> => {
+}: ICreateAnimalsRequest): Promise<Animals> => {
   const speciesAlredyExits = await speciesRepository.findOneBy({
     id: speciesId,
   });
