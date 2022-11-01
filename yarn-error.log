@@ -1,25 +1,30 @@
 Arguments: 
-  /home/erica/.nvm/versions/node/v16.15.0/bin/node /home/erica/.nvm/versions/node/v16.15.0/bin/yarn add ts-jest
+  /usr/bin/node /home/stevan/.yarn/bin/yarn.js add -D class-transfomer
 
 PATH: 
-  /home/erica/.nvm/versions/node/v16.15.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+  /home/stevan/.yarn/bin:/home/stevan/.config/yarn/global/node_modules/.bin:/home/stevan/.vscode-server/bin/d045a5eda657f4d7b676dedbfa7aab8207f8a075/bin/remote-cli:/home/stevan/.yarn/bin:/home/stevan/.config/yarn/global/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Users/steva/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/steva/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/steva/AppData/Roaming/npm
 
 Yarn version: 
   1.22.19
 
 Node version: 
-  16.15.0
+  14.20.1
 
 Platform: 
   linux x64
 
 Trace: 
-  SyntaxError: /home/erica/Documentos/KenzieAcademy/m4/Projeto Final M4/zooMed/package.json: Unexpected token } in JSON at position 620
-      at JSON.parse (<anonymous>)
-      at /home/erica/.nvm/versions/node/v16.15.0/lib/node_modules/yarn/lib/cli.js:1629:59
-      at Generator.next (<anonymous>)
-      at step (/home/erica/.nvm/versions/node/v16.15.0/lib/node_modules/yarn/lib/cli.js:310:30)
-      at /home/erica/.nvm/versions/node/v16.15.0/lib/node_modules/yarn/lib/cli.js:321:13
+  Error: https://registry.yarnpkg.com/class-transfomer: Not found
+      at Request.params.callback [as _callback] (/home/stevan/.yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/home/stevan/.yarn/lib/cli.js:140890:22)
+      at Request.emit (events.js:400:28)
+      at Request.<anonymous> (/home/stevan/.yarn/lib/cli.js:141862:10)
+      at Request.emit (events.js:400:28)
+      at IncomingMessage.<anonymous> (/home/stevan/.yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (events.js:519:28)
+      at IncomingMessage.emit (events.js:412:35)
+      at endReadableNT (internal/streams/readable.js:1333:12)
+      at processTicksAndRejections (internal/process/task_queues.js:82:21)
 
 npm manifest: 
   {
@@ -30,7 +35,7 @@ npm manifest:
     "author": "Erica Lopes <ericalopes@outlook.com>",
     "license": "MIT",
     "scripts": {
-      "dev": "ts-node-dev --ignore-watch node_modules src/app.ts",
+      "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
       "build": "tsc",
       "typeorm": "typeorm-ts-node-commonjs",
       "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key jest --verbose"
@@ -42,17 +47,16 @@ npm manifest:
       "jest": "^29.2.2",
       "sqlite3": "^5.1.2",
       "supertest": "^6.3.1",
-  
+      "ts-node-dev": "^2.0.0",
+      "typescript": "^4.8.4"
     },
     "dependencies": {
       "@types/bcryptjs": "^2.4.2",
       "@types/dotenv": "^8.2.0",
-     
       "@types/jsonwebtoken": "^8.5.9",
       "@types/pg": "^8.6.5",
       "@types/reflect-metadata": "^0.1.0",
       "@types/sqlite3": "^3.1.8",
-     
       "@types/typescript": "^2.0.0",
       "bcryptjs": "^2.4.3",
       "class-transformer": "^0.5.1",
@@ -60,14 +64,11 @@ npm manifest:
       "dotenv": "^16.0.3",
       "express": "^4.18.2",
       "express-async-errors": "^3.1.1",
-     
       "jsonwebtoken": "^8.5.1",
+      "pf": "^0.0.1",
       "pg": "^8.8.0",
       "reflect-metadata": "^0.1.13",
-     
-      "ts-node-dev": "^2.0.0",
-      "typeorm": "^0.3.10",
-      "typescript": "^4.8.4"
+      "typeorm": "^0.3.10"
     }
   }
 
@@ -95,9 +96,9 @@ Lockfile:
       "@babel/highlight" "^7.18.6"
   
   "@babel/compat-data@^7.20.0":
-    version "7.20.0"
-    resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.20.0.tgz#9b61938c5f688212c7b9ae363a819df7d29d4093"
-    integrity sha512-Gt9jszFJYq7qzXVK4slhc6NzJXnOVmRECWcVjF/T23rNXD9NtWQ0W3qxdg+p9wWIB+VQw3GYV/U2Ha9bRTfs4w==
+    version "7.20.1"
+    resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.20.1.tgz#f2e6ef7790d8c8dbf03d379502dcc246dcce0b30"
+    integrity sha512-EWZ4mE2diW3QALKvDMiXnbZpRvlj+nayZ112nK93SnhqOtpdsbVD4W+2tEoT3YNBAG9RBR0ISY758ZkOgsn6pQ==
   
   "@babel/core@^7.11.6", "@babel/core@^7.12.3":
     version "7.19.6"
@@ -120,10 +121,10 @@ Lockfile:
       json5 "^2.2.1"
       semver "^6.3.0"
   
-  "@babel/generator@^7.19.6", "@babel/generator@^7.20.0", "@babel/generator@^7.7.2":
-    version "7.20.0"
-    resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.20.0.tgz#0bfc5379e0efb05ca6092091261fcdf7ec36249d"
-    integrity sha512-GUPcXxWibClgmYJuIwC2Bc2Lg+8b9VjaJ+HlNdACEVt+Wlr1eoU1OPZjZRm7Hzl0gaTsUZNQfeihvZJhG7oc3w==
+  "@babel/generator@^7.19.6", "@babel/generator@^7.20.1", "@babel/generator@^7.7.2":
+    version "7.20.1"
+    resolved "https://registry.yarnpkg.com/@babel/generator/-/generator-7.20.1.tgz#ef32ecd426222624cbd94871a7024639cf61a9fa"
+    integrity sha512-u1dMdBUmA7Z0rBB97xh8pIhviK7oItYOkjbsCxTWMknyvbQRBwX7/gn4JXurRdirWMFh+ZtYARqkA6ydogVZpg==
     dependencies:
       "@babel/types" "^7.20.0"
       "@jridgewell/gen-mapping" "^0.3.2"
@@ -215,12 +216,12 @@ Lockfile:
     integrity sha512-XO7gESt5ouv/LRJdrVjkShckw6STTaB7l9BrpBaAHDeF5YZT+01PCwmR0SJHnkW6i8OwW/EVWRShfi4j2x+KQw==
   
   "@babel/helpers@^7.19.4":
-    version "7.20.0"
-    resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.20.0.tgz#27c8ffa8cc32a2ed3762fba48886e7654dbcf77f"
-    integrity sha512-aGMjYraN0zosCEthoGLdqot1oRsmxVTQRHadsUPz5QM44Zej2PYRz7XiDE7GqnkZnNtLbOuxqoZw42vkU7+XEQ==
+    version "7.20.1"
+    resolved "https://registry.yarnpkg.com/@babel/helpers/-/helpers-7.20.1.tgz#2ab7a0fcb0a03b5bf76629196ed63c2d7311f4c9"
+    integrity sha512-J77mUVaDTUJFZ5BpP6mMn6OIl3rEWymk2ZxDBQJUG3P+PbmyMcF3bYWvz0ma69Af1oobDqT/iAsvzhB58xhQUg==
     dependencies:
       "@babel/template" "^7.18.10"
-      "@babel/traverse" "^7.20.0"
+      "@babel/traverse" "^7.20.1"
       "@babel/types" "^7.20.0"
   
   "@babel/highlight@^7.18.6":
@@ -232,10 +233,10 @@ Lockfile:
       chalk "^2.0.0"
       js-tokens "^4.0.0"
   
-  "@babel/parser@^7.1.0", "@babel/parser@^7.14.7", "@babel/parser@^7.18.10", "@babel/parser@^7.19.6", "@babel/parser@^7.20.0":
-    version "7.20.0"
-    resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.20.0.tgz#b26133c888da4d79b0d3edcf42677bcadc783046"
-    integrity sha512-G9VgAhEaICnz8iiJeGJQyVl6J2nTjbW0xeisva0PK6XcKsga7BIaqm4ZF8Rg1Wbaqmy6znspNqhPaPkyukujzg==
+  "@babel/parser@^7.1.0", "@babel/parser@^7.14.7", "@babel/parser@^7.18.10", "@babel/parser@^7.19.6", "@babel/parser@^7.20.1":
+    version "7.20.1"
+    resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.20.1.tgz#3e045a92f7b4623cafc2425eddcb8cf2e54f9cc5"
+    integrity sha512-hp0AYxaZJhxULfM1zyp7Wgr+pSUKBcP3M+PHnSzWGdXOzg/kHWIgiUWARvubhUKGOEw3xqY4x+lyZ9ytBVcELw==
   
   "@babel/plugin-syntax-async-generators@^7.8.4":
     version "7.8.4"
@@ -344,18 +345,18 @@ Lockfile:
       "@babel/parser" "^7.18.10"
       "@babel/types" "^7.18.10"
   
-  "@babel/traverse@^7.19.6", "@babel/traverse@^7.20.0", "@babel/traverse@^7.7.2":
-    version "7.20.0"
-    resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.20.0.tgz#538c4c6ce6255f5666eba02252a7b59fc2d5ed98"
-    integrity sha512-5+cAXQNARgjRUK0JWu2UBwja4JLSO/rBMPJzpsKb+oBF5xlUuCfljQepS4XypBQoiigL0VQjTZy6WiONtUdScQ==
+  "@babel/traverse@^7.19.6", "@babel/traverse@^7.20.1", "@babel/traverse@^7.7.2":
+    version "7.20.1"
+    resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.20.1.tgz#9b15ccbf882f6d107eeeecf263fbcdd208777ec8"
+    integrity sha512-d3tN8fkVJwFLkHkBN479SOsw4DMZnz8cdbL/gvuDuzy3TS6Nfw80HuQqhw1pITbIruHyh7d1fMA47kWzmcUEGA==
     dependencies:
       "@babel/code-frame" "^7.18.6"
-      "@babel/generator" "^7.20.0"
+      "@babel/generator" "^7.20.1"
       "@babel/helper-environment-visitor" "^7.18.9"
       "@babel/helper-function-name" "^7.19.0"
       "@babel/helper-hoist-variables" "^7.18.6"
       "@babel/helper-split-export-declaration" "^7.18.6"
-      "@babel/parser" "^7.20.0"
+      "@babel/parser" "^7.20.1"
       "@babel/types" "^7.20.0"
       debug "^4.1.0"
       globals "^11.1.0"
@@ -853,9 +854,9 @@ Lockfile:
     integrity sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==
   
   "@types/node@*":
-    version "18.11.8"
-    resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.8.tgz#16d222a58d4363a2a359656dd20b28414de5d265"
-    integrity sha512-uGwPWlE0Hj972KkHtCDVwZ8O39GmyjfMane1Z3GUBGGnkZ2USDq7SxLpVIiIHpweY9DS0QTDH0Nw7RNBsAAZ5A==
+    version "18.11.9"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
+    integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
   
   "@types/pg@^8.6.5":
     version "8.6.5"
@@ -1307,9 +1308,9 @@ Lockfile:
     integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
   
   caniuse-lite@^1.0.30001400:
-    version "1.0.30001427"
-    resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001427.tgz#d3a749f74be7ae0671fbec3a4eea18576e8ad646"
-    integrity sha512-lfXQ73oB9c8DP5Suxaszm+Ta2sr/4tf8+381GkIm1MLj/YdLf+rEDyDSRCzeltuyTVGm+/s18gdZ0q+Wmp8VsQ==
+    version "1.0.30001429"
+    resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001429.tgz#70cdae959096756a85713b36dd9cb82e62325639"
+    integrity sha512-511ThLu1hF+5RRRt0zYCf2U2yRr9GPF6m5y90SBCWsvSoYoW7yAGlv/elyPaNfvGCkp6kj/KFZWU0BMA69Prsg==
   
   chalk@^2.0.0:
     version "2.4.2"
@@ -2694,6 +2695,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
     integrity sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==
   
+  lodash@~0.9.2:
+    version "0.9.2"
+    resolved "https://registry.yarnpkg.com/lodash/-/lodash-0.9.2.tgz#8f3499c5245d346d682e5b0d3b40767e09f1a92c"
+    integrity sha512-LVbt/rjK62gSbhehDVKL0vlaime4Y1IBixL+bKeNfoY4L2zab/jGrxU6Ka05tMA/zBxkTk5t3ivtphdyYupczw==
+  
   lru-cache@^6.0.0:
     version "6.0.0"
     resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
@@ -3104,6 +3110,13 @@ Lockfile:
     version "0.1.7"
     resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
     integrity sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==
+  
+  pf@^0.0.1:
+    version "0.0.1"
+    resolved "https://registry.yarnpkg.com/pf/-/pf-0.0.1.tgz#94d80f669bad35557127258c3fb32840781bee76"
+    integrity sha512-1D1pbLGUx8yJf8M37LVacQfEzfGxWHCXevR7Q16CcdsS1pawaeVTtm/YB0HKtEoQYA6N2NAR3E8y/aCK2BDI/w==
+    dependencies:
+      lodash "~0.9.2"
   
   pg-connection-string@^2.5.0:
     version "2.5.0"
