@@ -1,20 +1,20 @@
 import { Animals } from "../../entities/animals.entity";
-import { AppError } from "../../errors/appErros";
+import { AppError } from "../../errors/appError";
 import { ICreateAnimalsRequest } from "../../interfaces/animals";
-import { animalsRepository } from "../../utilities";
+import { animalsRepository, usersRepository } from "../../utilities";
 import { speciesRepository } from "../../utilities";
 
-const createAnimalsServices = async ({
-  name,
-  birthDate,
-  breed,
-  speciesId,
-}: ICreateAnimalsRequest): Promise<Animals> => {
-  const speciesAlredyExits = await speciesRepository.findOneBy({
+const createAnimalsServices = async (
+  { name, birthDate, breed, speciesId }: ICreateAnimalsRequest,
+  userId: string
+): Promise<Animals> => {
+  const species = await speciesRepository.findOneBy({
     id: speciesId,
   });
 
-  if (!speciesAlredyExits) {
+  const user = await usersRepository.findOneBy({ id: userId });
+
+  if (!species) {
     throw new AppError("Species not found", 404);
   }
 
@@ -22,7 +22,8 @@ const createAnimalsServices = async ({
     name: name,
     birthDate: birthDate,
     breed: breed,
-    species: speciesAlredyExits,
+    species: species,
+    user: user!,
   });
 
   await animalsRepository.save(createAnimals);
