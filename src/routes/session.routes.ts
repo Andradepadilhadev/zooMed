@@ -4,5 +4,6 @@ import loginController from "../controllers/session/session.controllers"
 const routes = Router()
 
 export const loginRoutes = () => {
-    routes.post("", loginController)
+    routes.post("", loginController);
+    return routes
 }
