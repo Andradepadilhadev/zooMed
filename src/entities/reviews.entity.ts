@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Appointments } from "./appointments.entity";
 import { Users } from "./users.entity";
 
 @Entity("reviews")
@@ -23,5 +26,10 @@ export class Reviews {
   updatedAt: Date;
 
   @ManyToOne(() => Users)
+  @JoinColumn()
   user: Users;
+
+  @OneToOne(() => Appointments)
+  @JoinColumn()
+  appointments: Appointments;
 }

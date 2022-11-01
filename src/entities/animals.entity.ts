@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -27,6 +28,7 @@ export class Animals {
   user: Users;
 
   @ManyToOne(() => Species)
+  @JoinColumn()
   species: Species;
 
   @OneToMany(() => Appointments, (appointments) => appointments.animals)

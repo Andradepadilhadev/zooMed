@@ -8,11 +8,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Animals } from "./animals.entity";
-import { Reviews } from "./reviews.entity";
+import { ClinicsDoctors } from "./clinicsDoctors.entity";
+import { DoctorsSpecialities } from "./doctorsSpecialities.entity";
 
-@Entity("users")
-export class Users {
+@Entity("doctors")
+export class Doctors {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
@@ -29,16 +29,23 @@ export class Users {
   @Column({ type: "date" })
   birthDate: Date;
 
+  @Column({ length: 6, unique: true })
+  crmv: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Animals, (animals) => animals.user)
+  @OneToMany(
+    () => DoctorsSpecialities,
+    (doctorsSpecialities) => doctorsSpecialities.doctorId
+  )
   @JoinColumn()
-  animals: Animals[];
+  doctorSpecialities: DoctorsSpecialities[];
 
-  @OneToMany(() => Reviews, (reviews) => reviews.user)
-  reviews: Reviews[];
+  @OneToMany(() => ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.doctorId)
+  @JoinColumn()
+  clinicsDoctors: ClinicsDoctors[];
 }

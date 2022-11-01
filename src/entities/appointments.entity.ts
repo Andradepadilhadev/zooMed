@@ -3,11 +3,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Animals } from "./animals.entity";
-import { Reviews } from "./reviews.entity";
+import { ClinicsDoctors } from "./clinicsDoctors.entity";
 
 @Entity("appointments")
 export class Appointments {
@@ -21,8 +20,10 @@ export class Appointments {
   hour: string;
 
   @ManyToOne(() => Animals)
+  @JoinColumn()
   animals: Animals;
 
-  @OneToOne(() => Reviews)
-  reviews: Reviews;
+  @ManyToOne(() => ClinicsDoctors)
+  @JoinColumn()
+  clinicsDoctorsId: string;
 }
