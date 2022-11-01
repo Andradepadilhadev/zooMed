@@ -32,3 +32,4 @@ const ensureAuthTokenMiddleware = async (
     }
   );
 };
+export default ensureAuthTokenMiddleware;
