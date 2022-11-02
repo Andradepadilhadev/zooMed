@@ -10,4 +10,17 @@ export const mockedUserUpdated = {
   birthDate: "2/14/1995",
 };
 
-export const mockedAnimal = {};
+export const mockedType = {
+  name: "Gato",
+};
+
+export const mockedTypeUpdated = {
+  name: "Rato",
+};
+
+export let mockedAnimal = {
+  name: "Bob",
+  birthDate: "2020/12/6",
+  breed: "sem raça definida",
+  type: "",
+};
