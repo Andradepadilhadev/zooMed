@@ -4,6 +4,7 @@ export interface ICreateAnimalsRequest {
   birthDate: Date;
   breed: string;
   speciesId: string;
+  user_id: string;
 }
 
 export interface IEspecies {
