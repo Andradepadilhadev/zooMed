@@ -1,3 +1,4 @@
+import { AppError } from "../../../errors/appError";
 import { appointmentsRepository } from "../../../utilities";
 
 const appointmentsDeleteService = async (id: string) => {
@@ -6,12 +7,8 @@ const appointmentsDeleteService = async (id: string) => {
   });
 
   if (!findAppointments) {
-    // throw new AppError(400, "User not found");
+    throw new AppError("Appointment not found", 400);
   }
-
-  //   if (!findUser.isActive) {
-  //     // throw new AppError(400, "User already inactive(deleted)");
-  //   }
 
   appointmentsRepository.delete(id);
 };
