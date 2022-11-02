@@ -2,6 +2,7 @@ import AppDataSource from "../../data-source";
 import { ClinicsDoctors } from "../../entities/clinicsDoctors.entity";
 import { Clinics } from "../../entities/clinics.entity";
 import { Address } from "../../entities/address.entity";
+import { AppError } from "../../errors/appError";
 
 const clinicDeleteService = async (id: string) => {
   const clinicRepository = AppDataSource.getRepository(Clinics);
@@ -11,7 +12,7 @@ const clinicDeleteService = async (id: string) => {
     where: { id: id },
   });
   if (!clinicAlreadyExists) {
-    throw new Error("Clinic not found");
+    throw new AppError("Clinic not found", 404);
   }
 
   const addressId = clinicAlreadyExists.address.id;

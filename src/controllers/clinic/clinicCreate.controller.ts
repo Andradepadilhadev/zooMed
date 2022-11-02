@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AppError } from "../../errors/appError";
+import handleErrorMiddleware from "../../middlewares/handleError.middlewares";
 import clinicCreateService from "../../services/clinic/clinicCreate.service";
 
 const clinicCreateController = async (req: Request, res: Response) => {
@@ -12,8 +13,6 @@ const clinicCreateController = async (req: Request, res: Response) => {
       address,
     });
     return res.status(201).send(createdClinic);
-  } catch (error) {
-    return res.status(400).send({ message: "deu merda aqui ó" });
-  }
+  } catch (error) {}
 };
 export default clinicCreateController;
