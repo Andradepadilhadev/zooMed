@@ -4,8 +4,8 @@ import { animalsRoutes } from "./animals.routes";
 import { clinicRoutes } from "./clinic.routes";
 
 const appRoutes = (app: Express) => {
-  app.use("/clinics", clinicRoutes());
   app.use("/login", loginRoutes());
+  app.use("/clinics", clinicRoutes());
   app.use("/animals", animalsRoutes());
 };
 
