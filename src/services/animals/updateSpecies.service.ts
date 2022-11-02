@@ -1,5 +1,5 @@
 import { AppError } from "../../errors/appError";
-import { speciesRepository } from "../../utilities";
+import { speciesRepository } from "../../utilities/repositories";
 
 const updateSpeciesService = async (name: string, id: string) => {
   const findSpecies = await speciesRepository.findOneBy({ id });

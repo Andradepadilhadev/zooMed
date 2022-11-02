@@ -1,6 +1,6 @@
 import { instanceToPlain } from "class-transformer";
 import { Users } from "../../entities/users.entity";
-import { usersRepository } from "../../utilities";
+import { usersRepository } from "../../utilities/repositories";
 
 const listAllUserService = async (): Promise<Users[]> => {
   const users = await usersRepository.find();

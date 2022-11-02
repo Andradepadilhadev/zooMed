@@ -1,4 +1,4 @@
-import { usersRepository } from ".";
+import { usersRepository } from "./repositories";
 import { AppError } from "../errors/appError";
 import { ICreateAnimalsRequest } from "../interfaces/animals";
 

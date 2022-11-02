@@ -1,4 +1,4 @@
-import { usersRepository } from "../../utilities";
+import { usersRepository } from "../../utilities/repositories";
 import { IUserDelete } from "../../interfaces/users";
 
 const userDeleteService = async ({ isActive }: IUserDelete, id: string) => {

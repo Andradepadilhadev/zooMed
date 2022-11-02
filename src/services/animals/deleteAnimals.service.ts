@@ -1,5 +1,5 @@
 import { AppError } from "../../errors/appError";
-import { animalsRepository } from "../../utilities";
+import { animalsRepository } from "../../utilities/repositories";
 
 const deleteAnimalService = async (id: string, userId: string) => {
   const animals = await animalsRepository.findOne({

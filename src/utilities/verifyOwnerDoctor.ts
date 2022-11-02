@@ -1,4 +1,4 @@
-import { clinicsDoctorsRepository } from ".";
+import { clinicsDoctorsRepository } from "./repositories";
 import { AppError } from "../errors/appError";
 import { IDoctorRequest } from "../interfaces/doctors";
 
@@ -9,7 +9,6 @@ const verifyOwnerDoctor = async ({ clinics_id }: IDoctorRequest) => {
     },
     relations: {
       clinicId: true,
-      //ou doctorId: true
     },
   });
 

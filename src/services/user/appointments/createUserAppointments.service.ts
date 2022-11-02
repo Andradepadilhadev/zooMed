@@ -6,7 +6,7 @@ import {
   doctorsRepository,
   usersRepository,
 } from "../../../utilities";
-
+../../../utilities/repositories
 const createAppointments = async ({
   date,
   hour,

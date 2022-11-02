@@ -6,7 +6,7 @@ import {
   handleDate,
   noPasswordReturn,
   usersRepository,
-} from "../../utilities";
+} from "../../utilities/repositories";
 
 const createUserService = async ({
   name,

@@ -1,6 +1,6 @@
 import { Appointments } from "../../../entities/appointments.entity";
 import { Reviews } from "../../../entities/reviews.entity";
-import {
+import {../../../utilities/repositories
   appointmentsRepository,
   reviewsRepository,
   usersRepository,

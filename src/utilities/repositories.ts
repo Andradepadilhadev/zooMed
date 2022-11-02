@@ -24,14 +24,3 @@ export const reviewsRepository = AppDataSource.getRepository(Reviews);
 export const specialitiesRepository = AppDataSource.getRepository(Specialities);
 export const speciesRepository = AppDataSource.getRepository(Species);
 export const usersRepository = AppDataSource.getRepository(Users);
-
-export function noPasswordReturn(user: Partial<Users>) {
-  const { password, ...rest } = user;
-  return rest;
-}
-
-export function handleDate(date: string) {
-  const handleDate = date.split("/");
-  const finalDate = handleDate[0] + "-" + handleDate[1] + "-" + handleDate[3];
-  return parseInt(finalDate);
-}
