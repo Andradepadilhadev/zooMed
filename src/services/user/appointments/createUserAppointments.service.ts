@@ -6,9 +6,10 @@ import {
   appointmentsRepository,
   doctorsRepository,
   usersRepository,
-} from "../../../utilities";
+} from "../../../utilities/repositories";
 
 const createAppointmentsService = async ({
+
   date,
   hour,
   animalsId,

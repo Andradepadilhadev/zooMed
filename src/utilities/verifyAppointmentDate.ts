@@ -19,4 +19,3 @@ const verifyAppointmentDate = (
 
 export { verifyAppointmentDate };
 
-//não pode ser antes da data de criação da consulta

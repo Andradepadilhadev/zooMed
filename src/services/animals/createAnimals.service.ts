@@ -1,8 +1,8 @@
 import { Animals } from "../../entities/animals.entity";
 import { AppError } from "../../errors/appError";
 import { ICreateAnimalsRequest } from "../../interfaces/animals";
-import { animalsRepository, usersRepository } from "../../utilities";
-import { speciesRepository } from "../../utilities";
+import { animalsRepository, usersRepository } from "../../utilities/repositories";
+import { speciesRepository } from "../../utilities/repositories";
 
 const createAnimalsServices = async (
   { name, birthDate, breed, speciesId }: ICreateAnimalsRequest,

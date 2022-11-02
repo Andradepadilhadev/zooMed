@@ -1,4 +1,4 @@
-import { usersRepository } from "../../utilities";
+import { usersRepository } from "../../utilities/repositories";
 import { hash } from "bcrypt";
 import { Users } from "../../entities/users.entity";
 import { IUserRequest } from "../../interfaces/users";

@@ -6,7 +6,7 @@ import {
   handleDate,
   noPasswordReturn,
   usersRepository,
-} from "../../utilities";
+} from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
 
 const createUserService = async ({

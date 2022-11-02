@@ -1,5 +1,5 @@
 import { Animals } from "../../entities/animals.entity";
-import { usersRepository } from "../../utilities";
+import { usersRepository } from "../../utilities/repositories";
 
 const listAllAnimalsUserService = async (
   userId: string

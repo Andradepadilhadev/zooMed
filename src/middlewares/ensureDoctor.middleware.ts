@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
-import { doctorsRepository } from "../utilities";
+import { doctorsRepository } from "../utilities/repositories";
 
 const ensureDoctorMiddleware = async (
   req: Request,

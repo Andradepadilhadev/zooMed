@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../errors/appError";
-import { addressRepository } from "../utilities";
+import { addressRepository } from "../utilities/repositories";
 
 const ensureUniqueAddressMiddleware = async (
   req: Request,

@@ -1,6 +1,6 @@
 import { AppError } from "../../errors/appError";
 import { IUserLogin } from "../../interfaces/users";
-import { usersRepository } from "../../utilities";
+import { usersRepository } from "../../utilities/repositories";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 

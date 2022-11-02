@@ -1,5 +1,5 @@
 import { Appointments } from "../../../entities/appointments.entity";
-import { appointmentsRepository, usersRepository } from "../../../utilities";
+import { appointmentsRepository, usersRepository } from "../../../utilities/repositories";
 
 const listAllUserAppointmentsService = async (
   userId: string
