@@ -1,6 +1,5 @@
 import { AppError } from "../../../errors/appError";
-import { appointmentsRepository } from "../../../utilities";
-../../../utilities/repositories
+import { appointmentsRepository } from "../../../utilities/repositories";
 const appointmentsDeleteService = async (id: string) => {
   const findAppointments = await appointmentsRepository.findOneBy({
     id,
