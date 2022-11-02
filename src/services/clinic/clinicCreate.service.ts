@@ -1,6 +1,7 @@
 import AppDataSource from "../../data-source";
 import { Address } from "../../entities/address.entity";
 import { Clinics } from "../../entities/clinics.entity";
+import { AppError } from "../../errors/appError";
 import { IClinicRequest } from "../../interfaces/clinic";
 
 const clinicCreateService = async ({
@@ -16,7 +17,7 @@ const clinicCreateService = async ({
       where: { crmv_pj: crmv_pj },
     });
     if (clinicList) {
-      throw new Error("Clinic Already Exists");
+      throw new AppError("Clinic Already Exists", 404);
     }
 
     const newAddress = new Address();
