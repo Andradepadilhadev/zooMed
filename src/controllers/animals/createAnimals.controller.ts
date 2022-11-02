@@ -4,8 +4,9 @@ import createAnimalsServices from "../../services/animals/createAnimals.service"
 
 const createAnimalsController = async (req: Request, res: Response) => {
   const data: ICreateAnimalsRequest = req.body;
+  const userId = req.user.id;
 
-  const createAnimals = await createAnimalsServices(data);
+  const createAnimals = await createAnimalsServices(data, userId);
 
   return res.status(201).json(createAnimals);
 };
