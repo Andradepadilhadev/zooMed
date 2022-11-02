@@ -1,10 +1,12 @@
-import { Appointments } from "../../../entities/appointments.entity";
 import { Reviews } from "../../../entities/reviews.entity";
+
+
 import {../../../utilities/repositories
   appointmentsRepository,
   reviewsRepository,
   usersRepository,
 } from "../../../utilities";
+import { Appointments } from "../../../entities/appointments.entity";
 
 const updateUserReviewService = async (
   review: string,

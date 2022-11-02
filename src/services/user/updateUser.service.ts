@@ -2,6 +2,7 @@ import { usersRepository } from "../../utilities/repositories";
 import { hash } from "bcrypt";
 import { Users } from "../../entities/users.entity";
 import { IUserRequest } from "../../interfaces/users";
+import { AppError } from "../../errors/appError";
 const updateUserService = async (
   { name, email, password, birthDate }: IUserRequest,
   id: string
@@ -10,14 +11,14 @@ const updateUserService = async (
     id,
   });
   if (!findUser) {
-    throw new AppError(404, "User not found");
+    throw new AppError("User not found", 404);
   }
 
   await usersRepository.update(id, {
     name: name ? name : findUser.name,
     email: email ? email : findUser.email,
+    birthDate: birthDate ? birthDate : findUser.birthDate,
     password: password ? await hash(password!, 10) : findUser.password,
-    birthDate: birthDate? findUser.bi
   });
   const user = await usersRepository.findOneBy({
     id,
