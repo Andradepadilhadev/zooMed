@@ -7,6 +7,7 @@ import {
   noPasswordReturn,
   usersRepository,
 } from "../../utilities";
+import { AppError } from "../../errors/appError";
 
 const createUserService = async ({
   name,
@@ -15,7 +16,7 @@ const createUserService = async ({
   password,
 }: IUserRequest): Promise<Users> => {
   if (!password) {
-    //     throw new AppError(400, "Password is missing");
+    throw new AppError("Password is missing", 400);
   }
   const hashedPassword = await hash(password, 10);
 
