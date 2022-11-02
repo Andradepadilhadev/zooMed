@@ -1,5 +1,6 @@
 import { Appointments } from "../../../entities/appointments.entity";
-import { IAppointments } from "../../../interfaces/users";
+import { AppError } from "../../../errors/appError";
+import { IAppointmentsRequest } from "../../../interfaces/users";
 import {
   animalsRepository,
   appointmentsRepository,
@@ -7,17 +8,17 @@ import {
   usersRepository,
 } from "../../../utilities";
 
-const createAppointments = async ({
+const createAppointmentsService = async ({
   date,
   hour,
   animalsId,
   doctorId,
-}: IAppointments): Promise<Partial<Appointments>> => {
+}: IAppointmentsRequest): Promise<Partial<Appointments>> => {
   const doctor = await doctorsRepository.findOneBy({ id: doctorId });
   const animal = await animalsRepository.findOneBy({ id: animalsId });
 
   if (!doctor || !animal) {
-    //     throw new AppError(400, "Not found, doctor or animal");
+    throw new AppError("Not found, doctor or animal", 400);
   }
   const newAppointments = {
     date,
@@ -30,4 +31,4 @@ const createAppointments = async ({
   return newAppointments;
 };
 
-export default createAppointments;
+export default createAppointmentsService;

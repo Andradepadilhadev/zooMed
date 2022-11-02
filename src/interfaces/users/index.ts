@@ -1,4 +1,3 @@
-
 export interface IUserRequest {
   name: string;
   email: string;
@@ -9,7 +8,7 @@ export interface IUserRequest {
   animals: object;
 }
 
-export interface IAppointments {
+export interface IAppointmentsRequest {
   date: string;
   hour: string;
   animalsId: string;
