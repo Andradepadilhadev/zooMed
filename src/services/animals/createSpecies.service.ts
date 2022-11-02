@@ -1,6 +1,5 @@
 import { Species } from "../../entities/species.entity";
 import { AppError } from "../../errors/appError";
-
 import { speciesRepository } from "../../utilities";
 
 const createSpeciesServices = async (name: string): Promise<Species> => {
