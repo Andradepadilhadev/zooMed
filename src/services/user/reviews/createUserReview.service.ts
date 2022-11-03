@@ -1,14 +1,12 @@
-import { DatabaseError } from "pg";
-import { Appointments } from "../../../entities/appointments.entity";
 import { Reviews } from "../../../entities/reviews.entity";
 import { AppError } from "../../../errors/appError";
 import {
   appointmentsRepository,
   reviewsRepository,
   usersRepository,
-} from "../../../utilities";
+} from "../../../utilities/repositories";
 
-const cr../../../utilities/repositoriesice = async (
+const createUserReviewService = async (
   review: string,
   appointmentsId: string,
   userId: string
@@ -21,10 +19,10 @@ const cr../../../utilities/repositoriesice = async (
     throw new AppError("Appointment not found", 400);
   }
 
-  const hoje = new Date();
+  const today = new Date();
   const appointmentDate = new Date(appointment.date);
 
-  if (appointmentDate > hoje) {
+  if (appointmentDate > today) {
     throw new AppError("Appointment not happen", 400);
   }
   const newReview = {

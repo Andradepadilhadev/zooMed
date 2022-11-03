@@ -1,5 +1,5 @@
 import { usersRepository } from "../../utilities/repositories";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 import { Users } from "../../entities/users.entity";
 import { IUserRequest } from "../../interfaces/users";
 import { AppError } from "../../errors/appError";
