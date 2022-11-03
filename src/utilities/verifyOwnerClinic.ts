@@ -2,7 +2,7 @@ import { clinicsDoctorsRepository } from "./repositories";
 import { AppError } from "../errors/appError";
 import { IDoctorRequest } from "../interfaces/doctors";
 
-const verifyOwnerDoctor = async ({ clinics_id }: IDoctorRequest) => {
+const verifyOwnerClinic = async ({ clinics_id }: IDoctorRequest): Promise<void> => {
   const doctor = await clinicsDoctorsRepository.findOne({
     where: {
       id: clinics_id,
@@ -17,4 +17,4 @@ const verifyOwnerDoctor = async ({ clinics_id }: IDoctorRequest) => {
   }
 };
 
-export { verifyOwnerDoctor };
+export { verifyOwnerClinic };

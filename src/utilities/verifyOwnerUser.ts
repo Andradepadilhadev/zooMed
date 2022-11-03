@@ -1,10 +1,7 @@
 import { usersRepository } from "./repositories";
 import { AppError } from "../errors/appError";
-import { ICreateAnimalsRequest } from "../interfaces/animals";
 
-const verifyOwnerUser = async ({
-  user_id,
-}: ICreateAnimalsRequest): Promise<void> => {
+const verifyOwnerUser = async (user_id: string): Promise<void> => {
   const user = await usersRepository.findOneBy({
     id: user_id,
   });
@@ -15,4 +12,3 @@ const verifyOwnerUser = async ({
 };
 
 export { verifyOwnerUser };
-
