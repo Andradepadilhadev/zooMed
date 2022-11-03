@@ -1,6 +1,6 @@
 import { AppError } from "../../../errors/appError";
 import { appointmentsRepository } from "../../../utilities/repositories";
-const appointmentsDeleteService = async (id: string) => {
+const appointmentsDeleteService = async (isCanceled: string, id: string) => {
   const findAppointments = await appointmentsRepository.findOneBy({
     id,
   });
@@ -8,7 +8,11 @@ const appointmentsDeleteService = async (id: string) => {
   if (!findAppointments) {
     throw new AppError("Appointment not found", 400);
   }
-
-  appointmentsRepository.delete(id);
+  if (!findAppointments.isCanceled) {
+    throw new AppError("User already inactive(deleted)", 400);
+  }
+  await appointmentsRepository.update(id, {
+    isCanceled: true,
+  });
 };
 export default appointmentsDeleteService;
