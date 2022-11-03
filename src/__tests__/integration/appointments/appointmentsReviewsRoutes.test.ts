@@ -1,0 +1,11 @@
+test("POST /users/appointments - Must not be able to create appointment without token or with invalid token", async () => {});
+test("POST /users/appointments - Must be able to create appointment", async () => {});
+test("POST /users/appointments - Must not be able to create a appointment with existing date, hour and doctor", async () => {});
+test("POST /users/appointments - Must not be able to create a appointment with invalid date or hour", async () => {});
+test("GET /users/appointments - Must not me able to list appointments without token or with invalid token", async () => {});
+test("GET /users/appointments - Must be able to list the users appointments", async () => {});
+test("POST /users/reviews - Must not be able to create review of an appointment that didn't happen yet", async () => {});
+//test("POST /users/reviews - Must be able to create an appointment review", async () => {});
+//test("POST /users/reviews - Must not be ale to create a existing appointment review", async () => {});
+//test("PATCH /users/reviews/:id - Must be able to update only the review field", async () => {});
+//test("DELETE /users/appointments/:id - Must be able to delete appointment", async () => {});
