@@ -3,6 +3,7 @@ import { specialitiesRepository } from "../../../utilities/repositories";
 
 const listAllSpecialityService = async (): Promise<Specialities[]> => {
   const specs = await specialitiesRepository.find();
-  return specs.map((spec) => spec);
+  const result = specs.map((spec) => spec);
+  return result;
 };
 export default listAllSpecialityService;
