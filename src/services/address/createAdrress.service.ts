@@ -1,5 +1,5 @@
 import { Address } from "../../entities/address.entity";
-import { addressRepository } from "../../utilities";
+import { addressRepository } from "../../utilities/repositories";
 
 const createAddressService = async (address: Address): Promise<Address> => {
   const newAddress = addressRepository.create({

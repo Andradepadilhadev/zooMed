@@ -1,5 +1,5 @@
 import { Address } from "../../entities/address.entity";
-import { addressRepository } from "../../utilities";
+import { addressRepository } from "../../utilities/repositories";
 
 const updateAddressService = async (
   address: Address

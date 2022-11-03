@@ -54,7 +54,3 @@ export interface IUserReturn {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface IUserDelete {
-  isActive: boolean;
-}

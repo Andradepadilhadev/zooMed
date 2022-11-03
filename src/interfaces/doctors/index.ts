@@ -3,8 +3,6 @@ export interface IDoctorRequest {
   email: string;
   password: string;
   birthDate: string;
-  crmv: object;
-  isActive: true;
-  speciality_id: string;
+  crmv: string;
   clinics_id: string;
 }
