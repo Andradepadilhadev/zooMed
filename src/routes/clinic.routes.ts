@@ -1,8 +1,10 @@
 import { Router } from "express";
-import clinicCreateController from "../controllers/clinic/clinicCreate.controller";
-import clinicDeleteController from "../controllers/clinic/clinicDelete.controller";
-import clinicListController from "../controllers/clinic/clinicList.controller";
-import clinicUpdateController from "../controllers/clinic/clinicUpdate.controller";
+import {
+  clinicCreateController,
+  clinicDeleteController,
+  clinicListController,
+  clinicUpdateController,
+} from "../controllers/clinic/clinic.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
 import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
 
