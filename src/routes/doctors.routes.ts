@@ -1,4 +1,5 @@
 import { Router } from "express";
+import listAppointmentsDoctorController from "../controllers/doctors/appointments/listAppointmentsDoctor.controller";
 import createDoctorController from "../controllers/doctors/createDoctor.controller";
 import deleteDoctorController from "../controllers/doctors/deleteDoctor.controller";
 import listDoctorsController from "../controllers/doctors/listDoctors.controller";
@@ -28,6 +29,11 @@ export const doctorsRoutes = () => {
     "/specialities",
     ensureAuthTokenMiddleware,
     createSpecialityController
+  );
+  routes.get(
+    "/appointments",
+    ensureAuthTokenMiddleware,
+    listAppointmentsDoctorController
   );
 
   return routes;
