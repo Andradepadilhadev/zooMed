@@ -26,3 +26,11 @@ export let mockedAnimal = {
 };
 
 export const mockedWrongId = "130236f0-4e0c-40e0-9000-3d68dcc6f9a9";
+
+export const mockedDoctor = {
+  name: "Veterinário",
+  email: "vet@email.com",
+  password: "1234",
+  birthDate: "1988/07/19",
+  crmv: "123456",
+};
