@@ -1,12 +1,7 @@
 import { IUserRequest } from "../../interfaces/users";
 import { Users } from "../../entities/users.entity";
 import { hash } from "bcrypt";
-import {
-  animalsRepository,
-  handleDate,
-  noPasswordReturn,
-  usersRepository,
-} from "../../utilities/repositories";
+import { usersRepository } from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
 
 const createUserService = async ({
@@ -23,16 +18,15 @@ const createUserService = async ({
   const newUser = usersRepository.create({
     name,
     email,
-    birthDate: new Date(handleDate(birthDate)),
+    birthDate,
     password: hashedPassword,
   });
-  const userExist = await usersRepository.findOneBy({
-    name,
+  const userAlreadyExists = await usersRepository.findOneBy({
     email,
   });
 
-  if (userExist) {
-    //   throw new AppError(400, "User e-mail or name is already registred");
+  if (userAlreadyExists) {
+    throw new AppError("Email is already exists", 409);
   }
 
   await usersRepository.save(newUser);

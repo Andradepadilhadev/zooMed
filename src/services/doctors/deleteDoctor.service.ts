@@ -1,8 +1,8 @@
-import { usersRepository } from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
+import { doctorsRepository } from "../../utilities/repositories";
 
-const userDeleteService = async (id: string) => {
-  const findUser = await usersRepository.findOneBy({
+const deleteDoctorService = async (id: string) => {
+  const findUser = await doctorsRepository.findOneBy({
     id,
   });
 
@@ -14,8 +14,8 @@ const userDeleteService = async (id: string) => {
     throw new AppError("User already inactive", 400);
   }
 
-  await usersRepository.update(id, {
+  await doctorsRepository.update(id, {
     isActive: false,
   });
 };
-export default userDeleteService;
+export default deleteDoctorService;
