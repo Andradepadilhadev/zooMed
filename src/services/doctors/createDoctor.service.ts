@@ -31,7 +31,7 @@ const createDoctorService = async ({
     crmv,
   });
 
-  doctorsRepository.save(newDoctor);
+  await doctorsRepository.save(newDoctor);
 
   return newDoctor;
 };
