@@ -3,12 +3,12 @@ import {
   mockedType,
   mockedTypeUpdated,
   mockedWrongId,
-} from "./../../mocks/index";
+  mockedUser,
+} from "../../mocks/index";
 import request from "supertest";
 import { DataSource } from "typeorm";
 import app from "../../../app";
 import AppDataSource from "../../../data-source";
-import { mockedUser } from "../../mocks";
 
 describe("Animals Routes", () => {
   let connection: DataSource;

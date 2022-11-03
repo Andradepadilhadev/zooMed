@@ -4,5 +4,4 @@ export interface IDoctorRequest {
   password: string;
   birthDate: string;
   crmv: string;
-  clinics_id: string;
 }
