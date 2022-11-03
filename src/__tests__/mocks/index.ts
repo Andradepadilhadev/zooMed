@@ -34,3 +34,11 @@ export const mockedDoctor = {
   birthDate: "1988/07/19",
   crmv: "123456",
 };
+
+export const mockedDoctorUpdate = {
+  name: "Julio castro",
+  email: "julio@email.com",
+  password: "1234",
+  birthDate: "1988/07/19",
+  crmv: "123456",
+};
