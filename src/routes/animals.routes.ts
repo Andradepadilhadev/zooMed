@@ -5,13 +5,19 @@ import deleteAnimalsController from "../controllers/animals/deleteAnimals.contro
 import listSpeciesController from "../controllers/animals/listSpecies.controller";
 import updateSpeciesController from "../controllers/animals/updateSpecie.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
+import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
 
 const routes = Router();
 
 export const animalsRoutes = () => {
   routes.post("", ensureAuthTokenMiddleware, createAnimalsController);
   routes.delete("/:id", ensureAuthTokenMiddleware, deleteAnimalsController);
-  routes.post("/species", ensureAuthTokenMiddleware, createSpeciesController);
+  routes.post(
+    "/species",
+    ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
+    createSpeciesController
+  );
   routes.get("/species", ensureAuthTokenMiddleware, listSpeciesController);
   routes.patch(
     "/species/:id",
