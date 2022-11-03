@@ -1,8 +1,8 @@
-import { AppError } from "../../errors/appError";
+import { AppError } from "../../../errors/appError";
 import {
   doctorsSpecialitiesRepository,
   specialitiesRepository,
-} from "../../utilities/repositories";
+} from "../../../utilities/repositories";
 
 const specialitiesDeleteService = async (id: string) => {
   const specialityAlreadyExists = specialitiesRepository.findOne({
