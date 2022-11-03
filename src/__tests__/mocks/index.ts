@@ -24,3 +24,5 @@ export let mockedAnimal = {
   breed: "sem raça definida",
   type: "",
 };
+
+export const mockedWrongId = "130236f0-4e0c-40e0-9000-3d68dcc6f9a9";
