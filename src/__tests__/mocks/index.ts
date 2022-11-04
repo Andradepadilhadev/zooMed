@@ -10,6 +10,11 @@ export const mockedUserUpdated = {
   birthDate: "2/14/1995",
 };
 
+export const mockedUserLogin = {
+  email: "kenzie@mail.com",
+  password: "1234",
+};
+
 export const mockedType = {
   name: "Gato",
 };
@@ -41,4 +46,50 @@ export const mockedDoctorUpdate = {
   password: "1234",
   birthDate: "1988/07/19",
   crmv: "123456",
+};
+
+export const mockedDoctorLogin = {
+  email: "julio@email.com",
+  password: "1234",
+};
+
+export const mockedClinic = {
+  name: "zooMed",
+  contact: "99 98533-5000",
+  crmv_pj: "99999",
+  address: {
+    zipCode: "18150000",
+    number: "68",
+    complement: "predio",
+    district: "Rua Heleodo Pires de camargo",
+    city: "Piedade",
+    state: "SP",
+  },
+};
+export const mockedClinic2 = {
+  name: "medAnimal",
+  contact: "99 98533-5000",
+  crmv_pj: "99999",
+  address: {
+    zipCode: "18156700",
+    number: "99",
+    complement: "predio",
+    district: "Rua tenorio zeribaldo",
+    city: "Penenopoli",
+    state: "BH",
+  },
+};
+
+export const mockedClinicUpdate = {
+  name: "zooEni",
+  contact: "99 98533-5000",
+  crmv_pj: "99999",
+  address: {
+    zipCode: "18150300",
+    number: "38",
+    complement: "predio",
+    district: "Rua gato a jato",
+    city: "marte",
+    state: "rd",
+  },
 };
