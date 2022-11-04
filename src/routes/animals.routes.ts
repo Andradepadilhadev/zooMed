@@ -1,9 +1,11 @@
 import { Router } from "express";
-import createAnimalsController from "../controllers/animals/createAnimals.controller";
-import createSpeciesController from "../controllers/animals/createSpecies.controller";
-import deleteAnimalsController from "../controllers/animals/deleteAnimals.controller";
-import listSpeciesController from "../controllers/animals/listSpecies.controller";
-import updateSpeciesController from "../controllers/animals/updateSpecie.controller";
+import {
+  createAnimalsController,
+  createSpeciesController,
+  deleteAnimalsController,
+  listSpeciesController,
+  updateSpeciesController,
+} from "../controllers/animals/animals.controllers";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
 import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
 

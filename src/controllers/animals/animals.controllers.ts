@@ -47,7 +47,7 @@ const updateSpeciesController = async (req: Request, res: Response) => {
   return res.status(200).json(updateSpecies);
 };
 
-export default {
+export {
   createAnimalsController,
   createSpeciesController,
   deleteAnimalsController,
