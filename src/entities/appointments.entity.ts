@@ -28,5 +28,5 @@ export class Appointments {
 
   @ManyToOne(() => ClinicsDoctors)
   @JoinColumn()
-  clinicsDoctorsId: string;
+  clinicsDoctorsId: ClinicsDoctors;
 }
