@@ -21,13 +21,12 @@ const createUserService = async ({
     birthDate,
     password: hashedPassword,
   });
-  const userExist = await usersRepository.findOneBy({
-    name,
+  const userAlreadyExists = await usersRepository.findOneBy({
     email,
   });
 
-  if (userExist) {
-    throw new AppError("User e-mail or name is already registred", 400);
+  if (userAlreadyExists) {
+    throw new AppError("Email is already exists", 409);
   }
 
   await usersRepository.save(newUser);

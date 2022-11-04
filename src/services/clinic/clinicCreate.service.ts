@@ -1,8 +1,8 @@
 import AppDataSource from "../../data-source";
-import { Address } from "../../entities/address.entity";
 import { Clinics } from "../../entities/clinics.entity";
 import { AppError } from "../../errors/appError";
 import { IClinicRequest } from "../../interfaces/clinic";
+import createAddressService from "../address/createAdrress.service";
 
 const clinicCreateService = async ({
   name,
@@ -11,55 +11,19 @@ const clinicCreateService = async ({
   address,
 }: IClinicRequest) => {
   const clinicRepository = AppDataSource.getRepository(Clinics);
-  const addressRepository = AppDataSource.getRepository(Address);
-  if (crmv_pj) {
-    const clinicList = await clinicRepository.findOne({
-      where: { crmv_pj: crmv_pj },
-    });
-    if (clinicList) {
-      throw new AppError("Clinic Already Exists", 404);
-    }
 
-    const newAddress = new Address();
-    newAddress.zipCode = address.zipCode;
-    newAddress.city = address.city;
-    newAddress.complement = address.complement;
-    newAddress.state = address.state;
-    newAddress.district = address.district;
-    newAddress.number = address.number;
-
-    addressRepository.create(newAddress);
-    await addressRepository.save(newAddress);
-
-    const newClinic = new Clinics();
-    newClinic.name = name;
-    newClinic.contact = contact;
-    newClinic.address = newAddress;
-    newClinic.crmv_pj = crmv_pj;
-
-    clinicRepository.create(newClinic);
-    await clinicRepository.save(newClinic);
-
-    return {
-      message: "Created sucessfully",
-      Clinic: newClinic,
-    };
+  const clinicAlreadyExists = await clinicRepository.findOne({
+    where: { name: name },
+  });
+  if (clinicAlreadyExists) {
+    throw new AppError("Clinic Already Exists", 404);
   }
-  const newAddress = new Address();
-  newAddress.zipCode = address.zipCode;
-  newAddress.city = address.city;
-  newAddress.complement = address.complement;
-  newAddress.state = address.state;
-  newAddress.district = address.district;
-  newAddress.number = address.number;
-
-  addressRepository.create(newAddress);
-  await addressRepository.save(newAddress);
 
   const newClinic = new Clinics();
   newClinic.name = name;
   newClinic.contact = contact;
-  newClinic.address = newAddress;
+  newClinic.address = await createAddressService(address);
+  crmv_pj && (newClinic.crmv_pj = crmv_pj);
 
   clinicRepository.create(newClinic);
   await clinicRepository.save(newClinic);
