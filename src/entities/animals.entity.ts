@@ -23,6 +23,7 @@ export class Animals {
 
   @Column({ length: 200 })
   breed: string;
+
   @Column({ default: true })
   isAlive: boolean;
 
