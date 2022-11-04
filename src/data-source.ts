@@ -26,8 +26,6 @@ const AppDataSource = new DataSource(
           process.env.NODE_ENV === "production"
             ? ["dist/migrations/*.js"]
             : ["src/migrations/*.ts"],
-        ssl: true,
-        extra: { ssl: { rejectUnauthorized: false } },
       }
 );
 
