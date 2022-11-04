@@ -99,9 +99,9 @@ describe("Appointmenst and Reviews Routes", () => {
       .send(mockedAppointment)
       .set("Authorization", `Bearer${invalidToken}`);
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(403);
+    expect(responseInvalidToken.status).toBe(401);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -230,9 +230,9 @@ describe("Appointmenst and Reviews Routes", () => {
       .get("/users/appointments")
       .set("Authorization", `Bearer${invalidToken}`);
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(403);
+    expect(responseInvalidToken.status).toBe(401);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -372,9 +372,9 @@ describe("Appointmenst and Reviews Routes", () => {
       .patch(`/users/appointments/${appointmentId}`)
       .set("Authorization", `Bearer ${invalidToken}`);
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(403);
+    expect(responseInvalidToken.status).toBe(401);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
