@@ -2,7 +2,12 @@ import { DataSource } from "typeorm";
 import app from "../../../app";
 import request from "supertest";
 import AppDataSource from "../../../data-source";
-import { mockedDoctor, mockedDoctorUpdate } from "../../mocks";
+import {
+  mockedDoctor,
+  mockedDoctorLogin,
+  mockedDoctorUpdate,
+  mockedSpeciality,
+} from "../../mocks";
 
 describe("Doctors Routes", () => {
   let connection: DataSource;
@@ -41,7 +46,7 @@ describe("Doctors Routes", () => {
     expect(response.body).toHaveProperty("message");
   });
 
-  test("PATCH /doctors/:id - Must not be able to update user without token or invalid token", async () => {
+  test("PATCH /doctors - Must not be able to update user without token or invalid token", async () => {
     const responseNoToken = await request(app)
       .patch("/doctors")
       .send(mockedDoctorUpdate);
@@ -51,10 +56,10 @@ describe("Doctors Routes", () => {
       .set("Authorization", `Bearer ${token}`)
       .send(mockedDoctorUpdate);
 
-    expect(responseNoToken.status).toBe(409);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidToken.status).toBe(409);
+    expect(responseInvalidToken.status).toBe(401);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -76,7 +81,16 @@ describe("Doctors Routes", () => {
     expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
-  test("DELETE /doctors - Must not be able to modify id or isActive", async () => {
+  test("GET /doctors - Must be able to list doctors", async () => {
+    const response = await request(app).get("/doctors");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+    expect(response.body[0]).toHaveProperty("specialities");
+    expect(response.body[0]).toHaveProperty("clinics");
+  });
+
+  test("PATCH /doctors - Must not be able to modify id or isActive", async () => {
     const login = await request(app).post("/login").send({
       email: mockedDoctorUpdate.email,
       password: mockedDoctorUpdate.password,
@@ -90,11 +104,59 @@ describe("Doctors Routes", () => {
     expect(response.body).toHaveProperty("message");
   });
 
-  test("DELETE /doctors - Must be able to do a soft delete of the doctors", async () => {
-    const login = await request(app).post("/login").send({
-      email: mockedDoctorUpdate.email,
-      password: mockedDoctorUpdate.password,
-    });
+  test("POST /doctors/specialities - Must be able to create speciality and add to the doctors specialities", async () => {
+    const login = await request(app).post("/login").send(mockedDoctorLogin);
+
+    const responseCreateSpeciality = await request(app)
+      .post("/doctors/specialities")
+      .set("Authorization", `Bearer ${login.body.token}`)
+      .send(mockedSpeciality);
+
+    expect(responseCreateSpeciality.status).toBe(201);
+    expect(responseCreateSpeciality.body).toHaveProperty("id");
+
+    const responseWasSpecialityAdded = await request(app).get("/doctors");
+
+    expect(responseWasSpecialityAdded.body[0].specialities[0]).toEqual(
+      mockedSpeciality.name
+    );
+  });
+
+  test("GET /doctors/specialitites - Must be able to list specialities", async () => {
+    const response = await request(app).get("/doctors/specialities");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+    expect(response.body[0].name).toEqual(mockedSpeciality.name);
+  });
+
+  test("GET /doctors/specialities/:id - Must be able to list doctors by speciality", async () => {
+    const specialitiesList = await request(app).get("/doctors/specialities");
+
+    const response = await request(app).get(
+      `/doctors/specialities/${specialitiesList.body[0].id}`
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveLength(1);
+    expect(response.body[0].name).toEqual(mockedDoctorUpdate.name);
+  });
+
+  test("PATCH /doctors/specialities - Must be able to remove speciality from the doctors specialities", async () => {
+    const login = await request(app).post("/login").send(mockedDoctorLogin);
+
+    const response = await request(app)
+      .patch("/doctors/specilities")
+      .set("Authorization", `Bearer ${login.body.token}`)
+      .send(mockedSpeciality);
+
+    expect(response.status).toBe(200);
+    expect(response.body.name).toEqual(mockedDoctorUpdate.name);
+    expect(response.body.specialities).toHaveLength(0);
+  });
+
+  test("PATCH /doctors - Must be able to do a soft delete of the doctors", async () => {
+    const login = await request(app).post("/login").send(mockedDoctorLogin);
     const response = await request(app)
       .patch("/doctors")
       .set("Authorization", `Bearer ${login.body.token}`);
@@ -104,33 +166,5 @@ describe("Doctors Routes", () => {
     expect(response.body.message).toEqual(
       "Doctor deleted/deactivated with success"
     );
-  });
-
-  test("PATCH/doctors - ");
-
-  test("DELETE/specialties/:id - Must be able to do a soft delete of the specialties", async () => {
-    const login = await request(app).post("/login").send({
-      email: mockedDoctorUpdate.email,
-      password: mockedDoctorUpdate.password,
-    });
-    const response = await request(app)
-      .patch("/doctors/specialties")
-      .set("Authorization", `Bearer ${login.body.token}`);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual(
-      "Speciality deleted/deactivated with success"
-    );
-  });
-
-  test("DELETE/specialties/:id should not be able to delete speciality without authentication", async () => {
-    const response = await request(app).post("/login").send({
-      email: mockedDoctorUpdate.email,
-      password: mockedDoctorUpdate.password,
-    });
-
-    expect(response.status).toBe(401);
-    expect(response.body).toHaveProperty("message");
   });
 });
