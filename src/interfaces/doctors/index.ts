@@ -3,8 +3,13 @@ export interface IDoctorRequest {
   email: string;
   password: string;
   birthDate: string;
-  crmv: object;
-  isActive: true;
-  speciality_id: string;
-  clinics_id: string;
+  crmv: string;
+  clinics_id?: string;
+}
+
+export interface IDoctorUpdate {
+  name: string;
+  email: string;
+  password: string;
+  birthDate: string;
 }

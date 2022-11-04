@@ -1,8 +1,7 @@
 import { usersRepository } from "../../utilities/repositories";
-import { IUserDelete } from "../../interfaces/users";
 import { AppError } from "../../errors/appError";
 
-const userDeleteService = async ({ isActive }: IUserDelete, id: string) => {
+const userDeleteService = async (id: string) => {
   const findUser = await usersRepository.findOneBy({
     id,
   });
@@ -12,7 +11,7 @@ const userDeleteService = async ({ isActive }: IUserDelete, id: string) => {
   }
 
   if (!findUser.isActive) {
-    throw new AppError("User already inactive(deleted)", 400);
+    throw new AppError("User already inactive", 400);
   }
 
   await usersRepository.update(id, {

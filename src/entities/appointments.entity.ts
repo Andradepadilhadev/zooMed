@@ -19,11 +19,14 @@ export class Appointments {
   @Column({ type: "time" })
   hour: string;
 
+  @Column({ default: false })
+  isCanceled: boolean;
+
   @ManyToOne(() => Animals)
   @JoinColumn()
   animals: Animals;
 
   @ManyToOne(() => ClinicsDoctors)
   @JoinColumn()
-  clinicsDoctorsId: string;
+  clinicsDoctorsId: ClinicsDoctors;
 }

@@ -32,6 +32,9 @@ export class Doctors {
   @Column({ length: 6, unique: true })
   crmv: string;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
