@@ -3,6 +3,8 @@ import listAppointmentsDoctorController from "../controllers/doctors/appointment
 import createDoctorController from "../controllers/doctors/createDoctor.controller";
 import deleteDoctorController from "../controllers/doctors/deleteDoctor.controller";
 import listDoctorsController from "../controllers/doctors/listDoctors.controller";
+import deleteReviewsController from "../controllers/doctors/reviews/deleteReviewsDoctor.controller";
+import listReviewsDoctorController from "../controllers/doctors/reviews/listReviewsDoctor.controller";
 import updateDoctorController from "../controllers/doctors/updateDoctor.controller";
 import { createSpecialityController } from "../controllers/specialities/speciality.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
@@ -34,6 +36,18 @@ export const doctorsRoutes = () => {
     "/appointments",
     ensureAuthTokenMiddleware,
     listAppointmentsDoctorController
+  );
+  routes.get(
+    "/reviews",
+    ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
+    listReviewsDoctorController
+  );
+  routes.delete(
+    "/reviews/:id",
+    ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
+    deleteReviewsController
   );
 
   return routes;
