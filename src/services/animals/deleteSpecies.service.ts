@@ -16,10 +16,7 @@ const deleteSpeciesService = async (id: string, doctorId: string) => {
   const doctor = await doctorsRepository.findOneBy({ id: doctorId });
 
   if (!doctor) {
-    throw new AppError(
-      "You don't have authorization to delete this animal",
-      409
-    );
+    throw new AppError("Doctor not found", 404);
   }
 
   await speciesRepository.delete({ id });
