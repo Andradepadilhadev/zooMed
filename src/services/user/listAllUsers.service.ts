@@ -2,9 +2,10 @@ import { Users } from "../../entities/users.entity";
 import { usersRepository } from "../../utilities/repositories";
 
 const listAllUserService = async (): Promise<Users[]> => {
+  console.log('1')
   const users = await usersRepository.find();
-  const result = users.map((user) => user);
-  return result;
+  console.log('2')
+  return users;
 };
 
 export default listAllUserService;

@@ -18,9 +18,11 @@ const AppDataSource = new DataSource(
         database: process.env.DB,
         logging: true,
         synchronize: false,
-        entities: ["dist/entities/*.js"] || ["src/entities/*.ts"],
-        migrations: ["dist/migrations/*.js"] || ["src/migrations/*.ts"],
+        entities:  ["src/entities/*.ts"],
+        migrations:  ["src/migrations/*.ts"],
       }
 );
 
 export default AppDataSource;
+//["dist/entities/*.js"] ||
+//["dist/migrations/*.js"] ||

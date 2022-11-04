@@ -7,7 +7,7 @@ import { userRoutes } from "./user.routes";
 
 const appRoutes = (app: Express) => {
   app.use("/login", loginRoutes());
-  app.use("/user", userRoutes())
+  app.use("/users", userRoutes())
   app.use("/clinics", clinicRoutes());
   app.use("/animals", animalsRoutes());
   app.use("/doctors", doctorsRoutes());

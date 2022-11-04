@@ -12,11 +12,12 @@ import {
 } from "../controllers/user/user.cotroller";
 import { Router } from "express";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
+import handleErrorMiddleware from "../middlewares/handleError.middlewares";
 
 const routes = Router();
 
 export const userRoutes = () => {
-  routes.post("", createUserController);
+  routes.post("", handleErrorMiddleware, createUserController);
   routes.delete("", ensureAuthTokenMiddleware, deleteUserController);
   routes.patch("", ensureAuthTokenMiddleware, updateUserController);
   routes.get("", ensureAuthTokenMiddleware, listAllUserController);
