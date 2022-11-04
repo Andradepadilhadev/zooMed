@@ -3,6 +3,7 @@ import { Users } from "../../entities/users.entity";
 import { hash } from "bcryptjs";
 import { usersRepository } from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
+import { verifyDateFormat } from "../../utilities/verifyDateFormat";
 
 const createUserService = async ({
   name,
@@ -14,6 +15,8 @@ const createUserService = async ({
     throw new AppError("Password is missing", 400);
   }
   const hashedPassword = await hash(password, 10);
+
+  verifyDateFormat(birthDate)
 
   const newUser = usersRepository.create({
     name,

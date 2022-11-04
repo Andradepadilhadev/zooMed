@@ -6,11 +6,7 @@ const deleteDoctorService = async (id: string) => {
     id,
   });
 
-  if (!doctorAlreadyExists) {
-    throw new AppError("Doctor not found", 400);
-  }
-
-  if (!doctorAlreadyExists.isActive) {
+  if (!doctorAlreadyExists!.isActive) {
     throw new AppError("Doctor already inactive", 400);
   }
 

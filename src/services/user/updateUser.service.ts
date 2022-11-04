@@ -3,6 +3,7 @@ import { hash } from "bcryptjs";
 import { Users } from "../../entities/users.entity";
 import { IUserRequest } from "../../interfaces/users";
 import { AppError } from "../../errors/appError";
+import { verifyDateFormat } from "../../utilities/verifyDateFormat";
 const updateUserService = async (
   { name, email, password, birthDate }: IUserRequest,
   id: string
@@ -12,6 +13,10 @@ const updateUserService = async (
   });
   if (!findUser) {
     throw new AppError("User not found", 404);
+  }
+
+  if (birthDate) {
+    verifyDateFormat(birthDate);
   }
 
   await usersRepository.update(id, {

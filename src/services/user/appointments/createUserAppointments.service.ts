@@ -15,7 +15,7 @@ const createAppointmentsService = async ({
   doctorId,
 }: IAppointmentsRequest): Promise<Partial<Appointments>> => {
   const clinicDoctor = await clinicsDoctorsRepository.findOneBy({
-    doctorId: doctorId,
+    doctor: doctorId,
   });
   const animal = await animalsRepository.findOneBy({ id: animalsId });
 
@@ -26,7 +26,7 @@ const createAppointmentsService = async ({
   newAppointments.date = date;
   newAppointments.hour = hour;
   newAppointments.animals = animal;
-  newAppointments.clinicsDoctorsId = clinicDoctor;
+  newAppointments.clinicsDoctors = clinicDoctor;
 
   appointmentsRepository.save(newAppointments);
 

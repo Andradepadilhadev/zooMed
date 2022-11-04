@@ -21,7 +21,7 @@ const createUserController = async (req: Request, res: Response) => {
 
 const listAllUserController = async (req: Request, res: Response) => {
   const users = await listAllUserService();
-  return res.json(users);
+  return res.json(instanceToPlain(users));
 };
 
 const updateUserController = async (req: Request, res: Response) => {

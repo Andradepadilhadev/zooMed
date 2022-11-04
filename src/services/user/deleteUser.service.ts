@@ -6,16 +6,15 @@ const userDeleteService = async (id: string) => {
     id,
   });
 
-  if (!findUser) {
-    throw new AppError("User not found", 400);
-  }
-
-  if (!findUser.isActive) {
+  if (!findUser!.isActive) {
     throw new AppError("User already inactive", 400);
   }
 
   await usersRepository.update(id, {
     isActive: false,
   });
+
+  return { message: "User deleted successfully" };
 };
+
 export default userDeleteService;

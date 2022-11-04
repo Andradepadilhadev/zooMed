@@ -80,10 +80,10 @@ describe("Animals Routes", () => {
       .get("/animals/species")
       .set("Authorization", `Bearer ${invalidUserToken}`);
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidUserToken.status).toBe(403);
+    expect(responseInvalidUserToken.status).toBe(401);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -131,9 +131,9 @@ describe("Animals Routes", () => {
       .post("/animals")
       .send(mockedAnimal);
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(403);
+    expect(responseInvalidUserToken.status).toBe(401);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -176,9 +176,9 @@ describe("Animals Routes", () => {
       .set("Authorization", `Bearer ${invalidUserToken}`);
     const responseNoToken = await request(app).get("/users/animals");
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(403);
+    expect(responseInvalidUserToken.status).toBe(401);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -207,9 +207,9 @@ describe("Animals Routes", () => {
       `/animals/${animalToBeDeleted}`
     );
 
-    expect(responseNoToken.status).toBe(403);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(403);
+    expect(responseInvalidUserToken.status).toBe(401);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
