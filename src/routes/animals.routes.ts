@@ -24,5 +24,11 @@ export const animalsRoutes = () => {
     ensureAuthTokenMiddleware,
     updateSpeciesController
   );
+  routes.delete(
+    "/species/:id",
+    ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
+    deleteAnimalsController
+  );
   return routes;
 };
