@@ -41,7 +41,7 @@ describe("Doctors Routes", () => {
     expect(response.body).toHaveProperty("message");
   });
 
-  test("PATCH /doctors - Must not be able to update user without token or invalid token", async () => {
+  test("PATCH /doctors/:id - Must not be able to update user without token or invalid token", async () => {
     const responseNoToken = await request(app)
       .patch("/doctors")
       .send(mockedDoctorUpdate);
@@ -63,7 +63,7 @@ describe("Doctors Routes", () => {
       .post("/login")
       .send({ email: mockedDoctor.email, password: mockedDoctor.password });
     const response = await request(app)
-      .patch("/doctors")
+      .patch(`/doctors`)
       .set("Authorization", `Bearer ${login.body.token}`)
       .send(mockedDoctorUpdate);
 
@@ -76,10 +76,10 @@ describe("Doctors Routes", () => {
     expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
-  test("PATCH /doctors - Must not be able to modify id or isActive", async () => {
+  test("DELETE /doctors - Must not be able to modify id or isActive", async () => {
     const login = await request(app).post("/login").send({
       email: mockedDoctorUpdate.email,
-      password: mockedDoctor.password,
+      password: mockedDoctorUpdate.password,
     });
     const response = await request(app)
       .patch("/doctors")
@@ -90,10 +90,10 @@ describe("Doctors Routes", () => {
     expect(response.body).toHaveProperty("message");
   });
 
-  test("PATCH /doctors - Must be able to do a soft delete of the doctors", async () => {
+  test("DELETE /doctors - Must be able to do a soft delete of the doctors", async () => {
     const login = await request(app).post("/login").send({
       email: mockedDoctorUpdate.email,
-      password: mockedDoctor.password,
+      password: mockedDoctorUpdate.password,
     });
     const response = await request(app)
       .patch("/doctors")
@@ -104,5 +104,33 @@ describe("Doctors Routes", () => {
     expect(response.body.message).toEqual(
       "Doctor deleted/deactivated with success"
     );
+  });
+
+  test("PATCH/doctors - ");
+
+  test("DELETE/specialties/:id - Must be able to do a soft delete of the specialties", async () => {
+    const login = await request(app).post("/login").send({
+      email: mockedDoctorUpdate.email,
+      password: mockedDoctorUpdate.password,
+    });
+    const response = await request(app)
+      .patch("/doctors/specialties")
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual(
+      "Speciality deleted/deactivated with success"
+    );
+  });
+
+  test("DELETE/specialties/:id should not be able to delete speciality without authentication", async () => {
+    const response = await request(app).post("/login").send({
+      email: mockedDoctorUpdate.email,
+      password: mockedDoctorUpdate.password,
+    });
+
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty("message");
   });
 });
