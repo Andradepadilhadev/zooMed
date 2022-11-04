@@ -8,7 +8,7 @@ import {
   mockedUserLogin,
   mockedUserUpdated,
   mockedUser,
-  mockedClinic2,
+  mockedClinicTwo,
   mockedDoctor,
   mockedClinicUpdate,
 } from "../../mocks";
@@ -93,7 +93,7 @@ describe("Clinics Routes", () => {
   });
 
   test("GET /clinics -  Must be able to list clinics", async () => {
-    await request(app).post("/clinics").send(mockedClinic2);
+    await request(app).post("/clinics").send(mockedClinicTwo);
 
     const response = await request(app).get("/clinics");
 
