@@ -15,11 +15,11 @@ export const mockedUserLogin = {
   password: "1234",
 };
 
-export const mockedType = {
+export const mockedSpecies = {
   name: "Gato",
 };
 
-export const mockedTypeUpdated = {
+export const mockedSpeciesUpdated = {
   name: "Rato",
 };
 
@@ -27,7 +27,7 @@ export let mockedAnimal = {
   name: "Bob",
   birthDate: "2020/12/6",
   breed: "sem raça definida",
-  type: "",
+  species: "",
 };
 
 export const mockedWrongId = "130236f0-4e0c-40e0-9000-3d68dcc6f9a9";
@@ -82,14 +82,15 @@ export const mockedClinic2 = {
 
 export const mockedClinicUpdate = {
   name: "zooEni",
-  contact: "99 98533-5000",
-  crmv_pj: "99999",
   address: {
     zipCode: "18150300",
     number: "38",
-    complement: "predio",
     district: "Rua gato a jato",
     city: "marte",
     state: "rd",
   },
+};
+
+export const mockedSpeciality = {
+  name: "Cardiologista",
 };
