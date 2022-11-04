@@ -9,14 +9,14 @@ export class ClinicsDoctors {
   readonly id: string;
 
   @ManyToOne(() => Clinics)
-  clinicId: string;
+  clinic: string;
 
   @ManyToOne(() => Doctors)
-  doctorId: string;
+  doctor: string;
 
   @OneToMany(
     () => Appointments,
-    (appointments) => appointments.clinicsDoctorsId
+    (appointments) => appointments.clinicsDoctors
   )
   appointments: Appointments[];
 }

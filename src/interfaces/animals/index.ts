@@ -1,9 +1,9 @@
 export interface ICreateAnimalsRequest {
   id: string;
   name: string;
-  birthDate: Date;
+  birthDate: string;
   breed: string;
-  speciesId: string;
+  species: string;
   user_id: string;
 }
 

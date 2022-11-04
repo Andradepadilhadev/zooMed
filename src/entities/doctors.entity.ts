@@ -43,12 +43,12 @@ export class Doctors {
 
   @OneToMany(
     () => DoctorsSpecialities,
-    (doctorsSpecialities) => doctorsSpecialities.doctorId
+    (doctorsSpecialities) => doctorsSpecialities.doctor
   )
   @JoinColumn()
   doctorSpecialities: DoctorsSpecialities[];
 
-  @OneToMany(() => ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.doctorId)
+  @OneToMany(() => ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.doctor)
   @JoinColumn()
   clinicsDoctors: ClinicsDoctors[];
 }

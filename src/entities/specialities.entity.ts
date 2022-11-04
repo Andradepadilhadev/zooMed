@@ -11,7 +11,7 @@ export class Specialities {
 
   @OneToMany(
     () => DoctorsSpecialities,
-    (doctorsSpecialities) => doctorsSpecialities.specialtyId
+    (doctorsSpecialities) => doctorsSpecialities.speciality
   )
   doctorSpecialities: DoctorsSpecialities[];
 }

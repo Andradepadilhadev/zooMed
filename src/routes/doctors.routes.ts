@@ -19,7 +19,7 @@ const routes = Router();
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
   routes.get("", listDoctorsController);
-  routes.delete(
+  routes.patch(
     "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
@@ -47,7 +47,7 @@ export const doctorsRoutes = () => {
     ensureDoctorMiddleware,
     listReviewsDoctorController
   );
-  routes.delete(
+  routes.patch(
     "/reviews/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,

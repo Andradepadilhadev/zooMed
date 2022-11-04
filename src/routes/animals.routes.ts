@@ -13,7 +13,7 @@ const routes = Router();
 
 export const animalsRoutes = () => {
   routes.post("", ensureAuthTokenMiddleware, createAnimalsController);
-  routes.delete("/:id", ensureAuthTokenMiddleware, deleteAnimalsController);
+  routes.patch("/:id", ensureAuthTokenMiddleware, deleteAnimalsController);
   routes.post(
     "/species",
     ensureAuthTokenMiddleware,
@@ -26,7 +26,7 @@ export const animalsRoutes = () => {
     ensureAuthTokenMiddleware,
     updateSpeciesController
   );
-  routes.delete(
+  routes.patch(
     "/species/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
