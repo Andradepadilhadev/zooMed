@@ -11,13 +11,13 @@ const loginService = async ({
   const user = await usersRepository.findOneBy({ email: email });
 
   if (!user) {
-    throw new AppError("Invalid email or password", 403);
+    throw new AppError("Invalid email or password", 401);
   }
 
   const matchPass = await compare(password, user.password);
 
   if (!matchPass) {
-    throw new AppError("Invalid email or password", 403);
+    throw new AppError("Invalid email or password", 401);
   }
 
   const token = jwt.sign(

@@ -12,40 +12,54 @@ import {
 } from "../controllers/user/user.cotroller";
 import { Router } from "express";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
-import handleErrorMiddleware from "../middlewares/handleError.middlewares";
+import ensureForbiddenFieldsMiddleware from "../middlewares/ensureForbiddenFieldsMiddleware";
 
 const routes = Router();
 
 export const userRoutes = () => {
-  routes.post("", handleErrorMiddleware, createUserController);
-  routes.delete("", ensureAuthTokenMiddleware, deleteUserController);
-  routes.patch("", ensureAuthTokenMiddleware, updateUserController);
+  routes.post("", createUserController);
+
+  routes.patch("", ensureAuthTokenMiddleware, deleteUserController);
+
+  routes.patch(
+    "",
+    ensureAuthTokenMiddleware,
+    ensureForbiddenFieldsMiddleware,
+    updateUserController
+  );
+
   routes.get("", ensureAuthTokenMiddleware, listAllUserController);
+
   routes.get(
     "/animals",
     ensureAuthTokenMiddleware,
     listAllAnimalUserController
   );
+
   routes.post(
     "/appointments",
     ensureAuthTokenMiddleware,
     createUserAppointmentsController
   );
-  routes.delete(
+
+  routes.patch(
     "/appointments/:id",
     ensureAuthTokenMiddleware,
     deleteUserAppointmentsController
   );
+
   routes.get(
     "/appointments",
     ensureAuthTokenMiddleware,
     listAllUserAppointmentsController
   );
+
   routes.post(
     "/reviews",
     ensureAuthTokenMiddleware,
     createUserReviewsController
   );
+
   routes.patch(
     "/reviews/:id",
     ensureAuthTokenMiddleware,
