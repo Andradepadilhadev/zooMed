@@ -1,4 +1,5 @@
 import { Router } from "express";
+import deleteAppointmentDoctorController from "../controllers/doctors/appointments/deleteAppointmentsDoctor.controller";
 import listAppointmentsDoctorController from "../controllers/doctors/appointments/listAppointmentsDoctor.controller";
 import {
   createDoctorController,
@@ -6,10 +7,8 @@ import {
   listDoctorsController,
   updateDoctorController,
 } from "../controllers/doctors/doctors.controller";
-import {
-  deleteReviewsController,
-  listReviewsDoctorController,
-} from "../controllers/doctors/reviews/reviews.controller";
+import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
+
 import {
   createSpecialityController,
   listAllDoctorsBySpecialityController,
@@ -59,7 +58,6 @@ export const doctorsRoutes = () => {
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
-    ensureDoctorMiddleware,
     listReviewsDoctorController
   );
 
@@ -67,7 +65,7 @@ export const doctorsRoutes = () => {
     "/reviews/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
-    deleteReviewsController
+    deleteAppointmentDoctorController
   );
 
   return routes;

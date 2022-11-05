@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class createEntities1667599692402 implements MigrationInterface {
-    name = 'createEntities1667599692402'
+export class createEntities1667611907932 implements MigrationInterface {
+    name = 'createEntities1667611907932'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "address" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "zipCode" character varying(8) NOT NULL, "number" character varying(5) NOT NULL, "complement" character varying(100), "district" character varying(100) NOT NULL, "city" character varying(200) NOT NULL, "state" character varying(2) NOT NULL, CONSTRAINT "PK_d92de1f82754668b5f5f5dd4fd5" PRIMARY KEY ("id"))`);
@@ -14,7 +14,7 @@ export class createEntities1667599692402 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "species" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, CONSTRAINT "PK_ae6a87f2423ba6c25dc43c32770" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "reviews" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "review" character varying(2000) NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "userId" uuid, "appointmentsId" uuid, CONSTRAINT "REL_a35cb053634a8fed410c7508cf" UNIQUE ("appointmentsId"), CONSTRAINT "PK_231ae565c273ee700b283f15c1d" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "users" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, "email" character varying(150) NOT NULL, "isActive" boolean NOT NULL DEFAULT true, "password" character varying(200) NOT NULL, "birthDate" date NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "animals" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, "birthDate" TIMESTAMP NOT NULL, "breed" character varying(200) NOT NULL, "isAlive" boolean NOT NULL DEFAULT true, "userId" uuid, "speciesId" uuid, CONSTRAINT "PK_6154c334bbb19186788468bce5c" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "animals" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(50) NOT NULL, "birthDate" date NOT NULL, "breed" character varying(200) NOT NULL, "isAlive" boolean NOT NULL DEFAULT true, "userId" uuid, "speciesId" uuid, CONSTRAINT "PK_6154c334bbb19186788468bce5c" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "clinics" ADD CONSTRAINT "FK_84cedd0702508727b620cd75a76" FOREIGN KEY ("addressId") REFERENCES "address"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "doctors_specialities" ADD CONSTRAINT "FK_30c079ac33bb8669929bca5b1e7" FOREIGN KEY ("doctorId") REFERENCES "doctors"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "doctors_specialities" ADD CONSTRAINT "FK_c019eff4a8e4ebee241711cb20c" FOREIGN KEY ("specialityId") REFERENCES "specialities"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
