@@ -1,7 +1,12 @@
 import { Router } from "express";
 import deleteAppointmentDoctorController from "../controllers/doctors/appointments/deleteAppointmentsDoctor.controller";
 import listAppointmentsDoctorController from "../controllers/doctors/appointments/listAppointmentsDoctor.controller";
-import { createDoctorController, deleteDoctorController, listDoctorsController, updateDoctorController } from "../controllers/doctors/doctors.controller";
+import {
+  createDoctorController,
+  deleteDoctorController,
+  listDoctorsController,
+  updateDoctorController,
+} from "../controllers/doctors/doctors.controller";
 import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
 import { createSpecialityController } from "../controllers/specialities/speciality.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
@@ -39,9 +44,6 @@ export const doctorsRoutes = () => {
     ensureAuthTokenMiddleware,
     listReviewsDoctorController
   );
-
-  routes.delete(
-    "/appointments/:id",
 
   routes.patch(
     "/reviews/:id",
