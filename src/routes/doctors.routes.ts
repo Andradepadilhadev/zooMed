@@ -8,7 +8,6 @@ import {
   updateDoctorController,
 } from "../controllers/doctors/doctors.controller";
 import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
-
 import {
   createSpecialityController,
   listAllDoctorsBySpecialityController,
