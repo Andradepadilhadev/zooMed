@@ -1,8 +1,12 @@
+import { verifyDateFormat } from "./../../utilities/verifyDateFormat";
 import { hash } from "bcryptjs";
 import { Doctors } from "../../entities/doctors.entity";
 import { AppError } from "../../errors/appError";
 import { IDoctorRequest } from "../../interfaces/doctors";
-import { doctorsRepository } from "../../utilities/repositories";
+import {
+  doctorsRepository,
+  usersRepository,
+} from "../../utilities/repositories";
 
 const createDoctorService = async ({
   name,
@@ -15,9 +19,16 @@ const createDoctorService = async ({
     throw new AppError("Password is missing", 400);
   }
 
-  const doctorAlreadyExists = await doctorsRepository.findOneBy({ email });
+  if (!crmv) {
+    throw new AppError("crmv is missing", 400);
+  }
 
-  if (doctorAlreadyExists) {
+  verifyDateFormat(birthDate);
+
+  const doctorAlreadyExists = await doctorsRepository.findOneBy({ email });
+  const emailAlreadyExistsInUsers = await usersRepository.findOneBy({ email });
+
+  if (doctorAlreadyExists || emailAlreadyExistsInUsers) {
     throw new AppError("Email already exists", 409);
   }
 

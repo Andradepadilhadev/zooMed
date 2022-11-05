@@ -10,7 +10,11 @@ import {
   deleteReviewsController,
   listReviewsDoctorController,
 } from "../controllers/doctors/reviews/reviews.controller";
-import { createSpecialityController } from "../controllers/specialities/speciality.controller";
+import {
+  createSpecialityController,
+  listAllDoctorsBySpecialityController,
+  listAllSpecialitiesController,
+} from "../controllers/specialities/speciality.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
 import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
 
@@ -18,35 +22,47 @@ const routes = Router();
 
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
+
   routes.get("", listDoctorsController);
+
   routes.patch(
     "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     deleteDoctorController
   );
+
   routes.patch(
     "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     updateDoctorController
   );
+
   routes.post(
     "/specialities",
     ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
     createSpecialityController
   );
+
+  routes.get("/specialities", listAllSpecialitiesController);
+
+  routes.get("/specialities/:id", listAllDoctorsBySpecialityController);
+
   routes.get(
     "/appointments",
     ensureAuthTokenMiddleware,
     listAppointmentsDoctorController
   );
+
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     listReviewsDoctorController
   );
+
   routes.patch(
     "/reviews/:id",
     ensureAuthTokenMiddleware,

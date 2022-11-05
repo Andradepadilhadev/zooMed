@@ -8,8 +8,8 @@ export class DoctorsSpecialities {
   readonly id: string;
 
   @ManyToOne(() => Doctors)
-  doctor: string;
+  doctor: Doctors;
 
   @ManyToOne(() => Specialities)
-  speciality: string;
+  speciality: Specialities;
 }

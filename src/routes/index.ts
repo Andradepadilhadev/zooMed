@@ -12,7 +12,7 @@ const appRoutes = (app: Express) => {
   app.use("/clinics", clinicRoutes());
   app.use("/animals", animalsRoutes());
   app.use("/doctors", doctorsRoutes());
-  // app.use(handleErrorMiddleware);
+  app.use(handleErrorMiddleware);
 };
 
 export default appRoutes;

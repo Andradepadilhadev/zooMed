@@ -30,7 +30,7 @@ export class Animals {
   @ManyToOne(() => Users)
   user: Users;
 
-  @ManyToOne(() => Species)
+  @ManyToOne(() => Species, { eager: true })
   @JoinColumn()
   species: Species;
 

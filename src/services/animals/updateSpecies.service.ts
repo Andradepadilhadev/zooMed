@@ -4,6 +4,10 @@ import { speciesRepository } from "../../utilities/repositories";
 const updateSpeciesService = async (name: string, id: string) => {
   const findSpecies = await speciesRepository.findOneBy({ id });
 
+  if (!name) {
+    throw new AppError("Name field required", 400);
+  }
+
   if (!findSpecies) {
     throw new AppError("Species not found", 404);
   }
