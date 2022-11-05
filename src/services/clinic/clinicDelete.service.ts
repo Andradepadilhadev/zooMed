@@ -1,24 +1,30 @@
-import AppDataSource from "../../data-source";
-import { ClinicsDoctors } from "../../entities/clinicsDoctors.entity";
-import { Clinics } from "../../entities/clinics.entity";
-import { Address } from "../../entities/address.entity";
 import { AppError } from "../../errors/appError";
+import {
+  clinicsDoctorsRepository,
+  clinicsRepository,
+} from "../../utilities/repositories";
 
-const clinicDeleteService = async (id: string) => {
-  const clinicRepository = AppDataSource.getRepository(Clinics);
-  const addressRepository = AppDataSource.getRepository(Address);
-
-  const clinicAlreadyExists = await clinicRepository.findOne({
+const clinicDeleteService = async (id: string, userId: string) => {
+  const clinic = await clinicsRepository.findOne({
     where: { id: id },
   });
-  if (!clinicAlreadyExists) {
+
+  if (!clinic) {
     throw new AppError("Clinic not found", 404);
   }
 
-  const addressId = clinicAlreadyExists.address.id;
+  const clinicsDoctors = await clinicsDoctorsRepository.findOne({
+    where: {
+      clinic: id,
+    },
+    relations: {
+      clinic: true,
+    },
+  });
 
-  await clinicRepository.delete(id);
-  await addressRepository.delete({ id: addressId });
-  return;
+  await clinicsDoctorsRepository.delete({
+    id: clinicsDoctors!.id,
+  });
+  return "Clinic removed successfully";
 };
 export default clinicDeleteService;
