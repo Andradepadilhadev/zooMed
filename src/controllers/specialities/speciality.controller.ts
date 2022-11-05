@@ -1,4 +1,4 @@
-import listAllSpecialityService from "../../services/doctors/speciality/listAllSpeciality.service";
+import listAllSpecialitiesService from "../../services/doctors/speciality/listAllSpeciality.service";
 import { Request, Response } from "express";
 import listDoctorBySpecialityService from "../../services/doctors/speciality/listDoctorBySpeciality.service";
 import specialitiesDeleteService from "../../services/doctors/speciality/specialitiesDelete.service";
@@ -6,19 +6,23 @@ import createSpecialityService from "../../services/doctors/speciality/createSpe
 
 const createSpecialityController = async (req: Request, res: Response) => {
   const { name } = req.body;
+  const doctorId = req.user.id;
 
-  const newSpeciality = createSpecialityService(name);
+  const newSpeciality = await createSpecialityService(name, doctorId);
 
-  return res.status(200).json({ newSpeciality });
+  return res.status(200).json(newSpeciality);
 };
 
-const listAllSpecController = async (req: Request, res: Response) => {
-  const listSpecs = await listAllSpecialityService();
+const listAllSpecialitiesController = async (req: Request, res: Response) => {
+  const listSpecs = await listAllSpecialitiesService();
 
   return res.json(listSpecs);
 };
 
-const listAllDocsBySpecsController = async (req: Request, res: Response) => {
+const listAllDoctorsBySpecialityController = async (
+  req: Request,
+  res: Response
+) => {
   const { specId } = req.params;
   const listDocs = await listDoctorBySpecialityService(specId);
 
@@ -36,7 +40,7 @@ const specialitiesDeleteController = async (req: Request, res: Response) => {
 
 export {
   createSpecialityController,
-  listAllSpecController,
-  listAllDocsBySpecsController,
+  listAllSpecialitiesController,
+  listAllDoctorsBySpecialityController,
   specialitiesDeleteController,
 };

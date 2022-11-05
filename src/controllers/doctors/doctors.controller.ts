@@ -21,13 +21,13 @@ const createDoctorController = async (req: Request, res: Response) => {
 
 const listDoctorsController = async (req: Request, res: Response) => {
   const allDoctors = await listDoctorsService();
-  return res.status(200).json(allDoctors);
+  return res.status(200).json(instanceToPlain(allDoctors));
 };
 
 const doctorListAppointmentController = (req: Request, res: Response) => {
-    const { id } = req.params;
-    const listAppointments = doctorListAppointmentService(id);
-    return res.status(200).send(listAppointments);
+  const { id } = req.params;
+  const listAppointments = doctorListAppointmentService(id);
+  return res.status(200).send(listAppointments);
 };
 
 const updateDoctorController = async (req: Request, res: Response) => {
