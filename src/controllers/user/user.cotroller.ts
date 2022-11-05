@@ -21,7 +21,7 @@ const createUserController = async (req: Request, res: Response) => {
 
 const listAllUserController = async (req: Request, res: Response) => {
   const users = await listAllUserService();
-  return res.json(users);
+  return res.json(instanceToPlain(users));
 };
 
 const updateUserController = async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ const updateUserController = async (req: Request, res: Response) => {
 const deleteUserController = async (req: Request, res: Response) => {
   const id = req.user.id;
   const deletedUser = await userDeleteService(id);
-  return res.status(204).json(instanceToPlain(deletedUser));
+  return res.status(200).json(instanceToPlain(deletedUser));
 };
 
 const listAllAnimalUserController = async (req: Request, res: Response) => {
@@ -48,7 +48,7 @@ const createUserAppointmentsController = async (
   res: Response
 ) => {
   const { date, hour, animalsId, doctorId }: IAppointmentsRequest = req.body;
-  const createdAppointment = await createAppointmentsService({
+  await createAppointmentsService({
     date,
     hour,
     animalsId,
@@ -64,7 +64,7 @@ const deleteUserAppointmentsController = async (
 ) => {
   const { id } = req.params;
   await appointmentsDeleteService(id);
-  return res.status(204).json({
+  return res.status(200).json({
     message: "Appointments successfully",
   });
 };
@@ -81,7 +81,7 @@ const listAllUserAppointmentsController = async (
 const createUserReviewsController = async (req: Request, res: Response) => {
   const { review, appointmentsId } = req.body;
   const userId = req.user.id;
-  const newReview = createUserReviewService(review, appointmentsId, userId);
+  const newReview = await createUserReviewService(review, appointmentsId, userId);
   return res
     .status(201)
     .json({ message: "Successfully review", review: review });

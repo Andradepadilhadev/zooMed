@@ -15,6 +15,7 @@ const ensureDoctorMiddleware = async (
   if (!doctorFound) {
     throw new AppError("User is not doctor", 403);
   }
+  
   return next();
 };
 

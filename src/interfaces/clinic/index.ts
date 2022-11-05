@@ -21,5 +21,4 @@ export interface IClinicUpdate {
   contact?: string;
   crmv_pj?: string;
   address?: IAdress;
-  clinicsDoctors?: [];
 }

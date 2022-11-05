@@ -14,6 +14,8 @@ const ensureUUIDMiddleware = (
   if(!test){
     throw new AppError("Invalid id", 400)
   }
+
+  return next();
 };
 
 export default ensureUUIDMiddleware;

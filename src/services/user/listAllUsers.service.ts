@@ -3,8 +3,8 @@ import { usersRepository } from "../../utilities/repositories";
 
 const listAllUserService = async (): Promise<Users[]> => {
   const users = await usersRepository.find();
-  const result = users.map((user) => user);
-  return result;
+
+  return users;
 };
 
 export default listAllUserService;

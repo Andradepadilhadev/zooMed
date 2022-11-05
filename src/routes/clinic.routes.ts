@@ -24,8 +24,8 @@ export const clinicRoutes = () => {
     ensureDoctorMiddleware,
     clinicUpdateController
   );
-  routes.delete(
-    "/:id",
+  routes.patch(
+    "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     clinicDeleteController

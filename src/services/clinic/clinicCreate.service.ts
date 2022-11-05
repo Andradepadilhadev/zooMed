@@ -28,9 +28,6 @@ const clinicCreateService = async ({
   clinicRepository.create(newClinic);
   await clinicRepository.save(newClinic);
 
-  return {
-    message: "Created sucessfully",
-    Clinic: newClinic,
-  };
+  return newClinic;
 };
 export default clinicCreateService;

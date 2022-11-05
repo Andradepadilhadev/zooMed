@@ -26,7 +26,7 @@ const deleteAnimalService = async (id: string, userId: string) => {
     isAlive: false,
   });
 
-  return "Animals deleted with success";
+  return "Animal deleted with success";
 };
 
 export default deleteAnimalService;

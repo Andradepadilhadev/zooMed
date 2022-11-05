@@ -35,7 +35,7 @@ export class Clinics {
   @JoinColumn()
   address: Address;
 
-  @OneToMany(() => ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.clinicId)
+  @OneToMany(() => ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.clinic)
   @JoinColumn()
   clinicsDoctors: ClinicsDoctors[];
 }

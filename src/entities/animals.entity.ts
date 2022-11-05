@@ -18,11 +18,12 @@ export class Animals {
   @Column({ length: 50 })
   name: string;
 
-  @Column()
-  birthDate: Date;
+  @Column({ type: "date" })
+  birthDate: string;
 
   @Column({ length: 200 })
   breed: string;
+
   @Column({ default: true })
   isAlive: boolean;
 

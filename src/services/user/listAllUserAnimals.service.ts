@@ -4,9 +4,15 @@ import { usersRepository } from "../../utilities/repositories";
 const listAllAnimalsUserService = async (
   userId: string
 ): Promise<Animals[]> => {
-  const user = await usersRepository.findOneBy({ id: userId });
-  const result = user!.animals.map((animal) => animal);
-  return result;
+  const user = await usersRepository.findOne({
+    where: {
+      id: userId,
+    },
+    relations: {
+      animals: true,
+    },
+  });
+  return user!.animals;
 };
 
 export default listAllAnimalsUserService;

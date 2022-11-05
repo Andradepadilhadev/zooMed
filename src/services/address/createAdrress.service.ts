@@ -2,7 +2,7 @@ import { Address } from "../../entities/address.entity";
 import { addressRepository } from "../../utilities/repositories";
 
 const createAddressService = async (address: Address): Promise<Address> => {
-  const newAddress = addressRepository.create({
+  const newAddress = await addressRepository.create({
     district: address.district,
     zipCode: address.zipCode,
     complement: address.complement,
@@ -10,6 +10,8 @@ const createAddressService = async (address: Address): Promise<Address> => {
     city: address.city,
     state: address.state,
   });
+
+  await addressRepository.save(newAddress);
 
   return newAddress;
 };
