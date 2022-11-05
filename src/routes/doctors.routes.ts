@@ -1,5 +1,11 @@
 import { Router } from "express";
+import deleteAppointmentDoctorController from "../controllers/doctors/appointments/deleteAppointmentsDoctor.controller";
 import listAppointmentsDoctorController from "../controllers/doctors/appointments/listAppointmentsDoctor.controller";
+import createDoctorController from "../controllers/doctors/createDoctor.controller";
+import deleteDoctorController from "../controllers/doctors/deleteDoctor.controller";
+import listDoctorsController from "../controllers/doctors/listDoctors.controller";
+import listReviewsDoctorController from "../controllers/doctors/reviews/listReviewsDoctor.controller";
+import updateDoctorController from "../controllers/doctors/updateDoctor.controller";
 import {
   createDoctorController,
   deleteDoctorController,
@@ -44,14 +50,17 @@ export const doctorsRoutes = () => {
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
-    ensureDoctorMiddleware,
     listReviewsDoctorController
   );
+
+  routes.delete(
+    "/appointments/:id",
+
   routes.patch(
     "/reviews/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
-    deleteReviewsController
+    deleteAppointmentDoctorController
   );
 
   return routes;
