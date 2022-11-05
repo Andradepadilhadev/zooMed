@@ -50,10 +50,10 @@ describe("Users Routes", () => {
       .set("Authorization", `Bearer ${token}`)
       .send(mockedUserUpdated);
 
-    expect(responseNoToken.status).toBe(409);
+    expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidToken.status).toBe(409);
+    expect(responseInvalidToken.status).toBe(401);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 

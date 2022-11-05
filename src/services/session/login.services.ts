@@ -1,6 +1,9 @@
 import { AppError } from "../../errors/appError";
 import { IUserLogin } from "../../interfaces/users";
-import { usersRepository } from "../../utilities/repositories";
+import {
+  doctorsRepository,
+  usersRepository,
+} from "../../utilities/repositories";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -8,26 +11,35 @@ const loginService = async ({
   email,
   password,
 }: IUserLogin): Promise<string> => {
-  const user = await usersRepository.findOneBy({ email: email });
+  const user = await usersRepository.findOneBy({ email });
+  const doctor = await doctorsRepository.findOneBy({ email });
 
-  if (!user) {
-    throw new AppError("Invalid email or password", 403);
+  if (!user && !doctor) {
+    throw new AppError("Invalid email or password", 401);
   }
 
-  const matchPass = await compare(password, user.password);
+  let matchPass;
+
+  if (user) {
+    matchPass = await compare(password, user.password);
+  }
+
+  if (doctor) {
+    matchPass = await compare(password, doctor.password);
+  }
 
   if (!matchPass) {
-    throw new AppError("Invalid email or password", 403);
+    throw new AppError("Invalid email or password", 401);
   }
 
   const token = jwt.sign(
     {
-      id: user.id,
+      id: user ? user.id : doctor!.id,
     },
     process.env.SECRET_KEY as string,
     {
       expiresIn: "24h",
-      subject: user.id,
+      subject: user ? user.id : doctor!.id,
     }
   );
   return token;

@@ -8,7 +8,7 @@ import handleErrorMiddleware from "../middlewares/handleError.middlewares";
 
 const appRoutes = (app: Express) => {
   app.use("/login", loginRoutes());
-  app.use("/user", userRoutes());
+  app.use("/users", userRoutes());
   app.use("/clinics", clinicRoutes());
   app.use("/animals", animalsRoutes());
   app.use("/doctors", doctorsRoutes());

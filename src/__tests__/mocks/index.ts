@@ -10,6 +10,11 @@ export const mockedUserUpdated = {
   birthDate: "1995/2/14",
 };
 
+export const mockedUserLogin = {
+  email: "kenzie@mail.com",
+  password: "1234",
+};
+
 export const mockedSpecies = {
   name: "Gato",
 };
@@ -33,6 +38,27 @@ export const mockedDoctor = {
   password: "1234",
   birthDate: "1988/07/19",
   crmv: "123456",
+};
+
+export const mockedDoctorUpdate = {
+  name: "Julio castro",
+  email: "julio@email.com",
+};
+
+export const mockedDoctorLogin = {
+  email: "julio@email.com",
+  password: "1234",
+};
+
+export const mockedClinicUpdate = {
+  name: "zooEni",
+  address: {
+    zipCode: "18150300",
+    number: "38",
+    district: "Rua gato a jato",
+    city: "marte",
+    state: "rd",
+  },
 };
 
 export const mockedSpeciality = {

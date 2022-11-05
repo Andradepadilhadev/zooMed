@@ -8,8 +8,8 @@ import {
 const listReviewDoctorService = async (id: string) => {
   const clinicDoctor = await clinicsDoctorsRepository.findOne(
     {
-      where: { doctorId: id },
-    } || { where: { clinicId: id } }
+      where: { doctor: id },
+    } || { where: { clinic: id } }
   );
 
   if (!clinicDoctor) {
@@ -17,7 +17,7 @@ const listReviewDoctorService = async (id: string) => {
   }
   const appointmentsForClinic = await appointmentsRepository.find({
     where: {
-      clinicsDoctorsId: clinicDoctor,
+      clinicsDoctors: clinicDoctor,
     },
   });
   const reviewsForClinic = await reviewsRepository.find({
