@@ -21,12 +21,12 @@ __decorate([
 ], DoctorsSpecialities.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => doctors_entity_1.Doctors),
-    __metadata("design:type", String)
-], DoctorsSpecialities.prototype, "doctorId", void 0);
+    __metadata("design:type", doctors_entity_1.Doctors)
+], DoctorsSpecialities.prototype, "doctor", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => specialities_entity_1.Specialities),
-    __metadata("design:type", String)
-], DoctorsSpecialities.prototype, "specialtyId", void 0);
+    __metadata("design:type", specialities_entity_1.Specialities)
+], DoctorsSpecialities.prototype, "speciality", void 0);
 DoctorsSpecialities = __decorate([
     (0, typeorm_1.Entity)("doctors_specialities")
 ], DoctorsSpecialities);

@@ -8,5 +8,6 @@ const ensureUUIDMiddleware = (req, res, next) => {
     if (!test) {
         throw new appError_1.AppError("Invalid id", 400);
     }
+    return next();
 };
 exports.default = ensureUUIDMiddleware;

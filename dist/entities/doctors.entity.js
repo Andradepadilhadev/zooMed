@@ -54,12 +54,12 @@ __decorate([
     __metadata("design:type", Date)
 ], Doctors.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => doctorsSpecialities_entity_1.DoctorsSpecialities, (doctorsSpecialities) => doctorsSpecialities.doctorId),
+    (0, typeorm_1.OneToMany)(() => doctorsSpecialities_entity_1.DoctorsSpecialities, (doctorsSpecialities) => doctorsSpecialities.doctor),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], Doctors.prototype, "doctorSpecialities", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => clinicsDoctors_entity_1.ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.doctorId),
+    (0, typeorm_1.OneToMany)(() => clinicsDoctors_entity_1.ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.doctor),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], Doctors.prototype, "clinicsDoctors", void 0);

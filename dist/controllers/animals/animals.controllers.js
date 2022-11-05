@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateSpeciesController = exports.listSpeciesController = exports.deleteAnimalsController = exports.createSpeciesController = exports.createAnimalsController = void 0;
+exports.deleteSpeciesController = exports.updateSpeciesController = exports.listSpeciesController = exports.deleteAnimalsController = exports.createSpeciesController = exports.createAnimalsController = void 0;
 const createAnimals_service_1 = __importDefault(require("../../services/animals/createAnimals.service"));
 const createSpecies_service_1 = __importDefault(require("../../services/animals/createSpecies.service"));
-const deleteAnimals_service_1 = __importDefault(require("../../services/animals/deleteAnimals.service"));
 const listSpecies_service_1 = __importDefault(require("../../services/animals/listSpecies.service"));
 const updateSpecies_service_1 = __importDefault(require("../../services/animals/updateSpecies.service"));
+const deleteAnimals_service_1 = __importDefault(require("../../services/animals/deleteAnimals.service"));
+const deleteSpecies_service_1 = __importDefault(require("../../services/animals/deleteSpecies.service"));
 const createAnimalsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     const userId = req.user.id;
@@ -31,13 +32,6 @@ const createSpeciesController = (req, res) => __awaiter(void 0, void 0, void 0, 
     return res.status(201).json(createSpecies);
 });
 exports.createSpeciesController = createSpeciesController;
-const deleteAnimalsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const userId = req.user.id;
-    const result = yield (0, deleteAnimals_service_1.default)(id, userId);
-    return res.status(200).json({ message: result });
-});
-exports.deleteAnimalsController = deleteAnimalsController;
 const listSpeciesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const species = yield (0, listSpecies_service_1.default)();
     return res.status(200).json(species);
@@ -50,3 +44,17 @@ const updateSpeciesController = (req, res) => __awaiter(void 0, void 0, void 0, 
     return res.status(200).json(updateSpecies);
 });
 exports.updateSpeciesController = updateSpeciesController;
+const deleteAnimalsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const result = yield (0, deleteAnimals_service_1.default)(id, userId);
+    return res.status(200).json({ message: result });
+});
+exports.deleteAnimalsController = deleteAnimalsController;
+const deleteSpeciesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const doctorId = req.user.id;
+    const result = yield (0, deleteSpecies_service_1.default)(id, doctorId);
+    return res.status(200).json({ message: result });
+});
+exports.deleteSpeciesController = deleteSpeciesController;

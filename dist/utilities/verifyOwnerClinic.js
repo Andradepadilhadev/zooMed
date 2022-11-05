@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyOwnerClinic = void 0;
 const repositories_1 = require("./repositories");
 const appError_1 = require("../errors/appError");
-const verifyOwnerClinic = ({ clinics_id }) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyOwnerClinic = ({ clinics_id, }) => __awaiter(void 0, void 0, void 0, function* () {
     const doctor = yield repositories_1.clinicsDoctorsRepository.findOne({
         where: {
             id: clinics_id,
         },
         relations: {
-            clinicId: true,
+            clinic: true,
         },
     });
     if (!doctor) {

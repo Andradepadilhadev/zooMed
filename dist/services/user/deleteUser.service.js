@@ -15,14 +15,12 @@ const userDeleteService = (id) => __awaiter(void 0, void 0, void 0, function* ()
     const findUser = yield repositories_1.usersRepository.findOneBy({
         id,
     });
-    if (!findUser) {
-        throw new appError_1.AppError("User not found", 400);
-    }
     if (!findUser.isActive) {
         throw new appError_1.AppError("User already inactive", 400);
     }
     yield repositories_1.usersRepository.update(id, {
         isActive: false,
     });
+    return { message: "User deleted successfully" };
 });
 exports.default = userDeleteService;

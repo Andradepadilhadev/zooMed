@@ -32,7 +32,7 @@ const createUserController = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.createUserController = createUserController;
 const listAllUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield (0, listAllUsers_service_1.default)();
-    return res.json(users);
+    return res.json((0, class_transformer_1.instanceToPlain)(users));
 });
 exports.listAllUserController = listAllUserController;
 const updateUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

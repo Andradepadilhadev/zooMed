@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const data_source_1 = __importDefault(require("./data-source"));
+require("dotenv/config");
 dotenv_1.default.config();
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield data_source_1.default.initialize().catch((err) => {

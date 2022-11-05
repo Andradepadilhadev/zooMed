@@ -23,13 +23,13 @@ __decorate([
 __decorate([
     (0, typeorm_1.ManyToOne)(() => clinics_entity_1.Clinics),
     __metadata("design:type", String)
-], ClinicsDoctors.prototype, "clinicId", void 0);
+], ClinicsDoctors.prototype, "clinic", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => doctors_entity_1.Doctors),
     __metadata("design:type", String)
-], ClinicsDoctors.prototype, "doctorId", void 0);
+], ClinicsDoctors.prototype, "doctor", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => appointments_entity_1.Appointments, (appointments) => appointments.clinicsDoctorsId),
+    (0, typeorm_1.OneToMany)(() => appointments_entity_1.Appointments, (appointments) => appointments.clinicsDoctors),
     __metadata("design:type", Array)
 ], ClinicsDoctors.prototype, "appointments", void 0);
 ClinicsDoctors = __decorate([

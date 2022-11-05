@@ -19,5 +19,6 @@ const handleErrorMiddleware = (error, req, res, next) => __awaiter(void 0, void 
     return res.status(500).json({
         message: "Internal server error",
     });
+    return next();
 });
 exports.default = handleErrorMiddleware;

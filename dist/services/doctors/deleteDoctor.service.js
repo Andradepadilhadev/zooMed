@@ -15,9 +15,6 @@ const deleteDoctorService = (id) => __awaiter(void 0, void 0, void 0, function* 
     const doctorAlreadyExists = yield repositories_1.doctorsRepository.findOneBy({
         id,
     });
-    if (!doctorAlreadyExists) {
-        throw new appError_1.AppError("Doctor not found", 400);
-    }
     if (!doctorAlreadyExists.isActive) {
         throw new appError_1.AppError("Doctor already inactive", 400);
     }

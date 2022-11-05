@@ -18,49 +18,37 @@ const clinicDelete_service_1 = __importDefault(require("../../services/clinic/cl
 const clinicList_service_1 = __importDefault(require("../../services/clinic/clinicList.service"));
 const clinicUpdate_service_1 = __importDefault(require("../../services/clinic/clinicUpdate.service"));
 const clinicCreateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { name, contact, crmv_pj, address } = req.body;
-        const createdClinic = yield (0, clinicCreate_service_1.default)({
-            name,
-            contact,
-            crmv_pj,
-            address,
-        });
-        return res.status(201).send(createdClinic);
-    }
-    catch (error) { }
+    const { name, contact, crmv_pj, address } = req.body;
+    const createdClinic = yield (0, clinicCreate_service_1.default)({
+        name,
+        contact,
+        crmv_pj,
+        address,
+    });
+    return res.status(201).send(createdClinic);
 });
 exports.clinicCreateController = clinicCreateController;
 const clinicDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        yield (0, clinicDelete_service_1.default)(id);
-        return res.status(203).send();
-    }
-    catch (error) { }
+    const { id } = req.params;
+    yield (0, clinicDelete_service_1.default)(id);
+    return res.status(203).send();
 });
 exports.clinicDeleteController = clinicDeleteController;
 const clinicListController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const listed = yield (0, clinicList_service_1.default)();
-        return res.status(200).send(listed);
-    }
-    catch (error) { }
+    const listed = yield (0, clinicList_service_1.default)();
+    return res.status(200).send(listed);
 });
 exports.clinicListController = clinicListController;
 const clinicUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const { name, contact, crmv_pj, address, clinicsDoctors } = req.body;
-        const clinicUpdated = yield (0, clinicUpdate_service_1.default)(id, {
-            name,
-            contact,
-            crmv_pj,
-            address,
-            clinicsDoctors,
-        });
-        return res.status(200).send(clinicUpdated);
-    }
-    catch (error) { }
+    const { id } = req.params;
+    const { name, contact, crmv_pj, address, clinicsDoctors } = req.body;
+    const clinicUpdated = yield (0, clinicUpdate_service_1.default)(id, {
+        name,
+        contact,
+        crmv_pj,
+        address,
+        clinicsDoctors,
+    });
+    return res.status(200).send(clinicUpdated);
 });
 exports.clinicUpdateController = clinicUpdateController;

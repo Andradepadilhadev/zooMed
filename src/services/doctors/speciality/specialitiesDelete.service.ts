@@ -5,7 +5,7 @@ import {
 } from "../../../utilities/repositories";
 
 const specialitiesDeleteService = async (id: string) => {
-  const specialityAlreadyExists = specialitiesRepository.findOne({
+  const specialityAlreadyExists = await specialitiesRepository.findOne({
     where: { id: id },
   });
   if (!specialityAlreadyExists) {
@@ -13,7 +13,9 @@ const specialitiesDeleteService = async (id: string) => {
   }
 
   await specialitiesRepository.delete({ id });
-  await doctorsSpecialitiesRepository.delete({ speciality: id });
+  await doctorsSpecialitiesRepository.delete({
+    speciality: specialityAlreadyExists,
+  });
 
   return;
 };

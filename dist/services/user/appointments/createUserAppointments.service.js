@@ -15,7 +15,7 @@ const appError_1 = require("../../../errors/appError");
 const repositories_2 = require("../../../utilities/repositories");
 const createAppointmentsService = ({ date, hour, animalsId, doctorId, }) => __awaiter(void 0, void 0, void 0, function* () {
     const clinicDoctor = yield repositories_1.clinicsDoctorsRepository.findOneBy({
-        doctorId: doctorId,
+        doctor: doctorId,
     });
     const animal = yield repositories_2.animalsRepository.findOneBy({ id: animalsId });
     if (!clinicDoctor || !animal) {
@@ -25,7 +25,7 @@ const createAppointmentsService = ({ date, hour, animalsId, doctorId, }) => __aw
     newAppointments.date = date;
     newAppointments.hour = hour;
     newAppointments.animals = animal;
-    newAppointments.clinicsDoctorsId = clinicDoctor;
+    newAppointments.clinicsDoctors = clinicDoctor;
     repositories_2.appointmentsRepository.save(newAppointments);
     return newAppointments;
 });

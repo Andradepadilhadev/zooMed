@@ -12,19 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
 const repositories_2 = require("../../utilities/repositories");
-const createAnimalsServices = ({ name, birthDate, breed, speciesId }, userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const species = yield repositories_2.speciesRepository.findOneBy({
-        id: speciesId,
+const verifyDateFormat_1 = require("../../utilities/verifyDateFormat");
+const createAnimalsServices = ({ name, birthDate, breed, species }, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, verifyDateFormat_1.verifyDateFormat)(birthDate);
+    const speciesName = yield repositories_2.speciesRepository.findOneBy({
+        name: species,
     });
     const user = yield repositories_1.usersRepository.findOneBy({ id: userId });
-    if (!species) {
+    if (!speciesName) {
         throw new appError_1.AppError("Species not found", 404);
     }
     const createAnimals = repositories_1.animalsRepository.create({
         name: name,
         birthDate: birthDate,
         breed: breed,
-        species: species,
+        species: speciesName,
         user: user,
     });
     yield repositories_1.animalsRepository.save(createAnimals);

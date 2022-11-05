@@ -32,5 +32,6 @@ const ensureAuthTokenMiddleware = (req, res, next) => __awaiter(void 0, void 0, 
             id: decoded.id,
         };
     });
+    return next();
 });
 exports.default = ensureAuthTokenMiddleware;

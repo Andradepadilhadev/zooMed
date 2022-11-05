@@ -13,14 +13,14 @@ const appError_1 = require("../../../errors/appError");
 const repositories_1 = require("../../../utilities/repositories");
 const listReviewDoctorService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const clinicDoctor = yield repositories_1.clinicsDoctorsRepository.findOne({
-        where: { doctorId: id },
-    } || { where: { clinicId: id } });
+        where: { doctor: id },
+    } || { where: { clinic: id } });
     if (!clinicDoctor) {
         throw new appError_1.AppError("Clinic not found", 404);
     }
     const appointmentsForClinic = yield repositories_1.appointmentsRepository.find({
         where: {
-            clinicsDoctorsId: clinicDoctor,
+            clinicsDoctors: clinicDoctor,
         },
     });
     const reviewsForClinic = yield repositories_1.reviewsRepository.find({

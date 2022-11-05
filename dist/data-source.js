@@ -12,12 +12,11 @@ const AppDataSource = new typeorm_1.DataSource(process.env.NODE_ENV === "test"
     : {
         type: "postgres",
         host: process.env.DB_HOST,
-        port: 5432,
+        database: process.env.DB,
         username: process.env.DB_USER,
         password: process.env.DB_PASSWORD,
-        database: process.env.DB,
-        logging: true,
         synchronize: false,
+        logging: true,
         entities: process.env.NODE_ENV === "production"
             ? ["dist/entities/*.js"]
             : ["src/entities/*.ts"],

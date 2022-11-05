@@ -54,9 +54,9 @@ describe("Users Routes", () => {
             .patch("/users")
             .set("Authorization", `Bearer ${token}`)
             .send(mocks_1.mockedUserUpdated);
-        expect(responseNoToken.status).toBe(409);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(409);
+        expect(responseInvalidToken.status).toBe(401);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("PATCH /users - Must be able to update user", () => __awaiter(void 0, void 0, void 0, function* () {

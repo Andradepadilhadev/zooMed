@@ -74,9 +74,9 @@ describe("Animals Routes", () => {
         const responseInvalidUserToken = yield (0, supertest_1.default)(app_1.default)
             .get("/animals/species")
             .set("Authorization", `Bearer ${invalidUserToken}`);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidUserToken.status).toBe(403);
+        expect(responseInvalidUserToken.status).toBe(401);
         expect(responseInvalidUserToken.body).toHaveProperty("message");
     }));
     test("GET /animals/species - Must be able to list all species with user or doctor login", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -117,9 +117,9 @@ describe("Animals Routes", () => {
         const responseNoToken = yield (0, supertest_1.default)(app_1.default)
             .post("/animals")
             .send(index_2.mockedAnimal);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidUserToken.status).toBe(403);
+        expect(responseInvalidUserToken.status).toBe(401);
         expect(responseInvalidUserToken.body).toHaveProperty("message");
     }));
     test("POST /animals - Must be able to create an animal", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -156,9 +156,9 @@ describe("Animals Routes", () => {
             .get("/users/animals")
             .set("Authorization", `Bearer ${invalidUserToken}`);
         const responseNoToken = yield (0, supertest_1.default)(app_1.default).get("/users/animals");
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidUserToken.status).toBe(403);
+        expect(responseInvalidUserToken.status).toBe(401);
         expect(responseInvalidUserToken.body).toHaveProperty("message");
     }));
     test("GET /users/animals - Must be able to list all animals of the user", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -180,9 +180,9 @@ describe("Animals Routes", () => {
             .patch(`/animals/${animalToBeDeleted}`)
             .set("Authorization", `Bearer ${invalidUserToken}`);
         const responseNoToken = yield (0, supertest_1.default)(app_1.default).patch(`/animals/${animalToBeDeleted}`);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidUserToken.status).toBe(403);
+        expect(responseInvalidUserToken.status).toBe(401);
         expect(responseInvalidUserToken.body).toHaveProperty("message");
     }));
     test("PATCH /animals/:id - Must not be able to delete animal with invalid or non-existing id", () => __awaiter(void 0, void 0, void 0, function* () {

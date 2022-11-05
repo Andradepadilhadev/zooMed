@@ -9,19 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const appError_1 = require("../../../errors/appError");
-const repositories_1 = require("../../../utilities/repositories");
-const specialitiesDeleteService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const specialityAlreadyExists = yield repositories_1.specialitiesRepository.findOne({
-        where: { id: id },
-    });
-    if (!specialityAlreadyExists) {
-        throw new appError_1.AppError("Speciality not found", 404);
+exports.initialMigrate1667684682524 = void 0;
+class initialMigrate1667684682524 {
+    up(queryRunner) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
     }
-    yield repositories_1.specialitiesRepository.delete({ id });
-    yield repositories_1.doctorsSpecialitiesRepository.delete({
-        speciality: specialityAlreadyExists,
-    });
-    return;
-});
-exports.default = specialitiesDeleteService;
+    down(queryRunner) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+}
+exports.initialMigrate1667684682524 = initialMigrate1667684682524;

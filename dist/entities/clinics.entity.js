@@ -45,7 +45,7 @@ __decorate([
     __metadata("design:type", address_entity_1.Address)
 ], Clinics.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => clinicsDoctors_entity_1.ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.clinicId),
+    (0, typeorm_1.OneToMany)(() => clinicsDoctors_entity_1.ClinicsDoctors, (clinicsDoctors) => clinicsDoctors.clinic),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], Clinics.prototype, "clinicsDoctors", void 0);

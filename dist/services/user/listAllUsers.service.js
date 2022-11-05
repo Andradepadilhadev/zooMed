@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../utilities/repositories");
 const listAllUserService = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield repositories_1.usersRepository.find();
-    const result = users.map((user) => user);
-    return result;
+    return users;
 });
 exports.default = listAllUserService;

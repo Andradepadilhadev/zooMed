@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.mockedReview = exports.mockedAppointment = exports.mockedClinicTwo = exports.mockedClinic = exports.mockedSpeciality = exports.mockedDoctor = exports.mockedWrongId = exports.mockedAnimal = exports.mockedSpeciesUpdated = exports.mockedSpecies = exports.mockedUserUpdated = exports.mockedUser = void 0;
+exports.mockedReview = exports.mockedAppointment = exports.mockedClinicTwo = exports.mockedClinic = exports.mockedSpeciality = exports.mockedClinicUpdate = exports.mockedDoctorLogin = exports.mockedDoctorUpdate = exports.mockedDoctor = exports.mockedWrongId = exports.mockedAnimal = exports.mockedSpeciesUpdated = exports.mockedSpecies = exports.mockedUserLogin = exports.mockedUserUpdated = exports.mockedUser = void 0;
 exports.mockedUser = {
     name: "Kenzinho",
     email: "kenzinho@email.com",
@@ -10,6 +10,10 @@ exports.mockedUser = {
 exports.mockedUserUpdated = {
     email: "kenzie@mail.com",
     birthDate: "1995/2/14",
+};
+exports.mockedUserLogin = {
+    email: "kenzie@mail.com",
+    password: "1234",
 };
 exports.mockedSpecies = {
     name: "Gato",
@@ -30,6 +34,24 @@ exports.mockedDoctor = {
     password: "1234",
     birthDate: "1988/07/19",
     crmv: "123456",
+};
+exports.mockedDoctorUpdate = {
+    name: "Julio castro",
+    email: "julio@email.com",
+};
+exports.mockedDoctorLogin = {
+    email: "julio@email.com",
+    password: "1234",
+};
+exports.mockedClinicUpdate = {
+    name: "zooEni",
+    address: {
+        zipCode: "18150300",
+        number: "38",
+        district: "Rua gato a jato",
+        city: "marte",
+        state: "rd",
+    },
 };
 exports.mockedSpeciality = {
     name: "Cardiologista",

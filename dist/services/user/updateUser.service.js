@@ -12,12 +12,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../utilities/repositories");
 const bcryptjs_1 = require("bcryptjs");
 const appError_1 = require("../../errors/appError");
+const verifyDateFormat_1 = require("../../utilities/verifyDateFormat");
 const updateUserService = ({ name, email, password, birthDate }, id) => __awaiter(void 0, void 0, void 0, function* () {
     const findUser = yield repositories_1.usersRepository.findOneBy({
         id,
     });
     if (!findUser) {
         throw new appError_1.AppError("User not found", 404);
+    }
+    if (birthDate) {
+        (0, verifyDateFormat_1.verifyDateFormat)(birthDate);
     }
     yield repositories_1.usersRepository.update(id, {
         name: name ? name : findUser.name,

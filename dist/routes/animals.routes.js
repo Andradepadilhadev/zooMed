@@ -11,11 +11,11 @@ const ensureDoctor_middleware_1 = __importDefault(require("../middlewares/ensure
 const routes = (0, express_1.Router)();
 const animalsRoutes = () => {
     routes.post("", ensureAuthToken_middleware_1.default, animals_controllers_1.createAnimalsController);
-    routes.delete("/:id", ensureAuthToken_middleware_1.default, animals_controllers_1.deleteAnimalsController);
+    routes.patch("/:id", ensureAuthToken_middleware_1.default, animals_controllers_1.deleteAnimalsController);
     routes.post("/species", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.createSpeciesController);
     routes.get("/species", ensureAuthToken_middleware_1.default, animals_controllers_1.listSpeciesController);
     routes.patch("/species/:id", ensureAuthToken_middleware_1.default, animals_controllers_1.updateSpeciesController);
-    routes.delete("/species/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.deleteAnimalsController);
+    routes.patch("/species/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.deleteAnimalsController);
     return routes;
 };
 exports.animalsRoutes = animalsRoutes;

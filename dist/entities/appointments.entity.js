@@ -40,7 +40,7 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => clinicsDoctors_entity_1.ClinicsDoctors),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", clinicsDoctors_entity_1.ClinicsDoctors)
-], Appointments.prototype, "clinicsDoctorsId", void 0);
+], Appointments.prototype, "clinicsDoctors", void 0);
 Appointments = __decorate([
     (0, typeorm_1.Entity)("appointments")
 ], Appointments);

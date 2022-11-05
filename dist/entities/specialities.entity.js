@@ -23,7 +23,7 @@ __decorate([
     __metadata("design:type", String)
 ], Specialities.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => doctorsSpecialities_entity_1.DoctorsSpecialities, (doctorsSpecialities) => doctorsSpecialities.specialtyId),
+    (0, typeorm_1.OneToMany)(() => doctorsSpecialities_entity_1.DoctorsSpecialities, (doctorsSpecialities) => doctorsSpecialities.speciality),
     __metadata("design:type", Array)
 ], Specialities.prototype, "doctorSpecialities", void 0);
 Specialities = __decorate([

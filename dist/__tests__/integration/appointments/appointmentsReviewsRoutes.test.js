@@ -87,9 +87,9 @@ describe("Appointmenst and Reviews Routes", () => {
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
             .set("Authorization", `Bearer${invalidToken}`);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(403);
+        expect(responseInvalidToken.status).toBe(401);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("POST /users/appointments - Must not be able to create appointment without animal id or incorrect animal id", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -192,9 +192,9 @@ describe("Appointmenst and Reviews Routes", () => {
         const responseInvalidToken = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
             .set("Authorization", `Bearer${invalidToken}`);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(403);
+        expect(responseInvalidToken.status).toBe(401);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("GET /users/appointments - Must be able to list the users appointments", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -302,9 +302,9 @@ describe("Appointmenst and Reviews Routes", () => {
         const responseInvalidToken = yield (0, supertest_1.default)(app_1.default)
             .patch(`/users/appointments/${appointmentId}`)
             .set("Authorization", `Bearer ${invalidToken}`);
-        expect(responseNoToken.status).toBe(403);
+        expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(403);
+        expect(responseInvalidToken.status).toBe(401);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("PATCH /users/appointments/:id - Must be able to cancel the appointment with user login", () => __awaiter(void 0, void 0, void 0, function* () {
