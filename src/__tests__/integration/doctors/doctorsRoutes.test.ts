@@ -75,9 +75,9 @@ describe("Doctors Routes", () => {
     expect(response.status).toBe(200);
     expect(response.body).not.toHaveProperty("password");
     expect(response.body).toHaveProperty("id");
-    expect(response.body.crmv).toEqual(mockedDoctorUpdate.crmv);
+    expect(response.body.crmv).toEqual(mockedDoctor.crmv);
     expect(response.body.email).toEqual(mockedDoctorUpdate.email);
-    expect(response.body.birthDate).toEqual(mockedDoctorUpdate.birthDate);
+    expect(response.body.birthDate).toEqual(mockedDoctor.birthDate);
     expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
@@ -93,7 +93,7 @@ describe("Doctors Routes", () => {
   test("PATCH /doctors - Must not be able to modify id or isActive", async () => {
     const login = await request(app).post("/login").send({
       email: mockedDoctorUpdate.email,
-      password: mockedDoctorUpdate.password,
+      password: mockedDoctor.password,
     });
     const response = await request(app)
       .patch("/doctors")
