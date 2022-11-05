@@ -10,7 +10,7 @@
     "build": "tsc",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "cross-env NODE_ENV=test SECRET_KEY=secret_key jest --verbose",
-    "start": "node dist/src/server.js"
+    "start:heroku": "node dist/YOUR-APP-NAME/server/main.js"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
