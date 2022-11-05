@@ -15,7 +15,7 @@ const clinicDeleteService = async (id: string, userId: string) => {
 
   const clinicsDoctors = await clinicsDoctorsRepository.findOne({
     where: {
-      clinic: id,
+      clinic: { id },
     },
     relations: {
       clinic: true,

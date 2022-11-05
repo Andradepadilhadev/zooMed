@@ -6,11 +6,9 @@ import {
 } from "../../../utilities/repositories";
 
 const listReviewDoctorService = async (id: string) => {
-  const clinicDoctor = await clinicsDoctorsRepository.findOne(
-    {
-      where: { doctor: id },
-    } || { where: { clinic: id } }
-  );
+  const clinicDoctor = await clinicsDoctorsRepository.findOne({
+    where: { doctor: { id } },
+  });
 
   if (!clinicDoctor) {
     throw new AppError("Clinic not found", 404);

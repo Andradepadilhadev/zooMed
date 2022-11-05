@@ -13,7 +13,7 @@ const specialitiesDeleteService = async (id: string) => {
   }
 
   await specialitiesRepository.delete({ id });
-  await doctorsSpecialitiesRepository.delete({ speciality: id });
+  await doctorsSpecialitiesRepository.delete({ speciality: { id } });
 
   return;
 };
