@@ -5,7 +5,6 @@ import { IAppointmentsRequest } from "../../../interfaces/users";
 import {
   animalsRepository,
   appointmentsRepository,
-  doctorsRepository,
 } from "../../../utilities/repositories";
 
 const createAppointmentsService = async ({
@@ -14,9 +13,7 @@ const createAppointmentsService = async ({
   animalsId,
   doctorId,
 }: IAppointmentsRequest): Promise<Partial<Appointments>> => {
-  const clinicDoctor = await clinicsDoctorsRepository.findOneBy({
-    doctor: doctorId,
-  });
+  const clinicDoctor = await clinicsDoctorsRepository.findOneBy({id: doctorId });
   const animal = await animalsRepository.findOneBy({ id: animalsId });
 
   if (!clinicDoctor || !animal) {

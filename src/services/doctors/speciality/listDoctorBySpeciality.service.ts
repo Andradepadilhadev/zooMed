@@ -6,17 +6,21 @@ import {
 } from "../../../utilities/repositories";
 
 const listDoctorBySpecialityService = async (
-  specId: string
+  id: string
 ): Promise<Doctors[]> => {
-  const spec = await specialitiesRepository.findBy({
-    id: specId,
+  const speciality = await specialitiesRepository.findBy({
+    id: id,
   });
-  if (!spec) {
+
+  if (!speciality) {
     throw new AppError("Speciality not found", 400);
   }
-  const doctors = await doctorsRepository.findBy({
-    doctorSpecialities: spec,
+
+  const doctors = await doctorsRepository.find({
+    where: { doctorSpecialities: { speciality: { id } } },
+    relations: { doctorSpecialities: { speciality: true } },
   });
+
   return doctors;
 };
 export default listDoctorBySpecialityService;

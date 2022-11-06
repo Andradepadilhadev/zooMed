@@ -8,6 +8,7 @@ import updateDoctorService from "../../services/doctors/updateDoctor.service";
 
 const createDoctorController = async (req: Request, res: Response) => {
   const { name, email, password, birthDate, crmv } = req.body;
+
   const newDoctor = await createDoctorService({
     name,
     email,
@@ -32,7 +33,10 @@ const doctorListAppointmentController = (req: Request, res: Response) => {
 
 const updateDoctorController = async (req: Request, res: Response) => {
   const { name, email, password, birthDate } = req.body;
-  const doctorUpdated = await updateDoctorService({
+
+  const id = req.user.id;
+
+  const doctorUpdated = await updateDoctorService(id, {
     name,
     email,
     password,

@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import listDoctorBySpecialityService from "../../services/doctors/speciality/listDoctorBySpeciality.service";
 import specialitiesDeleteService from "../../services/doctors/speciality/specialitiesDelete.service";
 import createSpecialityService from "../../services/doctors/speciality/createSpeciality.service";
+import { instanceToPlain } from "class-transformer";
 
 const createSpecialityController = async (req: Request, res: Response) => {
   const { name } = req.body;
@@ -23,19 +24,21 @@ const listAllDoctorsBySpecialityController = async (
   req: Request,
   res: Response
 ) => {
-  const { specId } = req.params;
-  const listDocs = await listDoctorBySpecialityService(specId);
+  const { id } = req.params;
 
-  return res.json(listDocs);
+  const listDocs = await listDoctorBySpecialityService(id);
+
+  return res.json(instanceToPlain(listDocs));
 };
 
 const specialitiesDeleteController = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    await specialitiesDeleteService(id);
+  const { id } = req.params;
 
-    return res.status(203).send();
-  } catch (error) {}
+  const userId = req.user.id;
+
+  const specialityDeleted = await specialitiesDeleteService(id, userId);
+
+  return res.status(200).json(specialityDeleted);
 };
 
 export {

@@ -31,7 +31,7 @@ export class Clinics {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, {eager: true})
   @JoinColumn()
   address: Address;
 
