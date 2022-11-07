@@ -5,6 +5,10 @@ import { appointmentsRepository } from "./repositories";
 const verifyAppointmentDate = (date: string, hour: string): void => {
   const validatedHour = Number(hour.split(":")[0]);
 
+  if (isNaN(validatedHour)) {
+    throw new AppError("Invalid Hour. Hour format should be HH:MM", 400);
+  }
+
   if (validatedHour < 7 || validatedHour >= 18) {
     throw new AppError("Invalid hour. Office hours are from 7h to 18h", 400);
   }

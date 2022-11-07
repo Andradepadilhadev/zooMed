@@ -8,6 +8,7 @@ import {
   updateDoctorController,
 } from "../controllers/doctors/doctors.controller";
 import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
+import listSelfController from "../controllers/session/listSelf.controller";
 import {
   createSpecialityController,
   listAllDoctorsBySpecialityController,
@@ -22,6 +23,8 @@ const routes = Router();
 
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
+
+  routes.get("/profile", ensureAuthTokenMiddleware, listSelfController);
 
   routes.get("", listDoctorsController);
 
@@ -66,11 +69,12 @@ export const doctorsRoutes = () => {
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
     listReviewsDoctorController
   );
 
   routes.patch(
-    "/reviews/:id",
+    "/appointments/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     deleteAppointmentDoctorController

@@ -1,3 +1,4 @@
+import { verifyDateFormat } from "./../../../utilities/verifyDateFormat";
 import { clinicsDoctorsRepository } from "./../../../utilities/repositories";
 import { Appointments } from "../../../entities/appointments.entity";
 import { AppError } from "../../../errors/appError";
@@ -6,19 +7,47 @@ import {
   animalsRepository,
   appointmentsRepository,
 } from "../../../utilities/repositories";
+import { verifyAppointmentDate } from "../../../utilities/verifyAppointmentDate";
+import verifyUUID from "../../../utilities/verifyUUID";
 
 const createAppointmentsService = async ({
   date,
   hour,
-  animalsId,
-  doctorId,
+  animalId,
+  clinicsDoctorsId,
 }: IAppointmentsRequest): Promise<Partial<Appointments>> => {
-  const clinicDoctor = await clinicsDoctorsRepository.findOneBy({id: doctorId });
-  const animal = await animalsRepository.findOneBy({ id: animalsId });
+  verifyDateFormat(date);
+  verifyAppointmentDate(date, hour);
+  verifyUUID(animalId);
+  verifyUUID(clinicsDoctorsId);
 
-  if (!clinicDoctor || !animal) {
-    throw new AppError("Not found, doctor or animal", 400);
+  const clinicDoctor = await clinicsDoctorsRepository.findOne({
+    where: { id: clinicsDoctorsId },
+    relations: { doctor: true },
+  });
+  const animal = await animalsRepository.findOneBy({ id: animalId });
+
+  if (!clinicDoctor) {
+    throw new AppError("Doctor not registered in this Clinic", 404);
   }
+
+  if (!animal) {
+    throw new AppError("Animal not found", 404);
+  }
+
+  const appointmentAlreadyExists = await appointmentsRepository.findOne({
+    where: {
+      date,
+      hour,
+      clinicsDoctors: { doctor: { id: clinicDoctor.doctor.id } },
+    },
+    relations: { clinicsDoctors: { doctor: true } },
+  });
+
+  if (appointmentAlreadyExists) {
+    throw new AppError("This appointment time is not available");
+  }
+
   const newAppointments = new Appointments();
   newAppointments.date = date;
   newAppointments.hour = hour;
