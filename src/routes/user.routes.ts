@@ -25,7 +25,7 @@ export const userRoutes = () => {
   routes.get("/profile", ensureAuthTokenMiddleware, listSelfController);
 
   routes.patch(
-    "",
+    "/:id",
     ensureAuthTokenMiddleware,
     ensureUserMiddleware,
     deleteUserController
