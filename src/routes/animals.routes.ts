@@ -21,16 +21,12 @@ export const animalsRoutes = () => {
     createSpeciesController
   );
   routes.get("/species", ensureAuthTokenMiddleware, listSpeciesController);
+
   routes.patch(
     "/species/:id",
     ensureAuthTokenMiddleware,
     updateSpeciesController
   );
-  routes.patch(
-    "/species/:id",
-    ensureAuthTokenMiddleware,
-    ensureDoctorMiddleware,
-    deleteAnimalsController
-  );
+
   return routes;
 };

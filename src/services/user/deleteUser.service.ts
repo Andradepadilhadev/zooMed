@@ -1,7 +1,10 @@
 import { usersRepository } from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
+import verifyUUID from "../../utilities/verifyUUID";
 
 const userDeleteService = async (id: string) => {
+  verifyUUID(id);
+  
   const findUser = await usersRepository.findOneBy({
     id,
   });

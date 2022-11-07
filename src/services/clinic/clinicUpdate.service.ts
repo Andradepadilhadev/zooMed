@@ -29,7 +29,7 @@ const clinicUpdateService = async (
     where: { clinic: findClinic, doctor: doctor! },
   });
 
-  if (!clinicDoctor) {
+  if (clinicDoctor) {
     throw new AppError("You are no longer registered at this clinic", 400);
   }
 

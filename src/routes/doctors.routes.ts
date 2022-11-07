@@ -24,7 +24,7 @@ const routes = Router();
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
 
-  routes.get("/profile", ensureAuthTokenMiddleware, listSelfController);
+  routes.get("/profile", ensureAuthTokenMiddleware, ensureDoctorMiddleware ,listSelfController);
 
   routes.get("", listDoctorsController);
 

@@ -22,10 +22,10 @@ const routes = Router();
 export const userRoutes = () => {
   routes.post("", createUserController);
 
-  routes.get("/profile", ensureAuthTokenMiddleware, listSelfController);
+  routes.get("/profile", ensureAuthTokenMiddleware, ensureUserMiddleware,listSelfController);
 
   routes.patch(
-    "",
+    "/:id",
     ensureAuthTokenMiddleware,
     ensureUserMiddleware,
     deleteUserController
