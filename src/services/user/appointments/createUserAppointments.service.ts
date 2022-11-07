@@ -17,8 +17,11 @@ const createAppointmentsService = async ({
   clinicsDoctorsId,
 }: IAppointmentsRequest): Promise<Partial<Appointments>> => {
   verifyDateFormat(date);
+
   verifyAppointmentDate(date, hour);
+
   verifyUUID(animalId);
+
   verifyUUID(clinicsDoctorsId);
 
   const clinicDoctor = await clinicsDoctorsRepository.findOne({
@@ -45,7 +48,7 @@ const createAppointmentsService = async ({
   });
 
   if (appointmentAlreadyExists) {
-    throw new AppError("This appointment time is not available");
+    throw new AppError("This appointment time is not available", 400);
   }
 
   const newAppointments = new Appointments();
@@ -55,7 +58,6 @@ const createAppointmentsService = async ({
   newAppointments.clinicsDoctors = clinicDoctor;
 
   appointmentsRepository.save(newAppointments);
-
   return newAppointments;
 };
 

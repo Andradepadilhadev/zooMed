@@ -5,6 +5,7 @@ import {
   clinicsRepository,
   doctorsRepository,
 } from "../../utilities/repositories";
+import verifyUUID from "../../utilities/verifyUUID";
 import updateAddressService from "../address/updateAddress.service";
 
 const clinicUpdateService = async (
@@ -12,6 +13,8 @@ const clinicUpdateService = async (
   userId: string,
   { name, contact, crmv_pj, address }: IClinicUpdate
 ) => {
+  verifyUUID(id);
+
   const findClinic = await clinicsRepository.findOne({
     where: { id: id },
     relations: { address: true },
@@ -26,7 +29,8 @@ const clinicUpdateService = async (
   });
 
   const clinicDoctor = await clinicsDoctorsRepository.findOne({
-    where: { clinic: findClinic, doctor: doctor! },
+    where: { clinic: { id: findClinic.id }, doctor: { id: doctor!.id } },
+    relations: { clinic: true, doctor: true },
   });
 
   if (!clinicDoctor) {

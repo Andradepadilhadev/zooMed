@@ -8,10 +8,4 @@ const listReviewsDoctorController = async (req: Request, res: Response) => {
   return res.status(200).send(listReviews);
 };
 
-const deleteReviewsController = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await deleteAppointmentDoctorService(id);
-  return res.status(203).send();
-};
-
-export { listReviewsDoctorController, deleteReviewsController };
+export { listReviewsDoctorController };
