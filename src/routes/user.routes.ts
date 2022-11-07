@@ -87,6 +87,7 @@ export const userRoutes = () => {
     "/reviews/:id",
     ensureAuthTokenMiddleware,
     ensureUserMiddleware,
+    ensureForbiddenFieldsMiddleware,
     updatedUserReviewsController
   );
 
