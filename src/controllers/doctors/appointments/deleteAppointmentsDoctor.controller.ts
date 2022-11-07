@@ -5,10 +5,11 @@ const deleteAppointmentDoctorController = async (
   req: Request,
   res: Response
 ) => {
-  try {
-    const { id } = req.params;
-    await deleteAppointmentDoctorService(id);
-    return res.status(203).send();
-  } catch (error) {}
+  const { id } = req.params;
+  const doctorId = req.user.id;
+
+  const deletedAppointment = await deleteAppointmentDoctorService(id, doctorId);
+
+  return res.status(200).send(deletedAppointment);
 };
 export default deleteAppointmentDoctorController;

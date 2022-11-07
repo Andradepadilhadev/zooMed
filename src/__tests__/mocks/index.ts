@@ -93,7 +93,7 @@ export const mockedClinicTwo = {
 export const mockedAppointment = {
   date: "2020/11/7",
   hour: "10:30",
-  animalsId: "",
+  animalId: "",
   clinicsDoctorsId: "",
 };
 

@@ -1,7 +1,10 @@
 import { AppError } from "../../errors/appError";
 import { animalsRepository } from "../../utilities/repositories";
+import verifyUUID from "../../utilities/verifyUUID";
 
 const deleteAnimalService = async (id: string, userId: string) => {
+  verifyUUID(id);
+
   const animals = await animalsRepository.findOne({
     where: {
       id: id,

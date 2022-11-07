@@ -11,7 +11,7 @@ const createSpecialityController = async (req: Request, res: Response) => {
 
   const newSpeciality = await createSpecialityService(name, doctorId);
 
-  return res.status(200).json(newSpeciality);
+  return res.status(201).json(newSpeciality);
 };
 
 const listAllSpecialitiesController = async (req: Request, res: Response) => {

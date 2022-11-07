@@ -53,7 +53,7 @@ describe("Users Routes", () => {
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -71,7 +71,6 @@ describe("Users Routes", () => {
     expect(response.body).toHaveProperty("id");
     expect(response.body.email).toEqual(mockedUserUpdated.email);
     expect(response.body.birthDate).toEqual(mockedUserUpdated.birthDate);
-    expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
   test("PATCH /users - Must not be able to modify id or isActive", async () => {
@@ -87,18 +86,37 @@ describe("Users Routes", () => {
     expect(response.body).toHaveProperty("message");
   });
 
-  test("PATCH /users - Must be able to do a soft delete of the user", async () => {
+  test("GET /users/profile - Must be able to list the logged user information", async () => {
     const login = await request(app)
       .post("/login")
       .send({ email: mockedUserUpdated.email, password: mockedUser.password });
+
     const response = await request(app)
-      .patch("/users")
+      .get("/users/profile")
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body.email).toEqual(mockedUserUpdated.email);
+  });
+
+  test("PATCH /users/:id - Must be able to do a soft delete of the user", async () => {
+    const login = await request(app)
+      .post("/login")
+      .send({ email: mockedUserUpdated.email, password: mockedUser.password });
+
+    const userInformation = await request(app)
+      .get("/users/profile")
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    const response = await request(app)
+      .patch(`/users/${userInformation.body.id}`)
       .set("Authorization", `Bearer ${login.body.token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual(
-      "User deleted/deactivated with success"
-    );
+    expect(response.body.message).toEqual("User deleted successfully");
   });
 });

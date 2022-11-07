@@ -29,7 +29,7 @@ const createAnimalsServices = async (
     throw new AppError("Species not found", 404);
   }
 
-  const animalAlreadyExists = user!.animals.filter(
+  const animalAlreadyExists = user!.animals.find(
     (animal) => animal.name === name
   );
 

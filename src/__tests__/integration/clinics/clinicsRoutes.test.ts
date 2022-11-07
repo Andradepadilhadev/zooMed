@@ -4,9 +4,7 @@ import request from "supertest";
 import AppDataSource from "../../../data-source";
 import {
   mockedClinic,
-  mockedDoctorLogin,
   mockedUserLogin,
-  mockedUserUpdated,
   mockedUser,
   mockedClinicTwo,
   mockedDoctor,
@@ -73,7 +71,7 @@ describe("Clinics Routes", () => {
       .post("/clinics")
       .send(mockedClinic);
 
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
@@ -88,12 +86,15 @@ describe("Clinics Routes", () => {
       .set("Authorization", `Bearer ${login.body.token}`)
       .send(mockedClinic);
 
-    expect(response.status).toBe(401);
+    expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
   });
 
   test("GET /clinics -  Must be able to list clinics", async () => {
-    await request(app).post("/clinics").send(mockedClinicTwo);
+    await request(app)
+      .post("/clinics")
+      .set("Authorization", `Bearer ${validDoctorToken}`)
+      .send(mockedClinicTwo);
 
     const response = await request(app).get("/clinics");
 
@@ -102,9 +103,7 @@ describe("Clinics Routes", () => {
   });
 
   test("PATCH /clinics/:id - Must be able update a clinic", async () => {
-    const clinicToBeUpdate = await request(app)
-      .get("/clinics")
-      .set("Authorization", `Bearer ${validDoctorToken}`);
+    const clinicToBeUpdate = await request(app).get("/clinics");
 
     const response = await request(app)
       .patch(`/clinics/${clinicToBeUpdate.body[0].id}`)
@@ -133,7 +132,7 @@ describe("Clinics Routes", () => {
       .patch(`/clinics/${clinicToBeUpdate.body[0].id}`)
       .send(mockedClinic);
 
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
@@ -143,14 +142,15 @@ describe("Clinics Routes", () => {
     const clinicsList = await request(app).get("/clinics");
 
     const response = await request(app)
-      .patch(`/clinics/${clinicsList.body[0].id}`)
-      .set("Authorization", `Bearer ${validDoctorToken}`);
+      .patch("/clinics")
+      .set("Authorization", `Bearer ${validDoctorToken}`)
+      .send({ id: clinicsList.body[0].id });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("message");
 
     const doctorsList = await request(app).get("/doctors");
 
-    expect(doctorsList.body[0].clinics).toHaveLength(1);
+    expect(doctorsList.body[0].clinicsDoctors).toHaveLength(1);
   });
 });
