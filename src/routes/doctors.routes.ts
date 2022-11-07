@@ -8,18 +8,23 @@ import {
   updateDoctorController,
 } from "../controllers/doctors/doctors.controller";
 import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
+import listSelfController from "../controllers/session/listSelf.controller";
 import {
   createSpecialityController,
   listAllDoctorsBySpecialityController,
   listAllSpecialitiesController,
+  specialitiesDeleteController,
 } from "../controllers/specialities/speciality.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
 import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
+import ensureForbiddenFieldsMiddleware from "../middlewares/ensureForbiddenFieldsMiddleware";
 
 const routes = Router();
 
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
+
+  routes.get("/profile", ensureAuthTokenMiddleware, listSelfController);
 
   routes.get("", listDoctorsController);
 
@@ -27,14 +32,15 @@ export const doctorsRoutes = () => {
     "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
-    deleteDoctorController
+    ensureForbiddenFieldsMiddleware,
+    updateDoctorController
   );
 
   routes.patch(
-    "",
+    "/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
-    updateDoctorController
+    deleteDoctorController
   );
 
   routes.post(
@@ -45,6 +51,12 @@ export const doctorsRoutes = () => {
   );
 
   routes.get("/specialities", listAllSpecialitiesController);
+
+  routes.patch(
+    "/specialities/:id",
+    ensureAuthTokenMiddleware,
+    specialitiesDeleteController
+  );
 
   routes.get("/specialities/:id", listAllDoctorsBySpecialityController);
 
@@ -57,11 +69,12 @@ export const doctorsRoutes = () => {
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
     listReviewsDoctorController
   );
 
   routes.patch(
-    "/reviews/:id",
+    "/appointments/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     deleteAppointmentDoctorController

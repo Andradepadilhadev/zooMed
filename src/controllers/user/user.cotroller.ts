@@ -11,6 +11,7 @@ import listAllUserAppointmentsService from "../../services/user/appointments/lis
 import createUserReviewService from "../../services/user/reviews/createUserReview.service";
 import updateUserReviewService from "../../services/user/reviews/updateUserReview.service";
 import { instanceToPlain } from "class-transformer";
+import listUsersReviewsService from "../../services/user/reviews/listUsersReviews.service";
 
 const createUserController = async (req: Request, res: Response) => {
   const user: IUserRequest = req.body;
@@ -47,12 +48,13 @@ const createUserAppointmentsController = async (
   req: Request,
   res: Response
 ) => {
-  const { date, hour, animalsId, doctorId }: IAppointmentsRequest = req.body;
+  const { date, hour, animalId, clinicsDoctorsId }: IAppointmentsRequest =
+    req.body;
   await createAppointmentsService({
     date,
     hour,
-    animalsId,
-    doctorId,
+    animalId,
+    clinicsDoctorsId,
   });
 
   return res.status(201).json({ message: "Successfully scheduled" });
@@ -63,9 +65,11 @@ const deleteUserAppointmentsController = async (
   res: Response
 ) => {
   const { id } = req.params;
-  await appointmentsDeleteService(id);
+  const userId = req.user.id;
+
+  await appointmentsDeleteService(id, userId);
   return res.status(200).json({
-    message: "Appointments successfully",
+    message: "Appointment canceled successfully",
   });
 };
 
@@ -74,29 +78,44 @@ const listAllUserAppointmentsController = async (
   res: Response
 ) => {
   const userId = req.user.id;
-  const list = await listAllUserAppointmentsService(userId);
-  return res.json(list);
+  const appointmentsList = await listAllUserAppointmentsService(userId);
+  return res.json(instanceToPlain(appointmentsList));
 };
 
 const createUserReviewsController = async (req: Request, res: Response) => {
-  const { review, appointmentsId } = req.body;
+  const { review, appointmentId } = req.body;
   const userId = req.user.id;
-  const newReview = await createUserReviewService(review, appointmentsId, userId);
+  const newReview = await createUserReviewService(
+    review,
+    appointmentId,
+    userId
+  );
   return res
     .status(201)
-    .json({ message: "Successfully review", review: review });
+    .json({ message: "Review created Successfully", review: newReview });
+};
+
+const listUsersReviewsController = async (req: Request, res: Response) => {
+  const userId = req.user.id;
+  const usersReviews = await listUsersReviewsService(userId);
+
+  return res.status(200).json(usersReviews);
 };
 
 const updatedUserReviewsController = async (req: Request, res: Response) => {
   const { review } = req.body;
   const { id } = req.params;
-  const updatedReviews = updateUserReviewService(review, id);
-  return res.json(updatedReviews);
+  const userId = req.user.id;
+
+  const updatedReviews = await updateUserReviewService(review, id, userId);
+
+  return res.status(200).json(updatedReviews);
 };
 
 export {
   updatedUserReviewsController,
   createUserReviewsController,
+  listUsersReviewsController,
   listAllUserAppointmentsController,
   deleteUserAppointmentsController,
   listAllAnimalUserController,

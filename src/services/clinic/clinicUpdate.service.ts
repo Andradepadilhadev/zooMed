@@ -1,20 +1,36 @@
-import AppDataSource from "../../data-source";
-import { Clinics } from "../../entities/clinics.entity";
 import { AppError } from "../../errors/appError";
 import { IClinicUpdate } from "../../interfaces/clinic";
+import {
+  clinicsDoctorsRepository,
+  clinicsRepository,
+  doctorsRepository,
+} from "../../utilities/repositories";
 import updateAddressService from "../address/updateAddress.service";
 
 const clinicUpdateService = async (
   id: string,
+  userId: string,
   { name, contact, crmv_pj, address }: IClinicUpdate
 ) => {
-  const clinicsRepository = AppDataSource.getRepository(Clinics);
   const findClinic = await clinicsRepository.findOne({
     where: { id: id },
     relations: { address: true },
   });
+
   if (!findClinic) {
     throw new AppError("Clinic not found", 404);
+  }
+
+  const doctor = await doctorsRepository.findOne({
+    where: { id: userId },
+  });
+
+  const clinicDoctor = await clinicsDoctorsRepository.findOne({
+    where: { clinic: findClinic, doctor: doctor! },
+  });
+
+  if (!clinicDoctor) {
+    throw new AppError("You are no longer registered at this clinic", 400);
   }
 
   if (address) {

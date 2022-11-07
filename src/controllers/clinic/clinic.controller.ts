@@ -6,19 +6,28 @@ import clinicUpdateService from "../../services/clinic/clinicUpdate.service";
 
 const clinicCreateController = async (req: Request, res: Response) => {
   const { name, contact, crmv_pj, address } = req.body;
-  const createdClinic = await clinicCreateService({
-    name,
-    contact,
-    crmv_pj,
-    address,
-  });
+
+  const userId = req.user.id;
+
+  const createdClinic = await clinicCreateService(
+    {
+      name,
+      contact,
+      crmv_pj,
+      address,
+    },
+    userId
+  );
   return res.status(201).send(createdClinic);
 };
 
 const clinicDeleteController = async (req: Request, res: Response) => {
   const userId = req.user.id;
+
   const { id } = req.body.id;
+
   const removed = await clinicDeleteService(id, userId);
+
   return res.status(200).json({
     message: removed,
   });
@@ -26,13 +35,18 @@ const clinicDeleteController = async (req: Request, res: Response) => {
 
 const clinicListController = async (req: Request, res: Response) => {
   const listed = await clinicListService();
+
   return res.status(200).send(listed);
 };
 
 const clinicUpdateController = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  const userId = req.user.id;
+
   const { name, contact, crmv_pj, address } = req.body;
-  const clinicUpdated = await clinicUpdateService(id, {
+
+  const clinicUpdated = await clinicUpdateService(id, userId, {
     name,
     contact,
     crmv_pj,

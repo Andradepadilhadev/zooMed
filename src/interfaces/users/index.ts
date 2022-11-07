@@ -11,8 +11,8 @@ export interface IUserRequest {
 export interface IAppointmentsRequest {
   date: string;
   hour: string;
-  animalsId: string;
-  doctorId: string;
+  animalId: string;
+  clinicsDoctorsId: string;
 }
 
 export interface IUser {

@@ -3,6 +3,7 @@ import { appointmentsRepository } from "../../../utilities/repositories";
 const listAppointmentsDoctorService = async (id: string) => {
   const appointmentsDoctor = await appointmentsRepository.find({
     where: { clinicsDoctors: { doctor: { id } } },
+    relations: { animals: true },
   });
 
   if (appointmentsDoctor.length === 0) {

@@ -17,18 +17,22 @@ export const clinicRoutes = () => {
     ensureDoctorMiddleware,
     clinicCreateController
   );
+
   routes.get("", clinicListController);
+
   routes.patch(
     "/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     clinicUpdateController
   );
+
   routes.patch(
     "",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     clinicDeleteController
   );
+
   return routes;
 };

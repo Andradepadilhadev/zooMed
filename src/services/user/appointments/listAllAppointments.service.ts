@@ -8,11 +8,11 @@ const listAllUserAppointmentsService = async (
   userId: string
 ): Promise<Appointments[]> => {
   const user = await usersRepository.findOneBy({ id: userId });
-  const appointments = await appointmentsRepository.findBy({
-    animals: user!.animals,
+  const appointments = await appointmentsRepository.find({
+    where: { animals: user!.animals },
+    relations: { clinicsDoctors: { doctor: true, clinic: true } },
   });
-  const result = appointments.map((appointments) => appointments);
-  return result;
+  return appointments;
 };
 
 export default listAllUserAppointmentsService;

@@ -1,32 +1,47 @@
-import AppDataSource from "../../data-source";
-import { Clinics } from "../../entities/clinics.entity";
 import { AppError } from "../../errors/appError";
 import { IClinicRequest } from "../../interfaces/clinic";
+import {
+  clinicsDoctorsRepository,
+  clinicsRepository,
+  doctorsRepository,
+} from "../../utilities/repositories";
 import createAddressService from "../address/createAdrress.service";
 
-const clinicCreateService = async ({
-  name,
-  contact,
-  crmv_pj,
-  address,
-}: IClinicRequest) => {
-  const clinicRepository = AppDataSource.getRepository(Clinics);
-
-  const clinicAlreadyExists = await clinicRepository.findOne({
-    where: { name: name },
+const clinicCreateService = async (
+  { name, contact, crmv_pj, address }: IClinicRequest,
+  userId: string
+) => {
+  const clinic = await clinicsRepository.findOne({
+    where: { name },
   });
-  if (clinicAlreadyExists) {
-    throw new AppError("Clinic Already Exists", 404);
+
+  if (clinic) {
+    if (clinic.crmv_pj === crmv_pj) {
+      throw new AppError("Clinic crmv Already Exists", 409);
+    }
+
+    throw new AppError("Clinic name Already Exists", 409);
   }
 
-  const newClinic = new Clinics();
-  newClinic.name = name;
-  newClinic.contact = contact;
-  newClinic.address = await createAddressService(address);
-  crmv_pj && (newClinic.crmv_pj = crmv_pj);
+  const newAddress = await createAddressService(address);
 
-  clinicRepository.create(newClinic);
-  await clinicRepository.save(newClinic);
+  const newClinic = clinicsRepository.create({
+    name,
+    contact,
+    crmv_pj,
+    address: newAddress,
+  });
+
+  const doctor = await doctorsRepository.findOne({ where: { id: userId } });
+
+  await clinicsRepository.save(newClinic);
+
+  const clinicDoctor = clinicsDoctorsRepository.create({
+    clinic: newClinic,
+    doctor: doctor!,
+  });
+
+  await clinicsDoctorsRepository.save(clinicDoctor);
 
   return newClinic;
 };
