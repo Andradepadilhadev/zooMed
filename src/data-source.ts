@@ -14,8 +14,8 @@ const AppDataSource = new DataSource(
         host: process.env.DB_HOST,
         port: Number(process.env.DB_PORT),
         database: process.env.DB,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
         synchronize: false,
         logging: true,
         entities:
