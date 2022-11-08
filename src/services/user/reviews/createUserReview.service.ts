@@ -19,18 +19,32 @@ const createUserReviewService = async (
     throw new AppError("Appointment not found", 400);
   }
 
+  if (appointment.isCanceled) {
+    throw new AppError("You can not review a canceled appointment", 403);
+  }
+
   const today = new Date();
   const appointmentDate = new Date(appointment.date);
 
   if (appointmentDate > today) {
-    throw new AppError("Appointment not happen", 400);
+    throw new AppError("Appointment hasn't happened yet", 403);
   }
-  const newReview = {
-    review,
-    appointment: appointment,
-  };
 
-  reviewsRepository.save(newReview);
+  const reviewAlreadyExists = await reviewsRepository.findOne({
+    where: { appointments: appointment },
+  });
+
+  if (reviewAlreadyExists) {
+    throw new AppError("You Already reviewed this appointment", 403);
+  }
+  const newReview = reviewsRepository.create({
+    review,
+    appointments: appointment,
+    user: user!,
+  });
+
+  await reviewsRepository.save(newReview);
+
   return newReview;
 };
 

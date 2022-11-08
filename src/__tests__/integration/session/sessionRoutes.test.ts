@@ -50,9 +50,9 @@ describe("Session Routes", () => {
       .post("/login")
       .send({ email: mockedDoctor.email, password: "abcd" });
 
-    expect(responseWrongEmail.status).toBe(400);
+    expect(responseWrongEmail.status).toBe(401);
     expect(responseWrongEmail.body).toHaveProperty("message");
-    expect(responseWrongPassword.status).toBe(400);
+    expect(responseWrongPassword.status).toBe(401);
     expect(responseWrongPassword.body).toHaveProperty("message");
   });
 
@@ -64,9 +64,9 @@ describe("Session Routes", () => {
       .post("/login")
       .send({ email: mockedDoctor.email, password: "abcd" });
 
-    expect(responseWrongEmail.status).toBe(400);
+    expect(responseWrongEmail.status).toBe(401);
     expect(responseWrongEmail.body).toHaveProperty("message");
-    expect(responseWrongPassword.status).toBe(400);
+    expect(responseWrongPassword.status).toBe(401);
     expect(responseWrongPassword.body).toHaveProperty("message");
   });
 });

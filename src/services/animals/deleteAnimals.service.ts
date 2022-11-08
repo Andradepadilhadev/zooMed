@@ -1,7 +1,10 @@
 import { AppError } from "../../errors/appError";
 import { animalsRepository } from "../../utilities/repositories";
+import verifyUUID from "../../utilities/verifyUUID";
 
 const deleteAnimalService = async (id: string, userId: string) => {
+  verifyUUID(id);
+
   const animals = await animalsRepository.findOne({
     where: {
       id: id,
@@ -26,7 +29,7 @@ const deleteAnimalService = async (id: string, userId: string) => {
     isAlive: false,
   });
 
-  return "Animals deleted with success";
+  return "Animal deleted with success";
 };
 
 export default deleteAnimalService;

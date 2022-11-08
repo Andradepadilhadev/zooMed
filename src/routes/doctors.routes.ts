@@ -1,4 +1,5 @@
 import { Router } from "express";
+import deleteAppointmentDoctorController from "../controllers/doctors/appointments/deleteAppointmentsDoctor.controller";
 import listAppointmentsDoctorController from "../controllers/doctors/appointments/listAppointmentsDoctor.controller";
 import {
   createDoctorController,
@@ -6,52 +7,77 @@ import {
   listDoctorsController,
   updateDoctorController,
 } from "../controllers/doctors/doctors.controller";
+import { listReviewsDoctorController } from "../controllers/doctors/reviews/reviews.controller";
+import listSelfController from "../controllers/session/listSelf.controller";
 import {
-  deleteReviewsController,
-  listReviewsDoctorController,
-} from "../controllers/doctors/reviews/reviews.controller";
-import { createSpecialityController } from "../controllers/specialities/speciality.controller";
+  createSpecialityController,
+  listAllDoctorsBySpecialityController,
+  listAllSpecialitiesController,
+  specialitiesDeleteController,
+} from "../controllers/specialities/speciality.controller";
 import ensureAuthTokenMiddleware from "../middlewares/ensureAuthToken.middleware";
 import ensureDoctorMiddleware from "../middlewares/ensureDoctor.middleware";
+import ensureForbiddenFieldsMiddleware from "../middlewares/ensureForbiddenFieldsMiddleware";
 
 const routes = Router();
 
 export const doctorsRoutes = () => {
   routes.post("", createDoctorController);
+
+  routes.get("/profile", ensureAuthTokenMiddleware, ensureDoctorMiddleware ,listSelfController);
+
   routes.get("", listDoctorsController);
+
   routes.patch(
     "",
+    ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
+    ensureForbiddenFieldsMiddleware,
+    updateDoctorController
+  );
+
+  routes.patch(
+    "/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     deleteDoctorController
   );
-  routes.patch(
-    "",
-    ensureAuthTokenMiddleware,
-    ensureDoctorMiddleware,
-    updateDoctorController
-  );
+
   routes.post(
     "/specialities",
     ensureAuthTokenMiddleware,
+    ensureDoctorMiddleware,
     createSpecialityController
   );
+
+  routes.get("/specialities", listAllSpecialitiesController);
+
+  routes.patch(
+    "/specialities/:id",
+    ensureAuthTokenMiddleware,
+    specialitiesDeleteController
+  );
+
+  routes.get("/specialities/:id", listAllDoctorsBySpecialityController);
+
   routes.get(
     "/appointments",
     ensureAuthTokenMiddleware,
     listAppointmentsDoctorController
   );
+
   routes.get(
     "/reviews",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
     listReviewsDoctorController
   );
+
   routes.patch(
-    "/reviews/:id",
+    "/appointments/:id",
     ensureAuthTokenMiddleware,
     ensureDoctorMiddleware,
-    deleteReviewsController
+    deleteAppointmentDoctorController
   );
 
   return routes;

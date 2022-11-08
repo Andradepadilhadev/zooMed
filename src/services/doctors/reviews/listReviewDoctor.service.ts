@@ -6,26 +6,26 @@ import {
 } from "../../../utilities/repositories";
 
 const listReviewDoctorService = async (id: string) => {
-  const clinicDoctor = await clinicsDoctorsRepository.findOne(
-    {
-      where: { doctor: id },
-    } || { where: { clinic: id } }
-  );
+  const clinicDoctor = await clinicsDoctorsRepository.find({
+    where: { doctor: { id } },
+  });
 
   if (!clinicDoctor) {
-    throw new AppError("Clinic not found", 404);
+    throw new AppError("You don't have any reviews", 400);
   }
-  const appointmentsForClinic = await appointmentsRepository.find({
+
+  const doctorsAppointments = await appointmentsRepository.find({
     where: {
       clinicsDoctors: clinicDoctor,
     },
   });
-  const reviewsForClinic = await reviewsRepository.find({
+
+  const doctorsReviews = await reviewsRepository.find({
     where: {
-      appointments: appointmentsForClinic,
+      appointments: doctorsAppointments,
     },
   });
 
-  return reviewsForClinic;
+  return doctorsReviews;
 };
 export default listReviewDoctorService;

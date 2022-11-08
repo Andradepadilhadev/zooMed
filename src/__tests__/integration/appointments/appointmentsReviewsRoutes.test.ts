@@ -14,7 +14,7 @@ import {
   mockedReview,
 } from "../../mocks";
 
-describe("Appointmenst and Reviews Routes", () => {
+describe("Appointments and Reviews Routes", () => {
   let connection: DataSource;
   let validUserToken: string;
   let validDoctorToken: string;
@@ -55,14 +55,14 @@ describe("Appointmenst and Reviews Routes", () => {
       .set("Authorization", `Bearer ${validDoctorToken}`)
       .send(mockedSpecies);
 
-    //get the species id
+    //get the species name
     const species = await request(app)
       .get("/animals/species")
-      .set("Authorization", `Bearer ${validDoctorToken}`);
-    const speciesId = species.body[0].id;
+      .set("Authorization", `Bearer ${validUserToken}`);
+    const speciesName = species.body[0].name;
 
     //create an animal
-    mockedAnimal.species = speciesId;
+    mockedAnimal.species = speciesName;
     await request(app)
       .post("/animals")
       .set("Authorization", `Bearer ${validUserToken}`)
@@ -88,7 +88,7 @@ describe("Appointmenst and Reviews Routes", () => {
     const doctorsList = await request(app).get("/doctors");
     const clinicsDoctorsId = doctorsList.body[0].clinicsDoctors[0].id;
 
-    mockedAppointment.animalsId = animalId;
+    mockedAppointment.animalId = animalId;
     mockedAppointment.clinicsDoctorsId = clinicsDoctorsId;
 
     const responseNoToken = await request(app)
@@ -101,7 +101,7 @@ describe("Appointmenst and Reviews Routes", () => {
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -111,16 +111,17 @@ describe("Appointmenst and Reviews Routes", () => {
 
     mockedAppointment.clinicsDoctorsId = clinicsDoctorsId;
 
+    mockedAppointment.animalId = "";
     const responseNoId = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
-    mockedAppointment.animalsId = "10";
+    mockedAppointment.animalId = "10";
     const responseInvalidId = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(responseNoId.status).toBe(400);
     expect(responseNoId.body).toHaveProperty("message");
@@ -132,18 +133,19 @@ describe("Appointmenst and Reviews Routes", () => {
     const animalsList = await request(app)
       .get("/users/animals")
       .set("Authorization", `Bearer ${validUserToken}`);
-    mockedAppointment.animalsId = animalsList.body[0].id;
+    mockedAppointment.animalId = animalsList.body[0].id;
 
+    mockedAppointment.clinicsDoctorsId = "";
     const responseNoId = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     mockedAppointment.clinicsDoctorsId = "10";
     const responseInvalidId = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(responseNoId.status).toBe(400);
     expect(responseNoId.body).toHaveProperty("message");
@@ -155,7 +157,7 @@ describe("Appointmenst and Reviews Routes", () => {
     const animalsList = await request(app)
       .get("/users/animals")
       .set("Authorization", `Bearer ${validUserToken}`);
-    mockedAppointment.animalsId = animalsList.body[0].id;
+    mockedAppointment.animalId = animalsList.body[0].id;
 
     const doctorsList = await request(app).get("/doctors");
     mockedAppointment.clinicsDoctorsId =
@@ -165,14 +167,14 @@ describe("Appointmenst and Reviews Routes", () => {
     const responseInvalidDate = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     mockedAppointment.date = "2020/03/20";
     mockedAppointment.hour = "10h";
     const responseInvalidHour = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(responseInvalidDate.status).toBe(400);
     expect(responseInvalidDate.body).toHaveProperty("message");
@@ -184,19 +186,20 @@ describe("Appointmenst and Reviews Routes", () => {
     const animalsList = await request(app)
       .get("/users/animals")
       .set("Authorization", `Bearer ${validUserToken}`);
-    mockedAppointment.animalsId = animalsList.body[0].id;
+    mockedAppointment.animalId = animalsList.body[0].id;
 
     const doctorsList = await request(app).get("/doctors");
     mockedAppointment.clinicsDoctorsId =
       doctorsList.body[0].clinicsDoctors[0].id;
 
+    mockedAppointment.hour = "10:00";
     const response = await request(app)
       .post("/users/appointments")
-      .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`)
+      .send(mockedAppointment);
 
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("message");
   });
 
   test("POST /users/appointments - Must not be able to create a appointment with existing date, hour and doctor", async () => {
@@ -208,7 +211,7 @@ describe("Appointmenst and Reviews Routes", () => {
     const animalsList = await request(app)
       .get("/users/animals")
       .set("Authorization", `Bearer ${validUserToken}`);
-    mockedAppointment.animalsId = animalsList.body[0].id;
+    mockedAppointment.animalId = animalsList.body[0].id;
 
     const doctorsList = await request(app).get("/doctors");
     mockedAppointment.clinicsDoctorsId =
@@ -217,9 +220,9 @@ describe("Appointmenst and Reviews Routes", () => {
     const response = await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
-    expect(response.status).toBe(409);
+    expect(response.status).toBe(400);
     expect(response.body).toHaveProperty("message");
   });
 
@@ -228,18 +231,18 @@ describe("Appointmenst and Reviews Routes", () => {
 
     const responseInvalidToken = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${invalidToken}`);
+      .set("Authorization", `Bearer ${invalidToken}`);
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
   test("GET /users/appointments - Must be able to list the users appointments", async () => {
     const response = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
@@ -248,7 +251,7 @@ describe("Appointmenst and Reviews Routes", () => {
   test("GET /doctors/appointments - Must be able to list the doctors appointments", async () => {
     const response = await request(app)
       .get("/doctors/appointments")
-      .set("Authorization", `Bearer${validDoctorToken}`);
+      .set("Authorization", `Bearer ${validDoctorToken}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
@@ -258,7 +261,7 @@ describe("Appointmenst and Reviews Routes", () => {
     const animalsList = await request(app)
       .get("/users/animals")
       .set("Authorization", `Bearer ${validUserToken}`);
-    mockedAppointment.animalsId = animalsList.body[0].id;
+    mockedAppointment.animalId = animalsList.body[0].id;
 
     const doctorsList = await request(app).get("/doctors");
     mockedAppointment.clinicsDoctorsId =
@@ -269,11 +272,26 @@ describe("Appointmenst and Reviews Routes", () => {
     await request(app)
       .post("/users/appointments")
       .send(mockedAppointment)
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     const appointmentsList = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
+    mockedReview.appointmentId = appointmentsList.body[1].id;
+
+    const response = await request(app)
+      .post("/users/reviews")
+      .set("Authorization", `Bearer ${validUserToken}`)
+      .send(mockedReview);
+
+    expect(response.status).toBe(403);
+    expect(response.body).toHaveProperty("message");
+  });
+
+  test("POST /users/reviews - Must be able to create an appointment review", async () => {
+    const appointmentsList = await request(app)
+      .get("/users/appointments")
+      .set("Authorization", `Bearer ${validUserToken}`);
     mockedReview.appointmentId = appointmentsList.body[0].id;
 
     const response = await request(app)
@@ -281,42 +299,32 @@ describe("Appointmenst and Reviews Routes", () => {
       .set("Authorization", `Bearer ${validUserToken}`)
       .send(mockedReview);
 
-    expect(response.status).toBe(409);
-    expect(response.body).toHaveProperty("message");
-  });
-
-  test("POST /users/reviews - Must be able to create an appointment review", async () => {
-    const appointmentsList = await request(app)
-      .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
-    mockedReview.appointmentId = appointmentsList.body[1].id;
-
-    const response = await request(app)
-      .post("/users/reviews")
-      .set("Authorization", `Bearer ${validUserToken}`)
-      .send(mockedReview);
-
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("message");
+    expect(response.body).toHaveProperty("review");
+    expect(response.body.review).toHaveProperty("id");
+    expect(response.body.review.review).toEqual(mockedReview.review);
   });
 
   test("POST /users/reviews - Must not be ale to create a existing appointment review", async () => {
     const appointmentsList = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
-    mockedReview.appointmentId = appointmentsList.body[1].id;
+      .set("Authorization", `Bearer ${validUserToken}`);
+    mockedReview.appointmentId = appointmentsList.body[0].id;
 
     const response = await request(app)
       .post("/users/reviews")
       .set("Authorization", `Bearer ${validUserToken}`)
       .send(mockedReview);
 
-    expect(response.status).toBe(409);
+    expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
   });
 
-  test("GET /reviews - Must be able to list all reviews", async () => {
-    const response = await request(app).get("/reviews");
+  test("GET /reviews - Must be able to list all users reviews", async () => {
+    const response = await request(app)
+      .get("/users/reviews")
+      .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
@@ -332,7 +340,9 @@ describe("Appointmenst and Reviews Routes", () => {
   });
 
   test("PATCH /users/reviews/:id - Must be able to update the review", async () => {
-    const reviewsList = await request(app).get("/reviews");
+    const reviewsList = await request(app)
+      .get("/users/reviews")
+      .set("Authorization", `Bearer ${validUserToken}`);
     const reviewId = reviewsList.body[0].id;
 
     const response = await request(app)
@@ -343,11 +353,12 @@ describe("Appointmenst and Reviews Routes", () => {
     expect(response.status).toBe(200);
     expect(response.body.id).toEqual(reviewId);
     expect(response.body.review).toEqual("Consulta devidamente avaliada.");
-    expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
   test("PATCH /users/reviews/:id - Must not be able to update review id", async () => {
-    const reviewsList = await request(app).get("/reviews");
+    const reviewsList = await request(app)
+      .get("/users/reviews")
+      .set("Authorization", `Bearer ${validUserToken}`);
     const reviewId = reviewsList.body[0].id;
 
     const response = await request(app)
@@ -355,15 +366,15 @@ describe("Appointmenst and Reviews Routes", () => {
       .set("Authorization", `Bearer ${validUserToken}`)
       .send({ id: "100" });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(403);
     expect(response.body).toHaveProperty("message");
   });
 
   test("PATCH /users/appointments/:id - Must not be able to cancel appointment without token or with invalid token", async () => {
     const appointmentsList = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
-    const appointmentId = appointmentsList.body[0].id;
+      .set("Authorization", `Bearer ${validUserToken}`);
+    const appointmentId = appointmentsList.body[1].id;
 
     const responseNoToken = await request(app).patch(
       `/users/appointments/${appointmentId}`
@@ -374,14 +385,14 @@ describe("Appointmenst and Reviews Routes", () => {
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
   test("PATCH /users/appointments/:id - Must be able to cancel the appointment with user login", async () => {
     const appointmentsList = await request(app)
       .get("/users/appointments")
-      .set("Authorization", `Bearer${validUserToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
     const appointmentId = appointmentsList.body[0].id;
 
     const response = await request(app)
@@ -389,13 +400,13 @@ describe("Appointmenst and Reviews Routes", () => {
       .set("Authorization", `Bearer ${validUserToken}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.isCanceled).toBe(true);
+    expect(response.body).toHaveProperty("message");
   });
 
   test("PATCH /doctors/appointments/:id - Must be able to cancel the appointment with doctor login", async () => {
     const appointmentsList = await request(app)
       .get("/doctors/appointments")
-      .set("Authorization", `Bearer${validDoctorToken}`);
+      .set("Authorization", `Bearer ${validDoctorToken}`);
     const appointmentId = appointmentsList.body[1].id;
 
     const response = await request(app)
@@ -403,6 +414,6 @@ describe("Appointmenst and Reviews Routes", () => {
       .set("Authorization", `Bearer ${validDoctorToken}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.isCanceled).toBe(true);
+    expect(response.body).toHaveProperty("message");
   });
 });

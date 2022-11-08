@@ -1,27 +1,24 @@
 import { hash } from "bcryptjs";
-import { AppError } from "../../errors/appError";
 import { IDoctorUpdate } from "../../interfaces/doctors";
 import { doctorsRepository } from "../../utilities/repositories";
 
-const updateDoctorService = async ({
-  name,
-  email,
-  password,
-  birthDate,
-}: IDoctorUpdate) => {
+const updateDoctorService = async (
+  id: string,
+  { name, email, password, birthDate }: IDoctorUpdate
+) => {
   const doctor = await doctorsRepository.findOneBy({
-    email,
+    id,
   });
 
-  if (!doctor) {
-    throw new AppError("Doctor not found", 400);
-  }
+  await doctorsRepository.update(id, {
+    name: name ? name : doctor!.name,
+    email: email ? email : doctor!.email,
+    birthDate: birthDate ? birthDate : doctor!.birthDate,
+    password: password ? await hash(password!, 10) : doctor!.password,
+  });
 
-  const doctorUpdated = await doctorsRepository.update(email, {
-    name: name ? name : doctor.name,
-    email: email ? email : doctor.email,
-    birthDate: birthDate ? birthDate : doctor.birthDate,
-    password: password ? await hash(password!, 10) : doctor.password,
+  const doctorUpdated = await doctorsRepository.findOneBy({
+    id,
   });
 
   return doctorUpdated;
