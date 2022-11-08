@@ -7,6 +7,7 @@ import {
   doctorsRepository,
   usersRepository,
 } from "../../utilities/repositories";
+import { validatePassword } from "../../validators";
 
 const createDoctorService = async ({
   name,
@@ -20,8 +21,14 @@ const createDoctorService = async ({
   }
 
   if (!crmv) {
-    throw new AppError("crmv is missing", 400);
+    throw new AppError("Crmv is missing", 400);
   }
+
+  if (crmv.length > 6) {
+    throw new AppError("Crmv incorrect", 400);
+  }
+
+  await validatePassword(password);
 
   verifyDateFormat(birthDate);
 
