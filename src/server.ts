@@ -1,6 +1,9 @@
 import app from "./app";
+import dotenv from "dotenv";
 import AppDataSource from "./data-source";
 import "dotenv/config";
+
+dotenv.config();
 
 (async () => {
   await AppDataSource.initialize().catch((err) => {
