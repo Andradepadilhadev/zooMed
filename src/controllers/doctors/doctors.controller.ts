@@ -47,7 +47,7 @@ const updateDoctorController = async (req: Request, res: Response) => {
 };
 
 const deleteDoctorController = async (req: Request, res: Response) => {
-  const id = req.user.id;
+  const { id } = req.params;
   await deleteDoctorService(id);
   return res.status(200).json({ message: "Doctor deleted successfully" });
 };
