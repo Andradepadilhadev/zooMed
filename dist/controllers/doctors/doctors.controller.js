@@ -55,7 +55,7 @@ const updateDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, f
 });
 exports.updateDoctorController = updateDoctorController;
 const deleteDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.user.id;
+    const { id } = req.params;
     yield (0, deleteDoctor_service_1.default)(id);
     return res.status(200).json({ message: "Doctor deleted successfully" });
 });
