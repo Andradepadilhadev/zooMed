@@ -5,7 +5,7 @@ export class Address {
   @PrimaryGeneratedColumn("uuid")
   readonly id: string;
 
-  @Column({ length: 8 })
+  @Column({ length: 9 })
   zipCode: string;
 
   @Column({ length: 5 })

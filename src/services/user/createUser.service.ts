@@ -4,6 +4,7 @@ import { hash } from "bcryptjs";
 import { usersRepository } from "../../utilities/repositories";
 import { AppError } from "../../errors/appError";
 import { verifyDateFormat } from "../../utilities/verifyDateFormat";
+import { validatePassword } from "../../validators";
 
 const createUserService = async ({
   name,
@@ -14,9 +15,11 @@ const createUserService = async ({
   if (!password) {
     throw new AppError("Password is missing", 400);
   }
-  const hashedPassword = await hash(password, 10);
+  await validatePassword(password);
 
-  verifyDateFormat(birthDate)
+  verifyDateFormat(birthDate);
+
+  const hashedPassword = await hash(password, 10);
 
   const newUser = usersRepository.create({
     name,

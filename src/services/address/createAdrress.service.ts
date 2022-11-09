@@ -1,6 +1,7 @@
 import { Address } from "../../entities/address.entity";
 import { AppError } from "../../errors/appError";
 import { addressRepository } from "../../utilities/repositories";
+import { validateZipCode } from "../../validators";
 
 const createAddressService = async ({
   district,
@@ -13,6 +14,8 @@ const createAddressService = async ({
   const addressAlreadyExists = await addressRepository.findOne({
     where: { district, zipCode, complement, number, city, state },
   });
+
+  await validateZipCode(zipCode);
 
   if (addressAlreadyExists) {
     throw new AppError("This address is already registered", 409);
