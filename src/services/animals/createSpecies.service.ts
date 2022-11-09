@@ -8,7 +8,7 @@ const createSpeciesServices = async (name: string): Promise<Species> => {
   });
 
   if (species) {
-    throw new AppError("Species already exists", 401);
+    throw new AppError("Species already exists", 409);
   }
 
   const createSpecies = speciesRepository.create({

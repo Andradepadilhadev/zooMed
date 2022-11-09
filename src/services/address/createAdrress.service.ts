@@ -1,15 +1,33 @@
 import { Address } from "../../entities/address.entity";
+import { AppError } from "../../errors/appError";
 import { addressRepository } from "../../utilities/repositories";
 
-const createAddressService = async (address: Address): Promise<Address> => {
-  const newAddress = addressRepository.create({
-    district: address.district,
-    zipCode: address.zipCode,
-    complement: address.complement,
-    number: address.number,
-    city: address.city,
-    state: address.state,
+const createAddressService = async ({
+  district,
+  zipCode,
+  complement,
+  number,
+  city,
+  state,
+}: Address): Promise<Address> => {
+  const addressAlreadyExists = await addressRepository.findOne({
+    where: { district, zipCode, complement, number, city, state },
   });
+
+  if (addressAlreadyExists) {
+    throw new AppError("This address is already registered", 409);
+  }
+
+  const newAddress = addressRepository.create({
+    district: district,
+    zipCode: zipCode,
+    complement: complement,
+    number: number,
+    city: city,
+    state: state,
+  });
+
+  await addressRepository.save(newAddress);
 
   return newAddress;
 };

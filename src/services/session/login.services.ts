@@ -12,10 +12,15 @@ const loginService = async ({
   password,
 }: IUserLogin): Promise<string> => {
   const user = await usersRepository.findOneBy({ email });
+
   const doctor = await doctorsRepository.findOneBy({ email });
 
   if (!user && !doctor) {
     throw new AppError("Invalid email or password", 401);
+  }
+
+  if (doctor?.isActive === false || user?.isActive === false) {
+    throw new AppError("This account has been removed", 400);
   }
 
   let matchPass;

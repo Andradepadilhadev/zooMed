@@ -1,4 +1,4 @@
-import { mockedDoctor } from "./../../mocks/index";
+import { mockedDoctor } from "../../mocks/index";
 import {
   mockedAnimal,
   mockedSpecies,
@@ -83,7 +83,7 @@ describe("Animals Routes", () => {
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidUserToken.status).toBe(401);
+    expect(responseInvalidUserToken.status).toBe(403);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -104,10 +104,12 @@ describe("Animals Routes", () => {
   test("PATCH /animals/species/:id - Must be able to update a species", async () => {
     const species = await request(app)
       .get("/animals/species")
-      .set("Authorization", `Bearer ${validDoctorToken}`);
+      .set("Authorization", `Bearer ${validUserToken}`);
     const speciesToBeUpdated = species.body[0].id;
+
     const response = await request(app)
       .patch(`/animals/species/${speciesToBeUpdated}`)
+      .set("Authorization", `Bearer ${validDoctorToken}`)
       .send(mockedSpeciesUpdated);
 
     expect(response.status).toBe(200);
@@ -119,8 +121,8 @@ describe("Animals Routes", () => {
     const species = await request(app)
       .get("/animals/species")
       .set("Authorization", `Bearer ${validUserToken}`);
-    const speciesId = species.body[0].id;
-    mockedAnimal.species = speciesId;
+    const speciesName = species.body[0].id;
+    mockedAnimal.species = speciesName;
 
     const invalidUserToken = "";
     const responseInvalidUserToken = await request(app)
@@ -133,7 +135,7 @@ describe("Animals Routes", () => {
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(401);
+    expect(responseInvalidUserToken.status).toBe(403);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -141,8 +143,9 @@ describe("Animals Routes", () => {
     const species = await request(app)
       .get("/animals/species")
       .set("Authorization", `Bearer ${validUserToken}`);
-    const speciesId = species.body[0].id;
-    mockedAnimal.species = speciesId;
+    const speciesName = species.body[0].name;
+    mockedAnimal.species = speciesName;
+
     const response = await request(app)
       .post("/animals")
       .set("Authorization", `Bearer ${validUserToken}`)
@@ -158,8 +161,8 @@ describe("Animals Routes", () => {
     const species = await request(app)
       .get("/animals/species")
       .set("Authorization", `Bearer ${validUserToken}`);
-    const speciesId = species.body[0].id;
-    mockedAnimal.species = speciesId;
+    const speciesName = species.body[0].name;
+    mockedAnimal.species = speciesName;
     const response = await request(app)
       .post("/animals")
       .set("Authorization", `Bearer ${validUserToken}`)
@@ -178,7 +181,7 @@ describe("Animals Routes", () => {
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(401);
+    expect(responseInvalidUserToken.status).toBe(403);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 
@@ -190,7 +193,7 @@ describe("Animals Routes", () => {
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
     expect(response.body[0].name).toEqual(mockedAnimal.name);
-    expect(response.body[0]).toHaveProperty("type");
+    expect(response.body[0]).toHaveProperty("species");
   });
 
   test("PATCH /animals/:id - Must not be able to delete animal without token or a invalid token", async () => {
@@ -209,7 +212,7 @@ describe("Animals Routes", () => {
 
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
-    expect(responseInvalidUserToken.status).toBe(401);
+    expect(responseInvalidUserToken.status).toBe(403);
     expect(responseInvalidUserToken.body).toHaveProperty("message");
   });
 

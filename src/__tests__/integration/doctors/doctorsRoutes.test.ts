@@ -59,7 +59,7 @@ describe("Doctors Routes", () => {
     expect(responseNoToken.status).toBe(401);
     expect(responseNoToken.body).toHaveProperty("message");
 
-    expect(responseInvalidToken.status).toBe(401);
+    expect(responseInvalidToken.status).toBe(403);
     expect(responseInvalidToken.body).toHaveProperty("message");
   });
 
@@ -78,7 +78,6 @@ describe("Doctors Routes", () => {
     expect(response.body.crmv).toEqual(mockedDoctor.crmv);
     expect(response.body.email).toEqual(mockedDoctorUpdate.email);
     expect(response.body.birthDate).toEqual(mockedDoctor.birthDate);
-    expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
   });
 
   test("GET /doctors - Must be able to list doctors", async () => {
@@ -86,8 +85,26 @@ describe("Doctors Routes", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveLength(1);
-    expect(response.body[0]).toHaveProperty("specialities");
-    expect(response.body[0]).toHaveProperty("clinics");
+    expect(response.body[0]).toHaveProperty("doctorSpecialities");
+    expect(response.body[0]).toHaveProperty("clinicsDoctors");
+  });
+
+  test("GET /doctors/profile - Must be able to list the logged doctors information", async () => {
+    const login = await request(app).post("/login").send({
+      email: mockedDoctorUpdate.email,
+      password: mockedDoctor.password,
+    });
+
+    const response = await request(app)
+      .get("/doctors/profile")
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).not.toHaveProperty("password");
+    expect(response.body.email).toEqual(mockedDoctorUpdate.email);
+    expect(response.body.name).toEqual(mockedDoctorUpdate.name);
+    expect(response.body.crmv).toEqual(mockedDoctor.crmv);
   });
 
   test("PATCH /doctors - Must not be able to modify id or isActive", async () => {
@@ -113,13 +130,15 @@ describe("Doctors Routes", () => {
       .send(mockedSpeciality);
 
     expect(responseCreateSpeciality.status).toBe(201);
-    expect(responseCreateSpeciality.body).toHaveProperty("id");
+    expect(responseCreateSpeciality.body).toHaveProperty("message");
+    expect(responseCreateSpeciality.body).toHaveProperty("speciality");
+    expect(responseCreateSpeciality.body.speciality).toHaveProperty("id");
 
     const responseWasSpecialityAdded = await request(app).get("/doctors");
 
-    expect(responseWasSpecialityAdded.body[0].specialities[0]).toEqual(
-      mockedSpeciality.name
-    );
+    expect(
+      responseWasSpecialityAdded.body[0].doctorSpecialities[0].speciality.name
+    ).toEqual(mockedSpeciality.name);
   });
 
   test("GET /doctors/specialitites - Must be able to list specialities", async () => {
@@ -145,26 +164,33 @@ describe("Doctors Routes", () => {
   test("PATCH /doctors/specialities - Must be able to remove speciality from the doctors specialities", async () => {
     const login = await request(app).post("/login").send(mockedDoctorLogin);
 
-    const response = await request(app)
-      .patch("/doctors/specilities")
-      .set("Authorization", `Bearer ${login.body.token}`)
-      .send(mockedSpeciality);
+    const specialitiesList = await request(app).get("/doctors/specialities");
 
-    expect(response.status).toBe(200);
-    expect(response.body.name).toEqual(mockedDoctorUpdate.name);
-    expect(response.body.specialities).toHaveLength(0);
-  });
-
-  test("PATCH /doctors - Must be able to do a soft delete of the doctors", async () => {
-    const login = await request(app).post("/login").send(mockedDoctorLogin);
     const response = await request(app)
-      .patch("/doctors")
+      .patch(`/doctors/specialities/${specialitiesList.body[0].id}`)
       .set("Authorization", `Bearer ${login.body.token}`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("message");
-    expect(response.body.message).toEqual(
-      "Doctor deleted/deactivated with success"
-    );
+
+    const doctorsList = await request(app).get("/doctors");
+
+    expect(doctorsList.body[0].doctorSpecialities).toHaveLength(0);
+  });
+
+  test("PATCH /doctors - Must be able to do a soft delete of the doctors", async () => {
+    const login = await request(app).post("/login").send(mockedDoctorLogin);
+
+    const userInformation = await request(app)
+      .get("/doctors/profile")
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    const response = await request(app)
+      .patch(`/doctors/${userInformation.body.id}`)
+      .set("Authorization", `Bearer ${login.body.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toEqual("Doctor deleted successfully");
   });
 });
