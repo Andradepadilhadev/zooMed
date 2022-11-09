@@ -9,7 +9,9 @@
 ***Organização do Projeto*** => Para conferir a organização e gerenciamento da equipe [Clique aqui](https://trello.com/b/dtoTnoPr/pb-node).
  <br />
 ***Diagrama ER*** => [Clique aqui](https://lucid.app/lucidchart/2f215970-a742-40ba-a2ef-3c4a3c872e60/edit?invitationId=inv_522ee8cf-8959-4d85-80a2-4d2e2342a943&referringApp=slack&page=0_0#) e acesse o diagrama do Projeto.
-
+<br />
+***Documentação do Projeto*** => [Clique aqui](https://doc-nine.vercel.app/) e confira a documentação da API.
+ <br />
 
 &nbsp;
 ## 💅 Layout - Front-End
