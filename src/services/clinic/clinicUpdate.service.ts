@@ -33,7 +33,7 @@ const clinicUpdateService = async (
     relations: { clinic: true, doctor: true },
   });
 
-  if (clinicDoctor) {
+  if (!clinicDoctor) {
     throw new AppError("You are no longer registered at this clinic", 400);
   }
 

@@ -6,6 +6,7 @@ import {
 } from "../../utilities/repositories";
 import { compare } from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { validateEmail } from "../../validators";
 
 const loginService = async ({
   email,
@@ -14,6 +15,8 @@ const loginService = async ({
   const user = await usersRepository.findOneBy({ email });
 
   const doctor = await doctorsRepository.findOneBy({ email });
+
+  await validateEmail(email);
 
   if (!user && !doctor) {
     throw new AppError("Invalid email or password", 401);
