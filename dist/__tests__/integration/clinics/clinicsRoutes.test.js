@@ -67,7 +67,7 @@ describe("Clinics Routes", () => {
         const responseNoToken = yield (0, supertest_1.default)(app_1.default)
             .post("/clinics")
             .send(mocks_1.mockedClinic);
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
@@ -79,19 +79,20 @@ describe("Clinics Routes", () => {
             .post("/clinics")
             .set("Authorization", `Bearer ${login.body.token}`)
             .send(mocks_1.mockedClinic);
-        expect(response.status).toBe(401);
+        expect(response.status).toBe(403);
         expect(response.body).toHaveProperty("message");
     }));
     test("GET /clinics -  Must be able to list clinics", () => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, supertest_1.default)(app_1.default).post("/clinics").send(mocks_1.mockedClinicTwo);
+        yield (0, supertest_1.default)(app_1.default)
+            .post("/clinics")
+            .set("Authorization", `Bearer ${validDoctorToken}`)
+            .send(mocks_1.mockedClinicTwo);
         const response = yield (0, supertest_1.default)(app_1.default).get("/clinics");
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(2);
     }));
     test("PATCH /clinics/:id - Must be able update a clinic", () => __awaiter(void 0, void 0, void 0, function* () {
-        const clinicToBeUpdate = yield (0, supertest_1.default)(app_1.default)
-            .get("/clinics")
-            .set("Authorization", `Bearer ${validDoctorToken}`);
+        const clinicToBeUpdate = yield (0, supertest_1.default)(app_1.default).get("/clinics");
         const response = yield (0, supertest_1.default)(app_1.default)
             .patch(`/clinics/${clinicToBeUpdate.body[0].id}`)
             .set("Authorization", `Bearer ${validDoctorToken}`)
@@ -114,7 +115,7 @@ describe("Clinics Routes", () => {
         const responseNoToken = yield (0, supertest_1.default)(app_1.default)
             .patch(`/clinics/${clinicToBeUpdate.body[0].id}`)
             .send(mocks_1.mockedClinic);
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
@@ -122,11 +123,12 @@ describe("Clinics Routes", () => {
     test("PATCH /clinics/:id - Must be able to remove clinic from the doctors clinics", () => __awaiter(void 0, void 0, void 0, function* () {
         const clinicsList = yield (0, supertest_1.default)(app_1.default).get("/clinics");
         const response = yield (0, supertest_1.default)(app_1.default)
-            .patch(`/clinics/${clinicsList.body[0].id}`)
-            .set("Authorization", `Bearer ${validDoctorToken}`);
+            .patch("/clinics")
+            .set("Authorization", `Bearer ${validDoctorToken}`)
+            .send({ id: clinicsList.body[0].id });
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty("message");
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
-        expect(doctorsList.body[0].clinics).toHaveLength(1);
+        expect(doctorsList.body[0].clinicsDoctors).toHaveLength(1);
     }));
 });

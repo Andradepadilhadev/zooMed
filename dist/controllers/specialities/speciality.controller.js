@@ -12,34 +12,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.specialitiesDeleteController = exports.listAllDocsBySpecsController = exports.listAllSpecController = exports.createSpecialityController = void 0;
+exports.specialitiesDeleteController = exports.listAllDoctorsBySpecialityController = exports.listAllSpecialitiesController = exports.createSpecialityController = void 0;
 const listAllSpeciality_service_1 = __importDefault(require("../../services/doctors/speciality/listAllSpeciality.service"));
 const listDoctorBySpeciality_service_1 = __importDefault(require("../../services/doctors/speciality/listDoctorBySpeciality.service"));
 const specialitiesDelete_service_1 = __importDefault(require("../../services/doctors/speciality/specialitiesDelete.service"));
 const createSpeciality_service_1 = __importDefault(require("../../services/doctors/speciality/createSpeciality.service"));
+const class_transformer_1 = require("class-transformer");
 const createSpecialityController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.body;
-    const newSpeciality = (0, createSpeciality_service_1.default)(name);
-    return res.status(200).json({ newSpeciality });
+    const doctorId = req.user.id;
+    const newSpeciality = yield (0, createSpeciality_service_1.default)(name, doctorId);
+    return res.status(201).json(newSpeciality);
 });
 exports.createSpecialityController = createSpecialityController;
-const listAllSpecController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const listAllSpecialitiesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listSpecs = yield (0, listAllSpeciality_service_1.default)();
     return res.json(listSpecs);
 });
-exports.listAllSpecController = listAllSpecController;
-const listAllDocsBySpecsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { specId } = req.params;
-    const listDocs = yield (0, listDoctorBySpeciality_service_1.default)(specId);
-    return res.json(listDocs);
+exports.listAllSpecialitiesController = listAllSpecialitiesController;
+const listAllDoctorsBySpecialityController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const listDocs = yield (0, listDoctorBySpeciality_service_1.default)(id);
+    return res.json((0, class_transformer_1.instanceToPlain)(listDocs));
 });
-exports.listAllDocsBySpecsController = listAllDocsBySpecsController;
+exports.listAllDoctorsBySpecialityController = listAllDoctorsBySpecialityController;
 const specialitiesDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        yield (0, specialitiesDelete_service_1.default)(id);
-        return res.status(203).send();
-    }
-    catch (error) { }
+    const { id } = req.params;
+    const userId = req.user.id;
+    const specialityDeleted = yield (0, specialitiesDelete_service_1.default)(id, userId);
+    return res.status(200).json(specialityDeleted);
 });
 exports.specialitiesDeleteController = specialitiesDeleteController;

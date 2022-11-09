@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSpeciesController = exports.updateSpeciesController = exports.listSpeciesController = exports.deleteAnimalsController = exports.createSpeciesController = exports.createAnimalsController = void 0;
+const class_transformer_1 = require("class-transformer");
 const createAnimals_service_1 = __importDefault(require("../../services/animals/createAnimals.service"));
 const createSpecies_service_1 = __importDefault(require("../../services/animals/createSpecies.service"));
 const listSpecies_service_1 = __importDefault(require("../../services/animals/listSpecies.service"));
@@ -23,7 +24,7 @@ const createAnimalsController = (req, res) => __awaiter(void 0, void 0, void 0, 
     const data = req.body;
     const userId = req.user.id;
     const createAnimals = yield (0, createAnimals_service_1.default)(data, userId);
-    return res.status(201).json(createAnimals);
+    return res.status(201).json((0, class_transformer_1.instanceToPlain)(createAnimals));
 });
 exports.createAnimalsController = createAnimalsController;
 const createSpeciesController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

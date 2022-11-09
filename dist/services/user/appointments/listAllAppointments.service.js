@@ -12,10 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../../utilities/repositories");
 const listAllUserAppointmentsService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield repositories_1.usersRepository.findOneBy({ id: userId });
-    const appointments = yield repositories_1.appointmentsRepository.findBy({
-        animals: user.animals,
+    const appointments = yield repositories_1.appointmentsRepository.find({
+        where: { animals: user.animals },
+        relations: { clinicsDoctors: { doctor: true, clinic: true } },
     });
-    const result = appointments.map((appointments) => appointments);
-    return result;
+    return appointments;
 });
 exports.default = listAllUserAppointmentsService;

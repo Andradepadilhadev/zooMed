@@ -10,20 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcryptjs_1 = require("bcryptjs");
-const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
-const updateDoctorService = ({ name, email, password, birthDate, }) => __awaiter(void 0, void 0, void 0, function* () {
+const updateDoctorService = (id, { name, email, password, birthDate }) => __awaiter(void 0, void 0, void 0, function* () {
     const doctor = yield repositories_1.doctorsRepository.findOneBy({
-        email,
+        id,
     });
-    if (!doctor) {
-        throw new appError_1.AppError("Doctor not found", 400);
-    }
-    const doctorUpdated = yield repositories_1.doctorsRepository.update(email, {
+    yield repositories_1.doctorsRepository.update(id, {
         name: name ? name : doctor.name,
         email: email ? email : doctor.email,
         birthDate: birthDate ? birthDate : doctor.birthDate,
         password: password ? yield (0, bcryptjs_1.hash)(password, 10) : doctor.password,
+    });
+    const doctorUpdated = yield repositories_1.doctorsRepository.findOneBy({
+        id,
     });
     return doctorUpdated;
 });

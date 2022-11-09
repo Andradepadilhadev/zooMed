@@ -14,8 +14,7 @@ const animalsRoutes = () => {
     routes.patch("/:id", ensureAuthToken_middleware_1.default, animals_controllers_1.deleteAnimalsController);
     routes.post("/species", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.createSpeciesController);
     routes.get("/species", ensureAuthToken_middleware_1.default, animals_controllers_1.listSpeciesController);
-    routes.patch("/species/:id", ensureAuthToken_middleware_1.default, animals_controllers_1.updateSpeciesController);
-    routes.patch("/species/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.deleteAnimalsController);
+    routes.patch("/species/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, animals_controllers_1.updateSpeciesController);
     return routes;
 };
 exports.animalsRoutes = animalsRoutes;

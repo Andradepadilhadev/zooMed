@@ -16,7 +16,7 @@ const createSpeciesServices = (name) => __awaiter(void 0, void 0, void 0, functi
         name,
     });
     if (species) {
-        throw new appError_1.AppError("Species already exists", 401);
+        throw new appError_1.AppError("Species already exists", 409);
     }
     const createSpecies = repositories_1.speciesRepository.create({
         name: name,

@@ -40,7 +40,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Clinics.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => address_entity_1.Address),
+    (0, typeorm_1.OneToOne)(() => address_entity_1.Address, { eager: true }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", address_entity_1.Address)
 ], Clinics.prototype, "address", void 0);

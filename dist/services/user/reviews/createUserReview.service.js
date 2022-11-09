@@ -19,16 +19,26 @@ const createUserReviewService = (review, appointmentsId, userId) => __awaiter(vo
     if (!appointment) {
         throw new appError_1.AppError("Appointment not found", 400);
     }
+    if (appointment.isCanceled) {
+        throw new appError_1.AppError("You can not review a canceled appointment", 403);
+    }
     const today = new Date();
     const appointmentDate = new Date(appointment.date);
     if (appointmentDate > today) {
-        throw new appError_1.AppError("Appointment not happen", 400);
+        throw new appError_1.AppError("Appointment hasn't happened yet", 403);
     }
-    const newReview = {
+    const reviewAlreadyExists = yield repositories_1.reviewsRepository.findOne({
+        where: { appointments: appointment },
+    });
+    if (reviewAlreadyExists) {
+        throw new appError_1.AppError("You Already reviewed this appointment", 403);
+    }
+    const newReview = repositories_1.reviewsRepository.create({
         review,
-        appointment: appointment,
-    };
-    repositories_1.reviewsRepository.save(newReview);
+        appointments: appointment,
+        user: user,
+    });
+    yield repositories_1.reviewsRepository.save(newReview);
     return newReview;
 });
 exports.default = createUserReviewService;

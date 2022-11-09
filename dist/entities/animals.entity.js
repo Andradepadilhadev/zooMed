@@ -41,7 +41,7 @@ __decorate([
     __metadata("design:type", users_entity_1.Users)
 ], Animals.prototype, "user", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => species_entity_1.Species),
+    (0, typeorm_1.ManyToOne)(() => species_entity_1.Species, { eager: true }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", species_entity_1.Species)
 ], Animals.prototype, "species", void 0);

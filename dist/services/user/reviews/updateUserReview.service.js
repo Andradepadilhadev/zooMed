@@ -8,9 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const appError_1 = require("../../../errors/appError");
 const repositories_1 = require("../../../utilities/repositories");
-const updateUserReviewService = (review, idReview) => __awaiter(void 0, void 0, void 0, function* () {
+const verifyUUID_1 = __importDefault(require("../../../utilities/verifyUUID"));
+const updateUserReviewService = (review, idReview, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, verifyUUID_1.default)(idReview);
+    const reviewToBeUpdated = yield repositories_1.reviewsRepository.findOne({
+        where: { id: idReview },
+        relations: { user: true },
+    });
+    if (!reviewToBeUpdated) {
+        throw new appError_1.AppError("Review not found", 404);
+    }
+    if (reviewToBeUpdated.user.id != userId) {
+        throw new appError_1.AppError("This is not your review", 403);
+    }
     yield repositories_1.reviewsRepository.update(idReview, {
         review,
     });

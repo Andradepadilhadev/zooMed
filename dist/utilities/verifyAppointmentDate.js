@@ -4,6 +4,9 @@ exports.verifyAppointmentDate = void 0;
 const appError_1 = require("../errors/appError");
 const verifyAppointmentDate = (date, hour) => {
     const validatedHour = Number(hour.split(":")[0]);
+    if (isNaN(validatedHour)) {
+        throw new appError_1.AppError("Invalid Hour. Hour format should be HH:MM", 400);
+    }
     if (validatedHour < 7 || validatedHour >= 18) {
         throw new appError_1.AppError("Invalid hour. Office hours are from 7h to 18h", 400);
     }

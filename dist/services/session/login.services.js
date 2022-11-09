@@ -22,6 +22,9 @@ const loginService = ({ email, password, }) => __awaiter(void 0, void 0, void 0,
     if (!user && !doctor) {
         throw new appError_1.AppError("Invalid email or password", 401);
     }
+    if ((doctor === null || doctor === void 0 ? void 0 : doctor.isActive) === false || (user === null || user === void 0 ? void 0 : user.isActive) === false) {
+        throw new appError_1.AppError("This account has been removed", 400);
+    }
     let matchPass;
     if (user) {
         matchPass = yield (0, bcryptjs_1.compare)(password, user.password);

@@ -22,11 +22,11 @@ __decorate([
 ], ClinicsDoctors.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => clinics_entity_1.Clinics),
-    __metadata("design:type", String)
+    __metadata("design:type", clinics_entity_1.Clinics)
 ], ClinicsDoctors.prototype, "clinic", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => doctors_entity_1.Doctors),
-    __metadata("design:type", String)
+    __metadata("design:type", doctors_entity_1.Doctors)
 ], ClinicsDoctors.prototype, "doctor", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => appointments_entity_1.Appointments, (appointments) => appointments.clinicsDoctors),

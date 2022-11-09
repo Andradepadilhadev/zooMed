@@ -8,19 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const repositories_1 = require("../../utilities/repositories");
-const verifyOwnerUser_1 = require("../../utilities/verifyOwnerUser");
-const listAllAnimalsUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, verifyOwnerUser_1.verifyOwnerUser)(userId);
-    const user = yield repositories_1.usersRepository.findOne({
-        where: {
-            id: userId,
-        },
-        relations: {
-            animals: true,
-        },
-    });
-    return user.animals;
+const class_transformer_1 = require("class-transformer");
+const listSelf_services_1 = __importDefault(require("../../services/session/listSelf.services"));
+const listSelfController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.user;
+    const listSelf = yield (0, listSelf_services_1.default)(id);
+    return res.status(200).json((0, class_transformer_1.instanceToPlain)(listSelf));
 });
-exports.default = listAllAnimalsUserService;
+exports.default = listSelfController;

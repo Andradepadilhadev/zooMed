@@ -9,18 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const repositories_1 = require("../../utilities/repositories");
-const verifyOwnerUser_1 = require("../../utilities/verifyOwnerUser");
-const listAllAnimalsUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, verifyOwnerUser_1.verifyOwnerUser)(userId);
-    const user = yield repositories_1.usersRepository.findOne({
-        where: {
-            id: userId,
-        },
-        relations: {
-            animals: true,
-        },
+const repositories_1 = require("../../../utilities/repositories");
+const listUsersReviewsService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const usersReviews = yield repositories_1.reviewsRepository.find({
+        where: { user: { id: userId } },
+        relations: { user: true },
     });
-    return user.animals;
+    return usersReviews;
 });
-exports.default = listAllAnimalsUserService;
+exports.default = listUsersReviewsService;

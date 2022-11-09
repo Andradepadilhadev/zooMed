@@ -16,7 +16,7 @@ const app_1 = __importDefault(require("../../../app"));
 const data_source_1 = __importDefault(require("../../../data-source"));
 const supertest_1 = __importDefault(require("supertest"));
 const mocks_1 = require("../../mocks");
-describe("Appointmenst and Reviews Routes", () => {
+describe("Appointments and Reviews Routes", () => {
     let connection;
     let validUserToken;
     let validDoctorToken;
@@ -51,13 +51,13 @@ describe("Appointmenst and Reviews Routes", () => {
             .post("/animals/species")
             .set("Authorization", `Bearer ${validDoctorToken}`)
             .send(mocks_1.mockedSpecies);
-        //get the species id
+        //get the species name
         const species = yield (0, supertest_1.default)(app_1.default)
             .get("/animals/species")
-            .set("Authorization", `Bearer ${validDoctorToken}`);
-        const speciesId = species.body[0].id;
+            .set("Authorization", `Bearer ${validUserToken}`);
+        const speciesName = species.body[0].name;
         //create an animal
-        mocks_1.mockedAnimal.species = speciesId;
+        mocks_1.mockedAnimal.species = speciesName;
         yield (0, supertest_1.default)(app_1.default)
             .post("/animals")
             .set("Authorization", `Bearer ${validUserToken}`)
@@ -78,7 +78,7 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalId = animalsList.body[0].id;
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         const clinicsDoctorsId = doctorsList.body[0].clinicsDoctors[0].id;
-        mocks_1.mockedAppointment.animalsId = animalId;
+        mocks_1.mockedAppointment.animalId = animalId;
         mocks_1.mockedAppointment.clinicsDoctorsId = clinicsDoctorsId;
         const responseNoToken = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
@@ -89,22 +89,23 @@ describe("Appointmenst and Reviews Routes", () => {
             .set("Authorization", `Bearer${invalidToken}`);
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("POST /users/appointments - Must not be able to create appointment without animal id or incorrect animal id", () => __awaiter(void 0, void 0, void 0, function* () {
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         const clinicsDoctorsId = doctorsList.body[0].clinicsDoctors[0].id;
         mocks_1.mockedAppointment.clinicsDoctorsId = clinicsDoctorsId;
+        mocks_1.mockedAppointment.animalId = "";
         const responseNoId = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = "10";
+            .set("Authorization", `Bearer ${validUserToken}`);
+        mocks_1.mockedAppointment.animalId = "10";
         const responseInvalidId = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         expect(responseNoId.status).toBe(400);
         expect(responseNoId.body).toHaveProperty("message");
         expect(responseInvalidId.status).toBe(400);
@@ -114,16 +115,17 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/animals")
             .set("Authorization", `Bearer ${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.animalId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.clinicsDoctorsId = "";
         const responseNoId = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         mocks_1.mockedAppointment.clinicsDoctorsId = "10";
         const responseInvalidId = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         expect(responseNoId.status).toBe(400);
         expect(responseNoId.body).toHaveProperty("message");
         expect(responseInvalidId.status).toBe(400);
@@ -133,7 +135,7 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/animals")
             .set("Authorization", `Bearer ${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.animalId = animalsList.body[0].id;
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         mocks_1.mockedAppointment.clinicsDoctorsId =
             doctorsList.body[0].clinicsDoctors[0].id;
@@ -141,13 +143,13 @@ describe("Appointmenst and Reviews Routes", () => {
         const responseInvalidDate = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         mocks_1.mockedAppointment.date = "2020/03/20";
         mocks_1.mockedAppointment.hour = "10h";
         const responseInvalidHour = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         expect(responseInvalidDate.status).toBe(400);
         expect(responseInvalidDate.body).toHaveProperty("message");
         expect(responseInvalidHour.status).toBe(400);
@@ -157,16 +159,17 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/animals")
             .set("Authorization", `Bearer ${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.animalId = animalsList.body[0].id;
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         mocks_1.mockedAppointment.clinicsDoctorsId =
             doctorsList.body[0].clinicsDoctors[0].id;
+        mocks_1.mockedAppointment.hour = "10:00";
         const response = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
-            .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`)
+            .send(mocks_1.mockedAppointment);
         expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty("id");
+        expect(response.body).toHaveProperty("message");
     }));
     test("POST /users/appointments - Must not be able to create a appointment with existing date, hour and doctor", () => __awaiter(void 0, void 0, void 0, function* () {
         yield (0, supertest_1.default)(app_1.default)
@@ -176,38 +179,38 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/animals")
             .set("Authorization", `Bearer ${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.animalId = animalsList.body[0].id;
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         mocks_1.mockedAppointment.clinicsDoctorsId =
             doctorsList.body[0].clinicsDoctors[1].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
-        expect(response.status).toBe(409);
+            .set("Authorization", `Bearer ${validUserToken}`);
+        expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("message");
     }));
     test("GET /users/appointments - Must not me able to list appointments without token or with invalid token", () => __awaiter(void 0, void 0, void 0, function* () {
         const responseNoToken = yield (0, supertest_1.default)(app_1.default).get("/users/appointments");
         const responseInvalidToken = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${invalidToken}`);
+            .set("Authorization", `Bearer ${invalidToken}`);
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("GET /users/appointments - Must be able to list the users appointments", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(1);
     }));
     test("GET /doctors/appointments - Must be able to list the doctors appointments", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, supertest_1.default)(app_1.default)
             .get("/doctors/appointments")
-            .set("Authorization", `Bearer${validDoctorToken}`);
+            .set("Authorization", `Bearer ${validDoctorToken}`);
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(1);
     }));
@@ -215,7 +218,7 @@ describe("Appointmenst and Reviews Routes", () => {
         const animalsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/animals")
             .set("Authorization", `Bearer ${validUserToken}`);
-        mocks_1.mockedAppointment.animalsId = animalsList.body[0].id;
+        mocks_1.mockedAppointment.animalId = animalsList.body[0].id;
         const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         mocks_1.mockedAppointment.clinicsDoctorsId =
             doctorsList.body[0].clinicsDoctors[0].id;
@@ -223,44 +226,49 @@ describe("Appointmenst and Reviews Routes", () => {
         yield (0, supertest_1.default)(app_1.default)
             .post("/users/appointments")
             .send(mocks_1.mockedAppointment)
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
-        mocks_1.mockedReview.appointmentId = appointmentsList.body[0].id;
+            .set("Authorization", `Bearer ${validUserToken}`);
+        mocks_1.mockedReview.appointmentId = appointmentsList.body[1].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .post("/users/reviews")
             .set("Authorization", `Bearer ${validUserToken}`)
             .send(mocks_1.mockedReview);
-        expect(response.status).toBe(409);
+        expect(response.status).toBe(403);
         expect(response.body).toHaveProperty("message");
     }));
     test("POST /users/reviews - Must be able to create an appointment review", () => __awaiter(void 0, void 0, void 0, function* () {
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
-        mocks_1.mockedReview.appointmentId = appointmentsList.body[1].id;
+            .set("Authorization", `Bearer ${validUserToken}`);
+        mocks_1.mockedReview.appointmentId = appointmentsList.body[0].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .post("/users/reviews")
             .set("Authorization", `Bearer ${validUserToken}`)
             .send(mocks_1.mockedReview);
         expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty("id");
+        expect(response.body).toHaveProperty("message");
+        expect(response.body).toHaveProperty("review");
+        expect(response.body.review).toHaveProperty("id");
+        expect(response.body.review.review).toEqual(mocks_1.mockedReview.review);
     }));
     test("POST /users/reviews - Must not be ale to create a existing appointment review", () => __awaiter(void 0, void 0, void 0, function* () {
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
-        mocks_1.mockedReview.appointmentId = appointmentsList.body[1].id;
+            .set("Authorization", `Bearer ${validUserToken}`);
+        mocks_1.mockedReview.appointmentId = appointmentsList.body[0].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .post("/users/reviews")
             .set("Authorization", `Bearer ${validUserToken}`)
             .send(mocks_1.mockedReview);
-        expect(response.status).toBe(409);
+        expect(response.status).toBe(403);
         expect(response.body).toHaveProperty("message");
     }));
-    test("GET /reviews - Must be able to list all reviews", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield (0, supertest_1.default)(app_1.default).get("/reviews");
+    test("GET /reviews - Must be able to list all users reviews", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield (0, supertest_1.default)(app_1.default)
+            .get("/users/reviews")
+            .set("Authorization", `Bearer ${validUserToken}`);
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(1);
     }));
@@ -272,7 +280,9 @@ describe("Appointmenst and Reviews Routes", () => {
         expect(response.body).toHaveLength(1);
     }));
     test("PATCH /users/reviews/:id - Must be able to update the review", () => __awaiter(void 0, void 0, void 0, function* () {
-        const reviewsList = yield (0, supertest_1.default)(app_1.default).get("/reviews");
+        const reviewsList = yield (0, supertest_1.default)(app_1.default)
+            .get("/users/reviews")
+            .set("Authorization", `Bearer ${validUserToken}`);
         const reviewId = reviewsList.body[0].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .patch(`/users/reviews/${reviewId}`)
@@ -281,52 +291,53 @@ describe("Appointmenst and Reviews Routes", () => {
         expect(response.status).toBe(200);
         expect(response.body.id).toEqual(reviewId);
         expect(response.body.review).toEqual("Consulta devidamente avaliada.");
-        expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
     }));
     test("PATCH /users/reviews/:id - Must not be able to update review id", () => __awaiter(void 0, void 0, void 0, function* () {
-        const reviewsList = yield (0, supertest_1.default)(app_1.default).get("/reviews");
+        const reviewsList = yield (0, supertest_1.default)(app_1.default)
+            .get("/users/reviews")
+            .set("Authorization", `Bearer ${validUserToken}`);
         const reviewId = reviewsList.body[0].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .patch(`/users/reviews/${reviewId}`)
             .set("Authorization", `Bearer ${validUserToken}`)
             .send({ id: "100" });
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(403);
         expect(response.body).toHaveProperty("message");
     }));
     test("PATCH /users/appointments/:id - Must not be able to cancel appointment without token or with invalid token", () => __awaiter(void 0, void 0, void 0, function* () {
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
-        const appointmentId = appointmentsList.body[0].id;
+            .set("Authorization", `Bearer ${validUserToken}`);
+        const appointmentId = appointmentsList.body[1].id;
         const responseNoToken = yield (0, supertest_1.default)(app_1.default).patch(`/users/appointments/${appointmentId}`);
         const responseInvalidToken = yield (0, supertest_1.default)(app_1.default)
             .patch(`/users/appointments/${appointmentId}`)
             .set("Authorization", `Bearer ${invalidToken}`);
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("PATCH /users/appointments/:id - Must be able to cancel the appointment with user login", () => __awaiter(void 0, void 0, void 0, function* () {
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/users/appointments")
-            .set("Authorization", `Bearer${validUserToken}`);
+            .set("Authorization", `Bearer ${validUserToken}`);
         const appointmentId = appointmentsList.body[0].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .patch(`/users/appointments/${appointmentId}`)
             .set("Authorization", `Bearer ${validUserToken}`);
         expect(response.status).toBe(200);
-        expect(response.body.isCanceled).toBe(true);
+        expect(response.body).toHaveProperty("message");
     }));
     test("PATCH /doctors/appointments/:id - Must be able to cancel the appointment with doctor login", () => __awaiter(void 0, void 0, void 0, function* () {
         const appointmentsList = yield (0, supertest_1.default)(app_1.default)
             .get("/doctors/appointments")
-            .set("Authorization", `Bearer${validDoctorToken}`);
+            .set("Authorization", `Bearer ${validDoctorToken}`);
         const appointmentId = appointmentsList.body[1].id;
         const response = yield (0, supertest_1.default)(app_1.default)
             .patch(`/doctors/appointments/${appointmentId}`)
             .set("Authorization", `Bearer ${validDoctorToken}`);
         expect(response.status).toBe(200);
-        expect(response.body.isCanceled).toBe(true);
+        expect(response.body).toHaveProperty("message");
     }));
 });

@@ -13,7 +13,7 @@ const clinicRoutes = () => {
     routes.post("", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, clinic_controller_1.clinicCreateController);
     routes.get("", clinic_controller_1.clinicListController);
     routes.patch("/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, clinic_controller_1.clinicUpdateController);
-    routes.delete("/:id", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, clinic_controller_1.clinicDeleteController);
+    routes.patch("", ensureAuthToken_middleware_1.default, ensureDoctor_middleware_1.default, clinic_controller_1.clinicDeleteController);
     return routes;
 };
 exports.clinicRoutes = clinicRoutes;

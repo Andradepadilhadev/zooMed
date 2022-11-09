@@ -13,6 +13,9 @@ const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
 const updateSpeciesService = (name, id) => __awaiter(void 0, void 0, void 0, function* () {
     const findSpecies = yield repositories_1.speciesRepository.findOneBy({ id });
+    if (!name) {
+        throw new appError_1.AppError("Name field required", 400);
+    }
     if (!findSpecies) {
         throw new appError_1.AppError("Species not found", 404);
     }

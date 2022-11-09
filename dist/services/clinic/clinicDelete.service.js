@@ -8,26 +8,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const data_source_1 = __importDefault(require("../../data-source"));
-const clinics_entity_1 = require("../../entities/clinics.entity");
-const address_entity_1 = require("../../entities/address.entity");
 const appError_1 = require("../../errors/appError");
-const clinicDeleteService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const clinicRepository = data_source_1.default.getRepository(clinics_entity_1.Clinics);
-    const addressRepository = data_source_1.default.getRepository(address_entity_1.Address);
-    const clinicAlreadyExists = yield clinicRepository.findOne({
+const repositories_1 = require("../../utilities/repositories");
+const clinicDeleteService = (id, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const clinic = yield repositories_1.clinicsRepository.findOne({
         where: { id: id },
     });
-    if (!clinicAlreadyExists) {
+    if (!clinic) {
         throw new appError_1.AppError("Clinic not found", 404);
     }
-    const addressId = clinicAlreadyExists.address.id;
-    yield clinicRepository.delete(id);
-    yield addressRepository.delete({ id: addressId });
-    return;
+    const clinicsDoctors = yield repositories_1.clinicsDoctorsRepository.findOne({
+        where: {
+            clinic: { id },
+            doctor: { id: userId },
+        },
+        relations: {
+            clinic: true,
+            doctor: true,
+        },
+    });
+    if (!clinicsDoctors) {
+        throw new appError_1.AppError("Clinic has already been removed", 400);
+    }
+    yield repositories_1.clinicsDoctorsRepository.delete({
+        id: clinicsDoctors.id,
+    });
+    return "Clinic removed successfully";
 });
 exports.default = clinicDeleteService;

@@ -11,17 +11,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../../errors/appError");
 const repositories_1 = require("../../../utilities/repositories");
-const specialitiesDeleteService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const specialityAlreadyExists = yield repositories_1.specialitiesRepository.findOne({
+const specialitiesDeleteService = (id, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const specialityAlreadyExists = repositories_1.specialitiesRepository.findOne({
         where: { id: id },
     });
     if (!specialityAlreadyExists) {
         throw new appError_1.AppError("Speciality not found", 404);
     }
-    yield repositories_1.specialitiesRepository.delete({ id });
-    yield repositories_1.doctorsSpecialitiesRepository.delete({
-        speciality: specialityAlreadyExists,
+    const specialityDoctorExists = yield repositories_1.doctorsSpecialitiesRepository.findOneBy({
+        speciality: { id },
+        doctor: { id: userId },
     });
-    return;
+    if (!specialityDoctorExists) {
+        throw new appError_1.AppError("Speciality has already been removed", 400);
+    }
+    yield repositories_1.doctorsSpecialitiesRepository.delete({
+        speciality: { id },
+        doctor: { id: userId },
+    });
+    return { message: "Speciality has been removed" };
 });
 exports.default = specialitiesDeleteService;

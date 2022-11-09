@@ -12,22 +12,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../../errors/appError");
 const repositories_1 = require("../../../utilities/repositories");
 const listReviewDoctorService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const clinicDoctor = yield repositories_1.clinicsDoctorsRepository.findOne({
-        where: { doctor: id },
-    } || { where: { clinic: id } });
+    const clinicDoctor = yield repositories_1.clinicsDoctorsRepository.find({
+        where: { doctor: { id } },
+    });
     if (!clinicDoctor) {
-        throw new appError_1.AppError("Clinic not found", 404);
+        throw new appError_1.AppError("You don't have any reviews", 400);
     }
-    const appointmentsForClinic = yield repositories_1.appointmentsRepository.find({
+    const doctorsAppointments = yield repositories_1.appointmentsRepository.find({
         where: {
             clinicsDoctors: clinicDoctor,
         },
     });
-    const reviewsForClinic = yield repositories_1.reviewsRepository.find({
+    const doctorsReviews = yield repositories_1.reviewsRepository.find({
         where: {
-            appointments: appointmentsForClinic,
+            appointments: doctorsAppointments,
         },
     });
-    return reviewsForClinic;
+    return doctorsReviews;
 });
 exports.default = listReviewDoctorService;

@@ -11,7 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../utilities/repositories");
 const listDoctorsService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const allDoctors = yield repositories_1.doctorsRepository.find();
+    const allDoctors = yield repositories_1.doctorsRepository.find({
+        relations: {
+            clinicsDoctors: { clinic: true },
+            doctorSpecialities: { speciality: true },
+        },
+    });
     return allDoctors;
 });
 exports.default = listDoctorsService;

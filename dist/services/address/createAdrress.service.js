@@ -9,16 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
-const createAddressService = (address) => __awaiter(void 0, void 0, void 0, function* () {
-    const newAddress = repositories_1.addressRepository.create({
-        district: address.district,
-        zipCode: address.zipCode,
-        complement: address.complement,
-        number: address.number,
-        city: address.city,
-        state: address.state,
+const createAddressService = ({ district, zipCode, complement, number, city, state, }) => __awaiter(void 0, void 0, void 0, function* () {
+    const addressAlreadyExists = yield repositories_1.addressRepository.findOne({
+        where: { district, zipCode, complement, number, city, state },
     });
+    if (addressAlreadyExists) {
+        throw new appError_1.AppError("This address is already registered", 409);
+    }
+    const newAddress = repositories_1.addressRepository.create({
+        district: district,
+        zipCode: zipCode,
+        complement: complement,
+        number: number,
+        city: city,
+        state: state,
+    });
+    yield repositories_1.addressRepository.save(newAddress);
     return newAddress;
 });
 exports.default = createAddressService;

@@ -13,26 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../../errors/appError");
-const repositories_1 = require("../../../utilities/repositories");
 const verifyUUID_1 = __importDefault(require("../../../utilities/verifyUUID"));
-const appointmentsDeleteService = (id, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const repositories_1 = require("./../../../utilities/repositories");
+const deleteAppointmentDoctorService = (id, doctorId) => __awaiter(void 0, void 0, void 0, function* () {
     (0, verifyUUID_1.default)(id);
-    const findAppointments = yield repositories_1.appointmentsRepository.findOne({
-        where: { id },
-        relations: { animals: { user: true } },
+    const appointmentExists = yield repositories_1.appointmentsRepository.findOne({
+        where: { id: id },
+        relations: { clinicsDoctors: { doctor: true } },
     });
-    if (!findAppointments) {
-        throw new appError_1.AppError("Appointment not found", 400);
+    if (!appointmentExists) {
+        throw new appError_1.AppError("Appointment not found", 404);
     }
-    const userOwnsTheAppointment = userId === findAppointments.animals.user.id;
-    if (!userOwnsTheAppointment) {
-        throw new appError_1.AppError("This is not your appointment", 403);
+    const appointmentBelongsToDoctor = doctorId === appointmentExists.clinicsDoctors.doctor.id;
+    if (!appointmentBelongsToDoctor) {
+        throw new appError_1.AppError("This is not your appointment to cancel", 403);
     }
-    if (findAppointments.isCanceled) {
-        throw new appError_1.AppError("Appointment already canceled", 400);
-    }
-    yield repositories_1.appointmentsRepository.update(id, {
-        isCanceled: true,
-    });
+    yield repositories_1.appointmentsRepository.delete({ id });
+    return { message: "Appointment canceled successfully" };
 });
-exports.default = appointmentsDeleteService;
+exports.default = deleteAppointmentDoctorService;

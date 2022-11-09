@@ -10,9 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../../utilities/repositories");
-const listAllSpecialityService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const specs = yield repositories_1.specialitiesRepository.find();
-    const result = specs.map((spec) => spec);
-    return result;
+const listAllSpecialitiesService = () => __awaiter(void 0, void 0, void 0, function* () {
+    const specialities = yield repositories_1.specialitiesRepository.find();
+    return specialities;
 });
-exports.default = listAllSpecialityService;
+exports.default = listAllSpecialitiesService;

@@ -12,18 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReviewsController = exports.listReviewsDoctorController = void 0;
-const deleteReviewDoctor_service_1 = __importDefault(require("../../../services/doctors/reviews/deleteReviewDoctor.service"));
+exports.listReviewsDoctorController = void 0;
 const listReviewDoctor_service_1 = __importDefault(require("../../../services/doctors/reviews/listReviewDoctor.service"));
 const listReviewsDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { id } = req.user;
     const listReviews = yield (0, listReviewDoctor_service_1.default)(id);
     return res.status(200).send(listReviews);
 });
 exports.listReviewsDoctorController = listReviewsDoctorController;
-const deleteReviewsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    yield (0, deleteReviewDoctor_service_1.default)(id);
-    return res.status(203).send();
-});
-exports.deleteReviewsController = deleteReviewsController;

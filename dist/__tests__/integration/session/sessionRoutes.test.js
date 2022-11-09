@@ -53,9 +53,9 @@ describe("Session Routes", () => {
         const responseWrongPassword = yield (0, supertest_1.default)(app_1.default)
             .post("/login")
             .send({ email: mocks_1.mockedDoctor.email, password: "abcd" });
-        expect(responseWrongEmail.status).toBe(400);
+        expect(responseWrongEmail.status).toBe(401);
         expect(responseWrongEmail.body).toHaveProperty("message");
-        expect(responseWrongPassword.status).toBe(400);
+        expect(responseWrongPassword.status).toBe(401);
         expect(responseWrongPassword.body).toHaveProperty("message");
     }));
     test("POST /login - Must not be able to log into a doctor account with wrong password/email", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,9 +65,9 @@ describe("Session Routes", () => {
         const responseWrongPassword = yield (0, supertest_1.default)(app_1.default)
             .post("/login")
             .send({ email: mocks_1.mockedDoctor.email, password: "abcd" });
-        expect(responseWrongEmail.status).toBe(400);
+        expect(responseWrongEmail.status).toBe(401);
         expect(responseWrongEmail.body).toHaveProperty("message");
-        expect(responseWrongPassword.status).toBe(400);
+        expect(responseWrongPassword.status).toBe(401);
         expect(responseWrongPassword.body).toHaveProperty("message");
     }));
 });

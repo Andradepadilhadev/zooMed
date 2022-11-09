@@ -12,7 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const repositories_1 = require("../../../utilities/repositories");
 const listAppointmentsDoctorService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const appointmentsDoctor = yield repositories_1.appointmentsRepository.find({
-        where: { clinicsDoctors: { doctor: id } },
+        where: { clinicsDoctors: { doctor: { id } } },
+        relations: { animals: true },
     });
     if (appointmentsDoctor.length === 0) {
         return { message: "You don't have any appointments" };

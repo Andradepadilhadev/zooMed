@@ -8,10 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
+const verifyUUID_1 = __importDefault(require("../../utilities/verifyUUID"));
 const deleteAnimalService = (id, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, verifyUUID_1.default)(id);
     const animals = yield repositories_1.animalsRepository.findOne({
         where: {
             id: id,
@@ -29,6 +34,6 @@ const deleteAnimalService = (id, userId) => __awaiter(void 0, void 0, void 0, fu
     yield repositories_1.animalsRepository.update(id, {
         isAlive: false,
     });
-    return "Animals deleted with success";
+    return "Animal deleted with success";
 });
 exports.default = deleteAnimalService;

@@ -57,7 +57,7 @@ describe("Doctors Routes", () => {
             .send(mocks_1.mockedDoctorUpdate);
         expect(responseNoToken.status).toBe(401);
         expect(responseNoToken.body).toHaveProperty("message");
-        expect(responseInvalidToken.status).toBe(401);
+        expect(responseInvalidToken.status).toBe(403);
         expect(responseInvalidToken.body).toHaveProperty("message");
     }));
     test("PATCH /doctors - Must be able to update doctors", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -74,14 +74,28 @@ describe("Doctors Routes", () => {
         expect(response.body.crmv).toEqual(mocks_1.mockedDoctor.crmv);
         expect(response.body.email).toEqual(mocks_1.mockedDoctorUpdate.email);
         expect(response.body.birthDate).toEqual(mocks_1.mockedDoctor.birthDate);
-        expect(response.body.createdAt).not.toEqual(response.body.updatedAt);
     }));
     test("GET /doctors - Must be able to list doctors", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, supertest_1.default)(app_1.default).get("/doctors");
         expect(response.status).toBe(200);
         expect(response.body).toHaveLength(1);
-        expect(response.body[0]).toHaveProperty("specialities");
-        expect(response.body[0]).toHaveProperty("clinics");
+        expect(response.body[0]).toHaveProperty("doctorSpecialities");
+        expect(response.body[0]).toHaveProperty("clinicsDoctors");
+    }));
+    test("GET /doctors/profile - Must be able to list the logged doctors information", () => __awaiter(void 0, void 0, void 0, function* () {
+        const login = yield (0, supertest_1.default)(app_1.default).post("/login").send({
+            email: mocks_1.mockedDoctorUpdate.email,
+            password: mocks_1.mockedDoctor.password,
+        });
+        const response = yield (0, supertest_1.default)(app_1.default)
+            .get("/doctors/profile")
+            .set("Authorization", `Bearer ${login.body.token}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty("id");
+        expect(response.body).not.toHaveProperty("password");
+        expect(response.body.email).toEqual(mocks_1.mockedDoctorUpdate.email);
+        expect(response.body.name).toEqual(mocks_1.mockedDoctorUpdate.name);
+        expect(response.body.crmv).toEqual(mocks_1.mockedDoctor.crmv);
     }));
     test("PATCH /doctors - Must not be able to modify id or isActive", () => __awaiter(void 0, void 0, void 0, function* () {
         const login = yield (0, supertest_1.default)(app_1.default).post("/login").send({
@@ -102,9 +116,11 @@ describe("Doctors Routes", () => {
             .set("Authorization", `Bearer ${login.body.token}`)
             .send(mocks_1.mockedSpeciality);
         expect(responseCreateSpeciality.status).toBe(201);
-        expect(responseCreateSpeciality.body).toHaveProperty("id");
+        expect(responseCreateSpeciality.body).toHaveProperty("message");
+        expect(responseCreateSpeciality.body).toHaveProperty("speciality");
+        expect(responseCreateSpeciality.body.speciality).toHaveProperty("id");
         const responseWasSpecialityAdded = yield (0, supertest_1.default)(app_1.default).get("/doctors");
-        expect(responseWasSpecialityAdded.body[0].specialities[0]).toEqual(mocks_1.mockedSpeciality.name);
+        expect(responseWasSpecialityAdded.body[0].doctorSpecialities[0].speciality.name).toEqual(mocks_1.mockedSpeciality.name);
     }));
     test("GET /doctors/specialitites - Must be able to list specialities", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield (0, supertest_1.default)(app_1.default).get("/doctors/specialities");
@@ -121,21 +137,25 @@ describe("Doctors Routes", () => {
     }));
     test("PATCH /doctors/specialities - Must be able to remove speciality from the doctors specialities", () => __awaiter(void 0, void 0, void 0, function* () {
         const login = yield (0, supertest_1.default)(app_1.default).post("/login").send(mocks_1.mockedDoctorLogin);
+        const specialitiesList = yield (0, supertest_1.default)(app_1.default).get("/doctors/specialities");
         const response = yield (0, supertest_1.default)(app_1.default)
-            .patch("/doctors/specilities")
-            .set("Authorization", `Bearer ${login.body.token}`)
-            .send(mocks_1.mockedSpeciality);
-        expect(response.status).toBe(200);
-        expect(response.body.name).toEqual(mocks_1.mockedDoctorUpdate.name);
-        expect(response.body.specialities).toHaveLength(0);
-    }));
-    test("PATCH /doctors - Must be able to do a soft delete of the doctors", () => __awaiter(void 0, void 0, void 0, function* () {
-        const login = yield (0, supertest_1.default)(app_1.default).post("/login").send(mocks_1.mockedDoctorLogin);
-        const response = yield (0, supertest_1.default)(app_1.default)
-            .patch("/doctors")
+            .patch(`/doctors/specialities/${specialitiesList.body[0].id}`)
             .set("Authorization", `Bearer ${login.body.token}`);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty("message");
-        expect(response.body.message).toEqual("Doctor deleted/deactivated with success");
+        const doctorsList = yield (0, supertest_1.default)(app_1.default).get("/doctors");
+        expect(doctorsList.body[0].doctorSpecialities).toHaveLength(0);
+    }));
+    test("PATCH /doctors - Must be able to do a soft delete of the doctors", () => __awaiter(void 0, void 0, void 0, function* () {
+        const login = yield (0, supertest_1.default)(app_1.default).post("/login").send(mocks_1.mockedDoctorLogin);
+        const userInformation = yield (0, supertest_1.default)(app_1.default)
+            .get("/doctors/profile")
+            .set("Authorization", `Bearer ${login.body.token}`);
+        const response = yield (0, supertest_1.default)(app_1.default)
+            .patch(`/doctors/${userInformation.body.id}`)
+            .set("Authorization", `Bearer ${login.body.token}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty("message");
+        expect(response.body.message).toEqual("Doctor deleted successfully");
     }));
 });

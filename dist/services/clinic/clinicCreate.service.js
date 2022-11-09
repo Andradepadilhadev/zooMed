@@ -12,28 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const data_source_1 = __importDefault(require("../../data-source"));
-const clinics_entity_1 = require("../../entities/clinics.entity");
 const appError_1 = require("../../errors/appError");
+const repositories_1 = require("../../utilities/repositories");
 const createAdrress_service_1 = __importDefault(require("../address/createAdrress.service"));
-const clinicCreateService = ({ name, contact, crmv_pj, address, }) => __awaiter(void 0, void 0, void 0, function* () {
-    const clinicRepository = data_source_1.default.getRepository(clinics_entity_1.Clinics);
-    const clinicAlreadyExists = yield clinicRepository.findOne({
-        where: { name: name },
+const clinicCreateService = ({ name, contact, crmv_pj, address }, userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const clinic = yield repositories_1.clinicsRepository.findOne({
+        where: { name },
     });
-    if (clinicAlreadyExists) {
-        throw new appError_1.AppError("Clinic Already Exists", 404);
+    if (clinic) {
+        if (clinic.crmv_pj === crmv_pj) {
+            throw new appError_1.AppError("Clinic crmv Already Exists", 409);
+        }
+        throw new appError_1.AppError("Clinic name Already Exists", 409);
     }
-    const newClinic = new clinics_entity_1.Clinics();
-    newClinic.name = name;
-    newClinic.contact = contact;
-    newClinic.address = yield (0, createAdrress_service_1.default)(address);
-    crmv_pj && (newClinic.crmv_pj = crmv_pj);
-    clinicRepository.create(newClinic);
-    yield clinicRepository.save(newClinic);
-    return {
-        message: "Created sucessfully",
-        Clinic: newClinic,
-    };
+    const newAddress = yield (0, createAdrress_service_1.default)(address);
+    const newClinic = repositories_1.clinicsRepository.create({
+        name,
+        contact,
+        crmv_pj,
+        address: newAddress,
+    });
+    const doctor = yield repositories_1.doctorsRepository.findOne({ where: { id: userId } });
+    yield repositories_1.clinicsRepository.save(newClinic);
+    const clinicDoctor = repositories_1.clinicsDoctorsRepository.create({
+        clinic: newClinic,
+        doctor: doctor,
+    });
+    yield repositories_1.clinicsDoctorsRepository.save(clinicDoctor);
+    return newClinic;
 });
 exports.default = clinicCreateService;

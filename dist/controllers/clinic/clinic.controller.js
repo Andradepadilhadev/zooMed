@@ -19,19 +19,23 @@ const clinicList_service_1 = __importDefault(require("../../services/clinic/clin
 const clinicUpdate_service_1 = __importDefault(require("../../services/clinic/clinicUpdate.service"));
 const clinicCreateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, contact, crmv_pj, address } = req.body;
+    const userId = req.user.id;
     const createdClinic = yield (0, clinicCreate_service_1.default)({
         name,
         contact,
         crmv_pj,
         address,
-    });
+    }, userId);
     return res.status(201).send(createdClinic);
 });
 exports.clinicCreateController = clinicCreateController;
 const clinicDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    yield (0, clinicDelete_service_1.default)(id);
-    return res.status(203).send();
+    const userId = req.user.id;
+    const { id } = req.body.id;
+    const removed = yield (0, clinicDelete_service_1.default)(id, userId);
+    return res.status(200).json({
+        message: removed,
+    });
 });
 exports.clinicDeleteController = clinicDeleteController;
 const clinicListController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,13 +45,13 @@ const clinicListController = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.clinicListController = clinicListController;
 const clinicUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { name, contact, crmv_pj, address, clinicsDoctors } = req.body;
-    const clinicUpdated = yield (0, clinicUpdate_service_1.default)(id, {
+    const userId = req.user.id;
+    const { name, contact, crmv_pj, address } = req.body;
+    const clinicUpdated = yield (0, clinicUpdate_service_1.default)(id, userId, {
         name,
         contact,
         crmv_pj,
         address,
-        clinicsDoctors,
     });
     return res.status(200).send(clinicUpdated);
 });

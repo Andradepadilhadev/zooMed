@@ -11,15 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../../errors/appError");
 const repositories_1 = require("../../../utilities/repositories");
-const listDoctorBySpecialityService = (specId) => __awaiter(void 0, void 0, void 0, function* () {
-    const spec = yield repositories_1.specialitiesRepository.findBy({
-        id: specId,
+const listDoctorBySpecialityService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const speciality = yield repositories_1.specialitiesRepository.findBy({
+        id: id,
     });
-    if (!spec) {
+    if (!speciality) {
         throw new appError_1.AppError("Speciality not found", 400);
     }
-    const doctors = yield repositories_1.doctorsRepository.findBy({
-        doctorSpecialities: spec,
+    const doctors = yield repositories_1.doctorsRepository.find({
+        where: { doctorSpecialities: { speciality: { id } } },
+        relations: { doctorSpecialities: { speciality: true } },
     });
     return doctors;
 });

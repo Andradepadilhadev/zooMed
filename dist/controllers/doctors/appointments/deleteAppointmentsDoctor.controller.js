@@ -8,19 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const repositories_1 = require("../../utilities/repositories");
-const verifyOwnerUser_1 = require("../../utilities/verifyOwnerUser");
-const listAllAnimalsUserService = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield (0, verifyOwnerUser_1.verifyOwnerUser)(userId);
-    const user = yield repositories_1.usersRepository.findOne({
-        where: {
-            id: userId,
-        },
-        relations: {
-            animals: true,
-        },
-    });
-    return user.animals;
+const deleteAppointmentsDoctor_service_1 = __importDefault(require("../../../services/doctors/appointments/deleteAppointmentsDoctor.service"));
+const deleteAppointmentDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const doctorId = req.user.id;
+    const deletedAppointment = yield (0, deleteAppointmentsDoctor_service_1.default)(id, doctorId);
+    return res.status(200).send(deletedAppointment);
 });
-exports.default = listAllAnimalsUserService;
+exports.default = deleteAppointmentDoctorController;

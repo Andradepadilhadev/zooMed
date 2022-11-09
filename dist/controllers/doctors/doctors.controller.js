@@ -33,7 +33,7 @@ const createDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, f
 exports.createDoctorController = createDoctorController;
 const listDoctorsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const allDoctors = yield (0, listDoctors_service_1.default)();
-    return res.status(200).json(allDoctors);
+    return res.status(200).json((0, class_transformer_1.instanceToPlain)(allDoctors));
 });
 exports.listDoctorsController = listDoctorsController;
 const doctorListAppointmentController = (req, res) => {
@@ -44,7 +44,8 @@ const doctorListAppointmentController = (req, res) => {
 exports.doctorListAppointmentController = doctorListAppointmentController;
 const updateDoctorController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, birthDate } = req.body;
-    const doctorUpdated = yield (0, updateDoctor_service_1.default)({
+    const id = req.user.id;
+    const doctorUpdated = yield (0, updateDoctor_service_1.default)(id, {
         name,
         email,
         password,
