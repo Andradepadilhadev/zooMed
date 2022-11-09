@@ -18,7 +18,7 @@ __decorate([
     __metadata("design:type", String)
 ], Address.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 8 }),
+    (0, typeorm_1.Column)({ length: 9 }),
     __metadata("design:type", String)
 ], Address.prototype, "zipCode", void 0);
 __decorate([

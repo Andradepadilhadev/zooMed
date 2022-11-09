@@ -16,9 +16,11 @@ const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
 const bcryptjs_1 = require("bcryptjs");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const validators_1 = require("../../validators");
 const loginService = ({ email, password, }) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield repositories_1.usersRepository.findOneBy({ email });
     const doctor = yield repositories_1.doctorsRepository.findOneBy({ email });
+    yield (0, validators_1.validateEmail)(email);
     if (!user && !doctor) {
         throw new appError_1.AppError("Invalid email or password", 401);
     }

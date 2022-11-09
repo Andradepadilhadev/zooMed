@@ -13,13 +13,18 @@ const verifyDateFormat_1 = require("./../../utilities/verifyDateFormat");
 const bcryptjs_1 = require("bcryptjs");
 const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
+const validators_1 = require("../../validators");
 const createDoctorService = ({ name, email, password, birthDate, crmv, }) => __awaiter(void 0, void 0, void 0, function* () {
     if (!password) {
         throw new appError_1.AppError("Password is missing", 400);
     }
     if (!crmv) {
-        throw new appError_1.AppError("crmv is missing", 400);
+        throw new appError_1.AppError("Crmv is missing", 400);
     }
+    if (crmv.length > 6) {
+        throw new appError_1.AppError("Crmv incorrect", 400);
+    }
+    yield (0, validators_1.validatePassword)(password);
     (0, verifyDateFormat_1.verifyDateFormat)(birthDate);
     const doctorAlreadyExists = yield repositories_1.doctorsRepository.findOneBy({ email });
     const emailAlreadyExistsInUsers = yield repositories_1.usersRepository.findOneBy({ email });

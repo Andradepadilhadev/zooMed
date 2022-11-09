@@ -11,10 +11,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const appError_1 = require("../../errors/appError");
 const repositories_1 = require("../../utilities/repositories");
+const validators_1 = require("../../validators");
 const createAddressService = ({ district, zipCode, complement, number, city, state, }) => __awaiter(void 0, void 0, void 0, function* () {
     const addressAlreadyExists = yield repositories_1.addressRepository.findOne({
         where: { district, zipCode, complement, number, city, state },
     });
+    yield (0, validators_1.validateZipCode)(zipCode);
     if (addressAlreadyExists) {
         throw new appError_1.AppError("This address is already registered", 409);
     }

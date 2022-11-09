@@ -32,7 +32,7 @@ const clinicUpdateService = (id, userId, { name, contact, crmv_pj, address }) =>
         where: { clinic: { id: findClinic.id }, doctor: { id: doctor.id } },
         relations: { clinic: true, doctor: true },
     });
-    if (clinicDoctor) {
+    if (!clinicDoctor) {
         throw new appError_1.AppError("You are no longer registered at this clinic", 400);
     }
     if (address) {

@@ -13,12 +13,14 @@ const bcryptjs_1 = require("bcryptjs");
 const repositories_1 = require("../../utilities/repositories");
 const appError_1 = require("../../errors/appError");
 const verifyDateFormat_1 = require("../../utilities/verifyDateFormat");
+const validators_1 = require("../../validators");
 const createUserService = ({ name, email, birthDate, password, }) => __awaiter(void 0, void 0, void 0, function* () {
     if (!password) {
         throw new appError_1.AppError("Password is missing", 400);
     }
-    const hashedPassword = yield (0, bcryptjs_1.hash)(password, 10);
+    yield (0, validators_1.validatePassword)(password);
     (0, verifyDateFormat_1.verifyDateFormat)(birthDate);
+    const hashedPassword = yield (0, bcryptjs_1.hash)(password, 10);
     const newUser = repositories_1.usersRepository.create({
         name,
         email,
