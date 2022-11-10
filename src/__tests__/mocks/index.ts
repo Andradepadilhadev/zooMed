@@ -1,7 +1,7 @@
 export const mockedUser = {
   name: "Kenzinho",
   email: "kenzinho@email.com",
-  password: "1234",
+  password: "Teste12!@",
   birthDate: "1995/4/25",
 };
 
@@ -12,7 +12,7 @@ export const mockedUserUpdated = {
 
 export const mockedUserLogin = {
   email: "kenzie@mail.com",
-  password: "1234",
+  password: "Teste12!@",
 };
 
 export const mockedSpecies = {
@@ -35,7 +35,7 @@ export const mockedWrongId = "130236f0-4e0c-40e0-9000-3d68dcc6f9a9";
 export const mockedDoctor = {
   name: "Veterinário",
   email: "vet@email.com",
-  password: "1234",
+  password: "Teste12!@",
   birthDate: "1988/07/19",
   crmv: "123456",
 };
@@ -47,13 +47,13 @@ export const mockedDoctorUpdate = {
 
 export const mockedDoctorLogin = {
   email: "julio@email.com",
-  password: "1234",
+  password: "Teste12!@",
 };
 
 export const mockedClinicUpdate = {
   name: "zooEni",
   address: {
-    zipCode: "18150300",
+    zipCode: "18150-300",
     number: "38",
     district: "Rua gato a jato",
     city: "marte",
@@ -69,7 +69,7 @@ export const mockedClinic = {
   name: "Clínica Vet",
   contact: "27123456789",
   address: {
-    zipCode: "12345678",
+    zipCode: "12345-678",
     number: "100",
     complement: "sala 2",
     district: "Bairro",
@@ -82,7 +82,7 @@ export const mockedClinicTwo = {
   name: "ZooClínica",
   contact: "31987654321",
   address: {
-    zipCode: "87654321",
+    zipCode: "87654-321",
     number: "3",
     district: "Outro Bairro",
     city: "Outra Cidade",
